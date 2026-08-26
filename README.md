@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/hero-banner.png" alt="Halo Chat Platform Hero Banner" width="100%" />
+  <img src="banner.png" alt="Halo Chat Platform Hero Banner" width="100%" />
 </p>
 
 <h1 align="center">💬 Halo Chat Platform</h1>
