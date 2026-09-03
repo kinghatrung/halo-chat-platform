@@ -389,7 +389,9 @@ function MessageBubble({
 
             {/* Reply header label */}
             {message.replyToMessageId && !message.isDeleted && (
-              <View className={`flex-row mt-1 items-center mb-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
+              <View
+                className={`flex-row mt-1 items-center mb-1 ${isMe ? 'justify-end' : 'justify-start'}`}
+              >
                 <Ionicons name="arrow-undo-outline" size={13} color="#6B7280" />
                 <Text className="ml-1 text-xs font-medium text-gray-500">
                   {isMe
@@ -460,12 +462,16 @@ function MessageBubble({
                       }}
                       delayLongPress={250}
                       className={`-mt-2 z-10 rounded-2xl ${
-                        message.attachmentIds && message.attachmentIds.length > 0 && !message.content
+                        message.attachmentIds &&
+                        message.attachmentIds.length > 0 &&
+                        !message.content
                           ? 'p-0 bg-transparent'
                           : `px-4 py-2 ${isMe ? 'rounded-br-xs bg-[#6f6bff] self-end' : 'rounded-bl-xs bg-white self-start'}`
                       }`}
                       style={
-                        message.attachmentIds && message.attachmentIds.length > 0 && !message.content
+                        message.attachmentIds &&
+                        message.attachmentIds.length > 0 &&
+                        !message.content
                           ? {}
                           : {
                               shadowColor: '#000',
@@ -476,18 +482,20 @@ function MessageBubble({
                             }
                       }
                     >
-                      {message.attachmentIds && message.attachmentIds.length > 0 && !message.isDeleted && (
-                        <View className="flex-col mb-1">
-                          {message.attachmentIds.map((att) => (
-                            <AttachmentDisplay
-                              key={att._id || att.url}
-                              attachment={att}
-                              isMe={isMe}
-                              onPressImage={onPressImage}
-                            />
-                          ))}
-                        </View>
-                      )}
+                      {message.attachmentIds &&
+                        message.attachmentIds.length > 0 &&
+                        !message.isDeleted && (
+                          <View className="flex-col mb-1">
+                            {message.attachmentIds.map((att) => (
+                              <AttachmentDisplay
+                                key={att._id || att.url}
+                                attachment={att}
+                                isMe={isMe}
+                                onPressImage={onPressImage}
+                              />
+                            ))}
+                          </View>
+                        )}
                       {Boolean(message.content) && (
                         <Text
                           className={`text-[16px] leading-6 font-normal ${
@@ -536,18 +544,20 @@ function MessageBubble({
                           }
                     }
                   >
-                    {message.attachmentIds && message.attachmentIds.length > 0 && !message.isDeleted && (
-                      <View className="flex-col mb-1">
-                        {message.attachmentIds.map((att) => (
-                          <AttachmentDisplay
-                            key={att._id || att.url}
-                            attachment={att}
-                            isMe={isMe}
-                            onPressImage={onPressImage}
-                          />
-                        ))}
-                      </View>
-                    )}
+                    {message.attachmentIds &&
+                      message.attachmentIds.length > 0 &&
+                      !message.isDeleted && (
+                        <View className="flex-col mb-1">
+                          {message.attachmentIds.map((att) => (
+                            <AttachmentDisplay
+                              key={att._id || att.url}
+                              attachment={att}
+                              isMe={isMe}
+                              onPressImage={onPressImage}
+                            />
+                          ))}
+                        </View>
+                      )}
                     {Boolean(message.content) && (
                       <Text
                         className={`text-[16px] leading-6 font-normal ${
@@ -1151,7 +1161,11 @@ export default function ChatDetailScreen() {
                   <View className="relative mr-3">
                     {isImg || isVid ? (
                       <View className="overflow-hidden relative w-16 h-16 bg-gray-100 rounded-xl">
-                        <Image source={{ uri: item.uri }} className="w-16 h-16" resizeMode="cover" />
+                        <Image
+                          source={{ uri: item.uri }}
+                          className="w-16 h-16"
+                          resizeMode="cover"
+                        />
                         {isVid && (
                           <View className="absolute inset-0 justify-center items-center bg-black/30">
                             <Ionicons name="play" size={16} color="white" />

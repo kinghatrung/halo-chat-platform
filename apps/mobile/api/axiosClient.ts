@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/auth';
 import { authService } from '@/services/auth.service';
 
 const axiosClient = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.7:5000/api',
+  baseURL: process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.23:5000/api',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',

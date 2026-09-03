@@ -83,7 +83,7 @@ const server = http.createServer(app);
 initSocket(server);
 startPushWorker();
 
-server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+server.listen(Number(PORT), '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
   console.log(`Swagger UI is available at http://localhost:${PORT}/api-docs`);
 });

@@ -66,7 +66,8 @@ const attachmentService = {
       const resourceType: AttachmentResourceType = isImage ? 'image' : 'raw';
       // Raw (non-image) files keep their extension in the public_id so Cloudinary
       // serves/downloads them with the correct format.
-      const publicId = resourceType === 'raw' ? `${uuidv4()}${path.extname(file.originalname)}` : uuidv4();
+      const publicId =
+        resourceType === 'raw' ? `${uuidv4()}${path.extname(file.originalname)}` : uuidv4();
 
       const result = await uploadBufferToCloudinary(file, resourceType, publicId);
 
@@ -100,7 +101,9 @@ const attachmentService = {
       return attachments;
     } catch (error) {
       // Roll back files already uploaded in this batch so a partial failure doesn't leave orphans
-      await Promise.all(attachments.map((a) => attachmentService.deleteAttachment(userId, String(a._id))));
+      await Promise.all(
+        attachments.map((a) => attachmentService.deleteAttachment(userId, String(a._id))),
+      );
       throw error;
     }
   },
@@ -122,7 +125,8 @@ const attachmentService = {
   buildDownloadUrl: (attachment: IAttachment) => {
     // Cloudinary's fl_attachment transformation can't safely contain arbitrary
     // characters, so pass a sanitized name; it auto-appends the real extension.
-    const safeName = path.parse(attachment.fileName).name.replace(/[^a-zA-Z0-9-_]+/g, '_') || 'file';
+    const safeName =
+      path.parse(attachment.fileName).name.replace(/[^a-zA-Z0-9-_]+/g, '_') || 'file';
 
     return cloudinary.url(attachment.publicId, {
       resource_type: attachment.resourceType,
