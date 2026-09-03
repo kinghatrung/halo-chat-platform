@@ -6838,16 +6838,20 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$switch$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Switch$3e$__ = __turbopack_context__.i("[project]/apps/web/node_modules/antd/es/switch/index.js [app-client] (ecmascript) <export default as Switch>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$tabs$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tabs$3e$__ = __turbopack_context__.i("[project]/apps/web/node_modules/antd/es/tabs/index.js [app-client] (ecmascript) <export default as Tabs>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$typography$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__ = __turbopack_context__.i("[project]/apps/web/node_modules/antd/es/typography/index.js [app-client] (ecmascript) <export default as Typography>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$upload$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__ = __turbopack_context__.i("[project]/apps/web/node_modules/antd/es/upload/index.js [app-client] (ecmascript) <export default as Upload>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$UserOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserOutlined$3e$__ = __turbopack_context__.i("[project]/apps/web/node_modules/@ant-design/icons/es/icons/UserOutlined.js [app-client] (ecmascript) <export default as UserOutlined>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$LockOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LockOutlined$3e$__ = __turbopack_context__.i("[project]/apps/web/node_modules/@ant-design/icons/es/icons/LockOutlined.js [app-client] (ecmascript) <export default as LockOutlined>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$InboxOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__InboxOutlined$3e$__ = __turbopack_context__.i("[project]/apps/web/node_modules/@ant-design/icons/es/icons/InboxOutlined.js [app-client] (ecmascript) <export default as InboxOutlined>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$notify$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/lib/notify.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useUser$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/hook/useUser.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$services$2f$attachment$2e$service$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/services/attachment.service.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$avatar$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/lib/avatar.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useMediaQuery$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/hook/useMediaQuery.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$push$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/lib/push.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
+;
 ;
 ;
 ;
@@ -6865,8 +6869,12 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
     const [passwordForm] = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].useForm();
     const updateProfileMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useUser$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useUpdateProfile"])();
     const changePasswordMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useUser$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useChangePassword"])();
+    const [selectedAvatarFile, setSelectedAvatarFile] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [avatarPreview, setAvatarPreview] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [isSubmitting, setIsSubmitting] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [pushEnabled, setPushEnabled] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [pushLoading, setPushLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const watchedAvatar = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].useWatch('avatar', profileForm);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ProfileDrawer.useEffect": ()=>{
             if (currentUser && open) {
@@ -6882,6 +6890,11 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
         open,
         profileForm
     ]);
+    const handleClose = ()=>{
+        setSelectedAvatarFile(null);
+        setAvatarPreview(null);
+        onClose();
+    };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ProfileDrawer.useEffect": ()=>{
             if (!open) return;
@@ -6909,14 +6922,39 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
             setPushLoading(false);
         }
     };
-    const handleUpdateProfile = (values)=>{
-        updateProfileMutation.mutate(values, {
-            onSuccess: ()=>__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$notify$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["notify"].success('Cập nhật hồ sơ thành công!'),
-            onError: (err)=>{
-                const axiosErr = err;
-                __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$notify$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["notify"].error(axiosErr.response?.data?.message || 'Cập nhật hồ sơ thất bại!');
+    const handleUpdateProfile = async (values)=>{
+        setIsSubmitting(true);
+        try {
+            let finalAvatarUrl = values.avatar;
+            if (selectedAvatarFile) {
+                const uploadRes = await __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$services$2f$attachment$2e$service$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["attachmentService"].uploadFiles([
+                    selectedAvatarFile
+                ]);
+                const uploadedUrl = uploadRes.data.attachments[0]?.url;
+                if (uploadedUrl) {
+                    finalAvatarUrl = uploadedUrl;
+                } else {
+                    throw new Error('Không thể tải ảnh lên');
+                }
             }
-        });
+            updateProfileMutation.mutate({
+                ...values,
+                avatar: finalAvatarUrl
+            }, {
+                onSuccess: ()=>{
+                    __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$notify$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["notify"].success('Cập nhật hồ sơ thành công!');
+                    setSelectedAvatarFile(null);
+                },
+                onError: (err)=>{
+                    const axiosErr = err;
+                    __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$notify$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["notify"].error(axiosErr.response?.data?.message || 'Cập nhật hồ sơ thất bại!');
+                }
+            });
+        } catch (err) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$notify$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["notify"].error(err instanceof Error ? err.message : 'Tải ảnh đại diện thất bại!');
+        } finally{
+            setIsSubmitting(false);
+        }
     };
     const handleChangePassword = (values)=>{
         changePasswordMutation.mutate({
@@ -6933,10 +6971,12 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
             }
         });
     };
+    const topHeaderAvatar = currentUser?.avatar || watchedAvatar || undefined;
+    const draggerPreview = avatarPreview || watchedAvatar || currentUser?.avatar;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$drawer$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Drawer$3e$__["Drawer"], {
         title: "Hồ sơ cá nhân",
         open: open,
-        onClose: onClose,
+        onClose: handleClose,
         size: isMobile ? '100%' : 420,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6946,19 +6986,19 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                 },
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$avatar$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Avatar$3e$__["Avatar"], {
                     size: 80,
-                    src: currentUser?.avatar || undefined,
+                    src: topHeaderAvatar,
                     style: {
                         backgroundColor: currentUser ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$avatar$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["colorForId"])(currentUser._id) : '#5b5bf6'
                     },
                     children: currentUser ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$avatar$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["initialOf"])(currentUser.username) : undefined
                 }, void 0, false, {
                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                    lineNumber: 104,
+                    lineNumber: 145,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                lineNumber: 103,
+                lineNumber: 144,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$tabs$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tabs$3e$__["Tabs"], {
@@ -6984,33 +7024,153 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$input$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Input$3e$__["Input"], {
                                         prefix: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$UserOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserOutlined$3e$__["UserOutlined"], {}, void 0, false, {
                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                            lineNumber: 130,
+                                            lineNumber: 171,
                                             columnNumber: 34
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         placeholder: "Tên hiển thị"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                        lineNumber: 130,
+                                        lineNumber: 171,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 125,
+                                    lineNumber: 166,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].Item, {
                                     name: "avatar",
-                                    label: "Đường dẫn ảnh đại diện",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$input$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Input$3e$__["Input"], {
-                                        placeholder: "https://..."
-                                    }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                        lineNumber: 133,
-                                        columnNumber: 19
-                                    }, ("TURBOPACK compile-time value", void 0))
-                                }, void 0, false, {
+                                    label: "Ảnh đại diện",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].Item, {
+                                            name: "avatar",
+                                            noStyle: true,
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$input$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Input$3e$__["Input"], {
+                                                type: "hidden"
+                                            }, void 0, false, {
+                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                                lineNumber: 175,
+                                                columnNumber: 21
+                                            }, ("TURBOPACK compile-time value", void 0))
+                                        }, void 0, false, {
+                                            fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                            lineNumber: 174,
+                                            columnNumber: 19
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$upload$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__["Upload"].Dragger, {
+                                            name: "file",
+                                            accept: "image/*",
+                                            showUploadList: false,
+                                            beforeUpload: (file)=>{
+                                                setSelectedAvatarFile(file);
+                                                const localUrl = URL.createObjectURL(file);
+                                                setAvatarPreview(localUrl);
+                                                return false; // Prevent auto upload
+                                            },
+                                            style: {
+                                                padding: '16px',
+                                                background: '#f8fafc',
+                                                borderRadius: '12px'
+                                            },
+                                            children: draggerPreview ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex flex-col gap-2 justify-center items-center",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$avatar$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Avatar$3e$__["Avatar"], {
+                                                        size: 64,
+                                                        src: draggerPreview
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                                        lineNumber: 191,
+                                                        columnNumber: 25
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "ant-upload-text",
+                                                        style: {
+                                                            fontSize: 13,
+                                                            fontWeight: 500,
+                                                            margin: 0
+                                                        },
+                                                        children: selectedAvatarFile ? 'Đã chọn ảnh mới' : 'Nhấp hoặc kéo thả ảnh khác để đổi'
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                                        lineNumber: 192,
+                                                        columnNumber: 25
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "ant-upload-hint",
+                                                        style: {
+                                                            fontSize: 11,
+                                                            color: '#888',
+                                                            margin: 0
+                                                        },
+                                                        children: 'Bấm "Lưu thay đổi" phía dưới để áp dụng ảnh mới'
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                                        lineNumber: 200,
+                                                        columnNumber: 25
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                                lineNumber: 190,
+                                                columnNumber: 23
+                                            }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "ant-upload-drag-icon",
+                                                        style: {
+                                                            marginBottom: 8
+                                                        },
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$InboxOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__InboxOutlined$3e$__["InboxOutlined"], {
+                                                            style: {
+                                                                color: '#6f6bff',
+                                                                fontSize: 32
+                                                            }
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                                            lineNumber: 210,
+                                                            columnNumber: 27
+                                                        }, ("TURBOPACK compile-time value", void 0))
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                                        lineNumber: 209,
+                                                        columnNumber: 25
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "ant-upload-text",
+                                                        style: {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                        children: "Kéo thả ảnh vào đây hoặc nhấp để chọn ảnh"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                                        lineNumber: 212,
+                                                        columnNumber: 25
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "ant-upload-hint",
+                                                        style: {
+                                                            fontSize: 12,
+                                                            color: '#888'
+                                                        },
+                                                        children: 'Ảnh mới sẽ được lưu khi bạn bấm "Lưu thay đổi"'
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                                        lineNumber: 215,
+                                                        columnNumber: 25
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                ]
+                                            }, void 0, true)
+                                        }, void 0, false, {
+                                            fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
+                                            lineNumber: 177,
+                                            columnNumber: 19
+                                        }, ("TURBOPACK compile-time value", void 0))
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 132,
+                                    lineNumber: 173,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].Item, {
@@ -7023,12 +7183,12 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                         placeholder: "Vài dòng về bạn..."
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                        lineNumber: 136,
+                                        lineNumber: 223,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 135,
+                                    lineNumber: 222,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].Item, {
@@ -7036,22 +7196,22 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                         type: "primary",
                                         htmlType: "submit",
                                         block: true,
-                                        loading: updateProfileMutation.isPending,
+                                        loading: updateProfileMutation.isPending || isSubmitting,
                                         children: "Lưu thay đổi"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                        lineNumber: 139,
+                                        lineNumber: 226,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 138,
+                                    lineNumber: 225,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                            lineNumber: 119,
+                            lineNumber: 160,
                             columnNumber: 15
                         }, ("TURBOPACK compile-time value", void 0))
                     },
@@ -7076,18 +7236,18 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$input$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Input$3e$__["Input"].Password, {
                                         prefix: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$LockOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LockOutlined$3e$__["LockOutlined"], {}, void 0, false, {
                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                            lineNumber: 166,
+                                            lineNumber: 253,
                                             columnNumber: 43
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         placeholder: "••••••••"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                        lineNumber: 166,
+                                        lineNumber: 253,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 161,
+                                    lineNumber: 248,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].Item, {
@@ -7106,18 +7266,18 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$input$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Input$3e$__["Input"].Password, {
                                         prefix: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$LockOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LockOutlined$3e$__["LockOutlined"], {}, void 0, false, {
                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                            lineNumber: 176,
+                                            lineNumber: 263,
                                             columnNumber: 43
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         placeholder: "••••••••"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                        lineNumber: 176,
+                                        lineNumber: 263,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 168,
+                                    lineNumber: 255,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].Item, {
@@ -7143,18 +7303,18 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$input$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Input$3e$__["Input"].Password, {
                                         prefix: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$LockOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LockOutlined$3e$__["LockOutlined"], {}, void 0, false, {
                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                            lineNumber: 194,
+                                            lineNumber: 281,
                                             columnNumber: 43
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         placeholder: "••••••••"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                        lineNumber: 194,
+                                        lineNumber: 281,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 178,
+                                    lineNumber: 265,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].Item, {
@@ -7166,18 +7326,18 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                         children: "Đổi mật khẩu"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                        lineNumber: 197,
+                                        lineNumber: 284,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 196,
+                                    lineNumber: 283,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                            lineNumber: 155,
+                            lineNumber: 242,
                             columnNumber: 15
                         }, ("TURBOPACK compile-time value", void 0))
                     },
@@ -7197,7 +7357,7 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                             children: "Thông báo đẩy"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                            lineNumber: 215,
+                                            lineNumber: 304,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
@@ -7208,13 +7368,13 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                             children: "Nhận thông báo tin nhắn mới khi không mở ứng dụng"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                            lineNumber: 216,
+                                            lineNumber: 305,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 214,
+                                    lineNumber: 303,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$switch$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Switch$3e$__["Switch"], {
@@ -7224,36 +7384,37 @@ const ProfileDrawer = ({ open, onClose, currentUser })=>{
                                     onChange: handleTogglePush
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                                    lineNumber: 220,
+                                    lineNumber: 309,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                            lineNumber: 213,
+                            lineNumber: 300,
                             columnNumber: 15
                         }, ("TURBOPACK compile-time value", void 0))
                     }
                 ]
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-                lineNumber: 113,
+                lineNumber: 154,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ProfileDrawer.tsx",
-        lineNumber: 102,
+        lineNumber: 143,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(ProfileDrawer, "KEFQzCQrEw7DQJqtY8Btx2psifc=", false, function() {
+_s(ProfileDrawer, "k9VVXoCshdq0dFncENJAXbCOSBE=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useMediaQuery$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useIsMobile"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].useForm,
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].useForm,
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useUser$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useUpdateProfile"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useUser$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useChangePassword"]
+        __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useUser$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useChangePassword"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].useWatch
     ];
 });
 _c = ProfileDrawer;

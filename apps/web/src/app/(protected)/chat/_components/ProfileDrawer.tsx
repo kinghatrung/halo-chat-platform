@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Avatar, Button, Drawer, Form, Input, Switch, Tabs, Typography } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Avatar, Button, Drawer, Form, Input, Switch, Tabs, Typography, Upload } from 'antd';
+import { UserOutlined, LockOutlined, InboxOutlined } from '@ant-design/icons';
+
 import type { AxiosError } from 'axios';
 
 import { notify } from '@/lib/notify';
 import { useUpdateProfile, useChangePassword } from '@/hook/useUser';
+import { attachmentService } from '@/services/attachment.service';
 import { colorForId, initialOf } from '@/lib/avatar';
 import { useIsMobile } from '@/hook/useMediaQuery';
 import {
@@ -36,8 +38,13 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
   const updateProfileMutation = useUpdateProfile();
   const changePasswordMutation = useChangePassword();
 
+  const [selectedAvatarFile, setSelectedAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [pushEnabled, setPushEnabled] = useState(false);
   const [pushLoading, setPushLoading] = useState(false);
+
+  const watchedAvatar = Form.useWatch('avatar', profileForm);
 
   useEffect(() => {
     if (currentUser && open) {
@@ -48,6 +55,12 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
       });
     }
   }, [currentUser, open, profileForm]);
+
+  const handleClose = () => {
+    setSelectedAvatarFile(null);
+    setAvatarPreview(null);
+    onClose();
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -72,14 +85,39 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
     }
   };
 
-  const handleUpdateProfile = (values: UpdateProfilePayload) => {
-    updateProfileMutation.mutate(values, {
-      onSuccess: () => notify.success('Cập nhật hồ sơ thành công!'),
-      onError: (err) => {
-        const axiosErr = err as AxiosError<ApiResponse<null>>;
-        notify.error(axiosErr.response?.data?.message || 'Cập nhật hồ sơ thất bại!');
-      },
-    });
+  const handleUpdateProfile = async (values: UpdateProfilePayload) => {
+    setIsSubmitting(true);
+    try {
+      let finalAvatarUrl = values.avatar;
+
+      if (selectedAvatarFile) {
+        const uploadRes = await attachmentService.uploadFiles([selectedAvatarFile]);
+        const uploadedUrl = uploadRes.data.attachments[0]?.url;
+        if (uploadedUrl) {
+          finalAvatarUrl = uploadedUrl;
+        } else {
+          throw new Error('Không thể tải ảnh lên');
+        }
+      }
+
+      updateProfileMutation.mutate(
+        { ...values, avatar: finalAvatarUrl },
+        {
+          onSuccess: () => {
+            notify.success('Cập nhật hồ sơ thành công!');
+            setSelectedAvatarFile(null);
+          },
+          onError: (err) => {
+            const axiosErr = err as AxiosError<ApiResponse<null>>;
+            notify.error(axiosErr.response?.data?.message || 'Cập nhật hồ sơ thất bại!');
+          },
+        },
+      );
+    } catch (err) {
+      notify.error(err instanceof Error ? err.message : 'Tải ảnh đại diện thất bại!');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChangePassword = (values: ChangePasswordPayload & { confirmPassword: string }) => {
@@ -98,12 +136,15 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
     );
   };
 
+  const topHeaderAvatar = currentUser?.avatar || watchedAvatar || undefined;
+  const draggerPreview = avatarPreview || watchedAvatar || currentUser?.avatar;
+
   return (
-    <Drawer title="Hồ sơ cá nhân" open={open} onClose={onClose} size={isMobile ? '100%' : 420}>
+    <Drawer title="Hồ sơ cá nhân" open={open} onClose={handleClose} size={isMobile ? '100%' : 420}>
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
         <Avatar
           size={80}
-          src={currentUser?.avatar || undefined}
+          src={topHeaderAvatar}
           style={{ backgroundColor: currentUser ? colorForId(currentUser._id) : '#5b5bf6' }}
         >
           {currentUser ? initialOf(currentUser.username) : undefined}
@@ -129,8 +170,54 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
                 >
                   <Input prefix={<UserOutlined />} placeholder="Tên hiển thị" />
                 </Form.Item>
-                <Form.Item name="avatar" label="Đường dẫn ảnh đại diện">
-                  <Input placeholder="https://..." />
+                <Form.Item name="avatar" label="Ảnh đại diện">
+                  <Form.Item name="avatar" noStyle>
+                    <Input type="hidden" />
+                  </Form.Item>
+                  <Upload.Dragger
+                    name="file"
+                    accept="image/*"
+                    showUploadList={false}
+                    beforeUpload={(file) => {
+                      setSelectedAvatarFile(file);
+                      const localUrl = URL.createObjectURL(file);
+                      setAvatarPreview(localUrl);
+                      return false; // Prevent auto upload
+                    }}
+                    style={{ padding: '16px', background: '#f8fafc', borderRadius: '12px' }}
+                  >
+                    {draggerPreview ? (
+                      <div className="flex flex-col gap-2 justify-center items-center">
+                        <Avatar size={64} src={draggerPreview} />
+                        <p
+                          className="ant-upload-text"
+                          style={{ fontSize: 13, fontWeight: 500, margin: 0 }}
+                        >
+                          {selectedAvatarFile
+                            ? 'Đã chọn ảnh mới'
+                            : 'Nhấp hoặc kéo thả ảnh khác để đổi'}
+                        </p>
+                        <p
+                          className="ant-upload-hint"
+                          style={{ fontSize: 11, color: '#888', margin: 0 }}
+                        >
+                          Bấm &quot;Lưu thay đổi&quot; phía dưới để áp dụng ảnh mới
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        <p className="ant-upload-drag-icon" style={{ marginBottom: 8 }}>
+                          <InboxOutlined style={{ color: '#6f6bff', fontSize: 32 }} />
+                        </p>
+                        <p className="ant-upload-text" style={{ fontSize: 14, fontWeight: 500 }}>
+                          Kéo thả ảnh vào đây hoặc nhấp để chọn ảnh
+                        </p>
+                        <p className="ant-upload-hint" style={{ fontSize: 12, color: '#888' }}>
+                          Ảnh mới sẽ được lưu khi bạn bấm &quot;Lưu thay đổi&quot;
+                        </p>
+                      </>
+                    )}
+                  </Upload.Dragger>
                 </Form.Item>
                 <Form.Item name="bio" label="Giới thiệu bản thân">
                   <TextArea rows={3} maxLength={200} showCount placeholder="Vài dòng về bạn..." />
@@ -140,7 +227,7 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
                     type="primary"
                     htmlType="submit"
                     block
-                    loading={updateProfileMutation.isPending}
+                    loading={updateProfileMutation.isPending || isSubmitting}
                   >
                     Lưu thay đổi
                   </Button>
@@ -210,7 +297,9 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
             key: 'notifications',
             label: 'Thông báo',
             children: (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+              >
                 <div>
                   <div>Thông báo đẩy</div>
                   <Text type="secondary" style={{ fontSize: 12 }}>
