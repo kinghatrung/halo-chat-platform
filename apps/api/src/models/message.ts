@@ -9,6 +9,7 @@ export interface IMessage extends Document {
   replyToMessageId?: mongoose.Types.ObjectId;
   isEdited: boolean;
   isDeleted: boolean;
+  isForwarded: boolean;
   isPinned: boolean;
   pinnedAt?: Date;
   pinnedById?: mongoose.Types.ObjectId;
@@ -52,6 +53,10 @@ const MessageSchema: Schema = new Schema(
       default: false,
     },
     isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    isForwarded: {
       type: Boolean,
       default: false,
     },

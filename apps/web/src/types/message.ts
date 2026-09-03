@@ -36,6 +36,7 @@ export interface Message {
   replyToMessageId?: MessageReplyPreview | null;
   isEdited: boolean;
   isDeleted: boolean;
+  isForwarded?: boolean;
   createdAt: string;
   updatedAt: string;
   /** Client-only fields, never persisted on the backend. */
@@ -59,6 +60,7 @@ export interface SendMessagePayload {
   content?: string;
   attachmentIds?: string[];
   replyToMessageId?: string;
+  isForwarded?: boolean;
   tempId?: string;
 }
 

@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   Alert,
   Avatar,
   Button,
   Dropdown,
   Empty,
+  Flex,
   Image,
   Input,
   type InputRef,
@@ -32,6 +34,8 @@ import {
   VideoCameraOutlined,
   PictureOutlined,
   RollbackOutlined,
+  ShareAltOutlined,
+  DeleteOutlined,
 } from '@ant-design/icons';
 import EmojiPicker, { type EmojiClickData } from 'emoji-picker-react';
 import { useConversationDetail } from '@/hook/useConversations';
@@ -43,9 +47,12 @@ import { useCallStore } from '@/store/useCallStore';
 import { useCallContext } from '@/providers/CallProvider';
 import { useActiveCall } from '@/hook/useCalls';
 import { attachmentService } from '@/services/attachment.service';
-import { msg } from '@/lib/notify';
+import { messageService } from '@/services/message.service';
+import { msg, notify } from '@/lib/notify';
 import GroupSettingsModal from './GroupSettingsModal';
 import MediaCenterDrawer from './MediaCenterDrawer';
+import ForwardMessageModal from './ForwardMessageModal';
+import { useDeleteMessage } from '@/hook/useMessages';
 
 const TYPING_STOP_DELAY_MS = 2500;
 
@@ -171,6 +178,7 @@ const ChatWindow = ({
   isMobile,
   onBack,
 }: ChatWindowProps) => {
+  const queryClient = useQueryClient();
   const { token } = theme.useToken();
   const [draft, setDraft] = useState('');
   const [groupSettingsOpen, setGroupSettingsOpen] = useState(false);
@@ -181,6 +189,8 @@ const ChatWindow = ({
   const [replyResetKey, setReplyResetKey] = useState(conversationId);
   const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null);
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const [forwardModalOpen, setForwardModalOpen] = useState(false);
+  const [messageToForward, setMessageToForward] = useState<Message | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesContentRef = useRef<HTMLDivElement>(null);
@@ -189,6 +199,7 @@ const ChatWindow = ({
   const prevConversationIdRef = useRef<string | null>(null);
   const stickToBottomRef = useRef(true);
 
+  const deleteMessageMutation = useDeleteMessage(conversationId ?? '');
   const { startTyping, stopTyping, markRead } = useSocketContext();
   const typingMap = useChatStore((s) =>
     conversationId ? s.typingByConversation[conversationId] : undefined,
@@ -412,7 +423,7 @@ const ChatWindow = ({
       style={{ flex: 1, display: 'flex', flexDirection: 'column', background: token.colorBgLayout }}
     >
       <div
-        className="flex h-16 items-center justify-between px-3 md:h-18 md:px-6"
+        className="flex justify-between items-center px-3 h-16 md:h-18 md:px-6"
         style={{
           background: token.colorBgContainer,
           borderBottom: `1px solid ${token.colorBorder}`,
@@ -645,28 +656,89 @@ const ChatWindow = ({
                             {initialOf(msg.senderId.username)}
                           </Avatar>
                         )}
-                        <div
-                          style={{
-                            minWidth: 0,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 6,
-                            padding:
-                              !msg.isDeleted && msg.attachmentIds?.length && !msg.content
-                                ? 4
-                                : '10px 16px',
-                            borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                            background: mine ? '#5b5bf6' : token.colorBgContainer,
-                            color: mine ? '#fff' : token.colorText,
-                            boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
-                            wordBreak: 'break-word',
-                            fontStyle: msg.isDeleted ? 'italic' : 'normal',
-                          }}
-                        >
-                          {msg.isDeleted ? (
-                            'Tin nhắn đã được thu hồi'
-                          ) : (
-                            <>
+                        {!msg.isDeleted && (
+                          <Dropdown
+                            trigger={['contextMenu']}
+                            menu={{
+                              items: [
+                                {
+                                  key: 'reply',
+                                  icon: <RollbackOutlined />,
+                                  label: 'Trả lời',
+                                  onClick: () => {
+                                    setReplyingTo(msg);
+                                    messageInputRef.current?.focus();
+                                  },
+                                },
+                                {
+                                  key: 'forward',
+                                  icon: <ShareAltOutlined />,
+                                  label: 'Chuyển tiếp',
+                                  onClick: () => {
+                                    setMessageToForward(msg);
+                                    setForwardModalOpen(true);
+                                  },
+                                },
+                                {
+                                  type: 'divider',
+                                },
+                                mine
+                                  ? {
+                                      key: 'revoke',
+                                      icon: <DeleteOutlined />,
+                                      danger: true,
+                                      label: 'Thu hồi với mọi người',
+                                      onClick: () => {
+                                        deleteMessageMutation.mutate(msg._id);
+                                      },
+                                    }
+                                  : {
+                                      key: 'deleteForMe',
+                                      icon: <DeleteOutlined />,
+                                      danger: true,
+                                      label: 'Gỡ ở phía tôi',
+                                      onClick: () => {
+                                        deleteMessageMutation.mutate(msg._id);
+                                      },
+                                    },
+                              ],
+                            }}
+                          >
+                            <div
+                              style={{
+                                minWidth: 0,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 6,
+                                padding:
+                                  !msg.isDeleted && msg.attachmentIds?.length && !msg.content
+                                    ? 4
+                                    : '10px 16px',
+                                borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                                background: mine ? '#5b5bf6' : token.colorBgContainer,
+                                color: mine ? '#fff' : token.colorText,
+                                boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
+                                wordBreak: 'break-word',
+                                fontStyle: msg.isDeleted ? 'italic' : 'normal',
+                                cursor: 'context-menu',
+                              }}
+                            >
+                              {msg.isForwarded && (
+                                <Text
+                                  italic
+                                  style={{
+                                    fontSize: 11,
+                                    display: 'block',
+                                    marginBottom: 2,
+                                    color: mine
+                                      ? 'rgba(255,255,255,0.85)'
+                                      : token.colorTextSecondary,
+                                  }}
+                                >
+                                  <ShareAltOutlined style={{ marginRight: 4 }} />
+                                  Đã chuyển tiếp
+                                </Text>
+                              )}
                               {msg.replyToMessageId && (
                                 <div
                                   style={{
@@ -712,20 +784,53 @@ const ChatWindow = ({
                                 <AttachmentPreview key={attachment._id} attachment={attachment} />
                               ))}
                               {msg.content}
-                            </>
-                          )}
-                        </div>
-                        {!msg.isDeleted && hoveredMessageId === msg._id && (
-                          <Button
-                            type="text"
-                            size="small"
-                            shape="circle"
-                            icon={<RollbackOutlined style={{ fontSize: 14 }} />}
-                            onClick={() => {
-                              setReplyingTo(msg);
-                              messageInputRef.current?.focus();
+                            </div>
+                          </Dropdown>
+                        )}
+                        {msg.isDeleted && (
+                          <div
+                            style={{
+                              minWidth: 0,
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 6,
+                              padding: '10px 16px',
+                              borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                              background: mine ? '#5b5bf6' : token.colorBgContainer,
+                              color: mine ? '#fff' : token.colorText,
+                              boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
+                              fontStyle: 'italic',
+                              opacity: 0.7,
                             }}
-                          />
+                          >
+                            Tin nhắn đã được thu hồi
+                          </div>
+                        )}
+                        {!msg.isDeleted && hoveredMessageId === msg._id && (
+                          <Flex gap={2} align="center">
+                            <Button
+                              type="text"
+                              size="small"
+                              shape="circle"
+                              icon={<RollbackOutlined style={{ fontSize: 14 }} />}
+                              title="Trả lời"
+                              onClick={() => {
+                                setReplyingTo(msg);
+                                messageInputRef.current?.focus();
+                              }}
+                            />
+                            <Button
+                              type="text"
+                              size="small"
+                              shape="circle"
+                              icon={<ShareAltOutlined style={{ fontSize: 14 }} />}
+                              title="Chuyển tiếp"
+                              onClick={() => {
+                                setMessageToForward(msg);
+                                setForwardModalOpen(true);
+                              }}
+                            />
+                          </Flex>
                         )}
                       </div>
                       <Text
@@ -922,6 +1027,32 @@ const ChatWindow = ({
         open={mediaCenterOpen}
         onClose={() => setMediaCenterOpen(false)}
         conversationId={conversation._id}
+      />
+
+      <ForwardMessageModal
+        open={forwardModalOpen}
+        onClose={() => {
+          setForwardModalOpen(false);
+          setMessageToForward(null);
+        }}
+        messageToForward={messageToForward}
+        onForward={async (targetConversationId, message) => {
+          try {
+            const res = await messageService.sendMessage(targetConversationId, {
+              content: message.content,
+              attachmentIds: message.attachmentIds?.map((a) => a._id),
+              type: message.type,
+              isForwarded: true,
+            });
+            queryClient.invalidateQueries({ queryKey: ['conversations'] });
+            queryClient.invalidateQueries({ queryKey: ['messages', targetConversationId] });
+            if (res.data?.message) {
+              notify.success('Đã chuyển tiếp tin nhắn thành công!');
+            }
+          } catch {
+            notify.error('Không thể chuyển tiếp tin nhắn!');
+          }
+        }}
       />
     </div>
   );

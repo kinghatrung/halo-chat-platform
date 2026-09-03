@@ -42,12 +42,13 @@ const messageController = {
         return sendError(res, 'Conversation ID is required', 400);
       }
 
-      const { type, content, attachmentIds, replyToMessageId, tempId } = req.body;
+      const { type, content, attachmentIds, replyToMessageId, tempId, isForwarded } = req.body;
       const message: any = await messageService.sendMessage(String(userId), String(id), {
         type,
         content,
         attachmentIds: Array.isArray(attachmentIds) ? attachmentIds.map(String) : [],
         replyToMessageId,
+        isForwarded: Boolean(isForwarded),
       });
 
       const io = getIO();

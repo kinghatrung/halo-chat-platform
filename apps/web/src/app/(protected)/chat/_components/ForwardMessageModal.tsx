@@ -7,7 +7,6 @@ import { useListConversations } from '@/hook/useConversations';
 import { colorForId, initialOf } from '@/lib/avatar';
 import type { ConversationListItem } from '@/types/conversation';
 import type { Message } from '@/types/message';
-import { notify } from '@/lib/notify';
 
 const { Text } = Typography;
 
@@ -38,9 +37,6 @@ const ForwardMessageModal = ({
     if (!messageToForward) return;
     onForward(conv._id, messageToForward);
     setForwardedIds((prev) => [...prev, conv._id]);
-    notify.success(
-      `Đã chuyển tiếp tin nhắn tới "${conv.type === 'group' ? conv.name : conv.otherMember?.username}"`,
-    );
   };
 
   return (

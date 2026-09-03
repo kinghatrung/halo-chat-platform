@@ -31,7 +31,7 @@ const messageService = {
       await assertMember(conversationId, userId);
 
       const limit = Math.min(Math.max(Number(options.limit) || 20, 1), 100);
-      const filter: any = { conversationId, isDeleted: false };
+      const filter: any = { conversationId };
 
       if (options.after) {
         filter._id = { $gt: new mongoose.Types.ObjectId(options.after) };
@@ -63,6 +63,7 @@ const messageService = {
       content?: string;
       attachmentIds?: string[];
       replyToMessageId?: string;
+      isForwarded?: boolean;
     },
   ) => {
     try {
@@ -99,7 +100,7 @@ const messageService = {
         throw new Error('Nội dung tin nhắn không được để trống!');
       }
 
-      if (attachmentIds.length > 0) {
+      if (attachmentIds.length > 0 && !data.isForwarded) {
         const count = await Attachment.countDocuments({
           _id: { $in: attachmentIds },
           uploaderId: userId,
@@ -128,6 +129,7 @@ const messageService = {
         type: data.type || 'text',
         attachmentIds,
         replyToMessageId: data.replyToMessageId || undefined,
+        isForwarded: !!data.isForwarded,
       });
 
       if (attachmentIds.length > 0) {
