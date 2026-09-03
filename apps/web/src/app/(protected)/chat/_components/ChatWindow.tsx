@@ -411,7 +411,13 @@ const ChatWindow = ({
     <div
       style={{ flex: 1, display: 'flex', flexDirection: 'column', background: token.colorBgLayout }}
     >
-      <div className="flex h-16 items-center justify-between border-b border-[#eef0f7] px-3 md:h-18 md:px-6">
+      <div
+        className="flex h-16 items-center justify-between px-3 md:h-18 md:px-6"
+        style={{
+          background: token.colorBgContainer,
+          borderBottom: `1px solid ${token.colorBorder}`,
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0, flex: 1 }}>
           {isMobile && (
             <Button
@@ -688,7 +694,9 @@ const ChatWindow = ({
                                     style={{
                                       fontSize: 12,
                                       display: 'block',
-                                      color: mine ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.55)',
+                                      color: mine
+                                        ? 'rgba(255,255,255,0.75)'
+                                        : token.colorTextSecondary,
                                       fontStyle: msg.replyToMessageId.isDeleted
                                         ? 'italic'
                                         : 'normal',
@@ -750,7 +758,13 @@ const ChatWindow = ({
         </div>
       </div>
 
-      <div className="border-t border-[#eef0f7] p-3 md:p-4 md:px-6">
+      <div
+        className="p-3 md:p-4 md:px-6"
+        style={{
+          background: token.colorBgContainer,
+          borderTop: `1px solid ${token.colorBorder}`,
+        }}
+      >
         {replyingTo && (
           <div
             style={{
@@ -760,7 +774,7 @@ const ChatWindow = ({
               gap: 8,
               padding: '6px 10px',
               borderRadius: 10,
-              background: '#f4f5fb',
+              background: token.colorBgTextHover,
               borderLeft: '3px solid #5b5bf6',
               marginBottom: 10,
             }}
@@ -772,7 +786,10 @@ const ChatWindow = ({
                   ? 'chính mình'
                   : replyingTo.senderId.username}
               </Text>
-              <Text ellipsis style={{ fontSize: 12, display: 'block', color: 'rgba(0,0,0,0.55)' }}>
+              <Text
+                ellipsis
+                style={{ fontSize: 12, display: 'block', color: token.colorTextSecondary }}
+              >
                 {replyingTo.content || 'Tệp đính kèm'}
               </Text>
             </div>

@@ -14,6 +14,7 @@ import {
   Spin,
   Tabs,
   Typography,
+  theme,
 } from 'antd';
 import {
   SearchOutlined,
@@ -123,15 +124,23 @@ const Sidebar = ({
     setActiveTab('conversations');
   };
 
+  const { token } = theme.useToken();
+
   return (
-    <div className="flex h-full w-full flex-col border-r border-[#eef0f7] md:w-85 md:min-w-85">
+    <div
+      className="flex h-full w-full flex-col md:w-85 md:min-w-85"
+      style={{
+        background: token.colorBgContainer,
+        borderRight: `1px solid ${token.colorBorder}`,
+      }}
+    >
       <div
         style={{
           padding: '16px 20px',
           display: 'flex',
           alignItems: 'center',
           gap: 12,
-          borderBottom: '1px solid #f2f2f7',
+          borderBottom: `1px solid ${token.colorBorderSecondary}`,
         }}
       >
         <Avatar
