@@ -13,6 +13,7 @@ import {
   Popover,
   Skeleton,
   Typography,
+  theme,
 } from 'antd';
 import {
   SendOutlined,
@@ -170,6 +171,7 @@ const ChatWindow = ({
   isMobile,
   onBack,
 }: ChatWindowProps) => {
+  const { token } = theme.useToken();
   const [draft, setDraft] = useState('');
   const [groupSettingsOpen, setGroupSettingsOpen] = useState(false);
   const [mediaCenterOpen, setMediaCenterOpen] = useState(false);
@@ -359,7 +361,7 @@ const ChatWindow = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#f4f5fb',
+          background: token.colorBgLayout,
         }}
       >
         <Empty
@@ -376,7 +378,7 @@ const ChatWindow = ({
 
   if (isLoading || !conversation) {
     return (
-      <div style={{ flex: 1, background: '#f4f5fb', padding: 24 }}>
+      <div style={{ flex: 1, background: token.colorBgLayout, padding: 24 }}>
         <Skeleton avatar paragraph={{ rows: 1 }} active />
       </div>
     );
@@ -406,8 +408,10 @@ const ChatWindow = ({
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#f4f5fb' }}>
-      <div className="flex h-16 items-center justify-between border-b border-[#eef0f7] bg-white px-3 md:h-18 md:px-6">
+    <div
+      style={{ flex: 1, display: 'flex', flexDirection: 'column', background: token.colorBgLayout }}
+    >
+      <div className="flex h-16 items-center justify-between border-b border-[#eef0f7] px-3 md:h-18 md:px-6">
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0, flex: 1 }}>
           {isMobile && (
             <Button
@@ -571,7 +575,7 @@ const ChatWindow = ({
                         type="secondary"
                         style={{
                           fontSize: 12,
-                          background: '#e8e9f5',
+                          background: token.colorBgTextHover,
                           padding: '4px 12px',
                           borderRadius: 12,
                         }}
@@ -586,7 +590,7 @@ const ChatWindow = ({
                         type="secondary"
                         style={{
                           fontSize: 12,
-                          background: '#e8e9f5',
+                          background: token.colorBgTextHover,
                           padding: '4px 12px',
                           borderRadius: 12,
                           textAlign: 'center',
@@ -646,8 +650,8 @@ const ChatWindow = ({
                                 ? 4
                                 : '10px 16px',
                             borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                            background: mine ? '#5b5bf6' : '#fff',
-                            color: mine ? '#fff' : 'rgba(0,0,0,0.88)',
+                            background: mine ? '#5b5bf6' : token.colorBgContainer,
+                            color: mine ? '#fff' : token.colorText,
                             boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
                             wordBreak: 'break-word',
                             fontStyle: msg.isDeleted ? 'italic' : 'normal',
@@ -730,6 +734,11 @@ const ChatWindow = ({
                           <>
                             {formatMessageTime(msg.createdAt)}
                             {msg.isEdited && !msg.isDeleted ? ' · Đã chỉnh sửa' : ''}
+                            {mine && index === messages.length - 1 && (
+                              <Text style={{ fontSize: 11, color: '#5b5bf6', marginLeft: 4 }}>
+                                · Đã xem
+                              </Text>
+                            )}
                           </>
                         )}
                       </Text>
@@ -741,7 +750,7 @@ const ChatWindow = ({
         </div>
       </div>
 
-      <div className="border-t border-[#eef0f7] bg-white p-3 md:p-4 md:px-6">
+      <div className="border-t border-[#eef0f7] p-3 md:p-4 md:px-6">
         {replyingTo && (
           <div
             style={{

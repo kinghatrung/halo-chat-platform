@@ -26,11 +26,14 @@ import {
   UserAddOutlined,
   TeamOutlined,
   DashboardOutlined,
+  SunOutlined,
+  MoonOutlined,
 } from '@ant-design/icons';
 import type { User } from '@/types/user';
 import { colorForId, initialOf } from '@/lib/avatar';
 import { useIncomingFriendRequests } from '@/hook/useFriend';
 import { useChatStore, resolvePresence } from '@/store/useChatStore';
+import { useThemeStore } from '@/store/useThemeStore';
 import ConversationsList from './ConversationsList';
 import CreateGroupModal from './CreateGroupModal';
 import AddFriendModal from './AddFriendModal';
@@ -82,8 +85,15 @@ const Sidebar = ({
   const incomingCount = incomingData?.data.length ?? 0;
   const isAdmin = currentUser?.role === 'admin';
 
+  const { isDarkMode, toggleTheme } = useThemeStore();
+
   const menuItems = [
     { key: 'profile', icon: <SettingOutlined />, label: 'Hồ sơ cá nhân' },
+    {
+      key: 'theme',
+      icon: isDarkMode ? <SunOutlined /> : <MoonOutlined />,
+      label: isDarkMode ? 'Chuyển Chế độ Sáng' : 'Chuyển Chế độ Tối',
+    },
     {
       key: 'friendRequests',
       icon: <TeamOutlined />,
@@ -101,6 +111,7 @@ const Sidebar = ({
 
   const handleMenuClick = (key: string) => {
     if (key === 'profile') onOpenProfile();
+    if (key === 'theme') toggleTheme();
     if (key === 'friendRequests') setFriendRequestsOpen(true);
     if (key === 'blocked') onOpenBlocked();
     if (key === 'admin') router.push('/admin');
@@ -113,7 +124,7 @@ const Sidebar = ({
   };
 
   return (
-    <div className="flex h-full w-full flex-col border-r border-[#eef0f7] bg-white md:w-85 md:min-w-85">
+    <div className="flex h-full w-full flex-col border-r border-[#eef0f7] md:w-85 md:min-w-85">
       <div
         style={{
           padding: '16px 20px',

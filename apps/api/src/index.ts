@@ -27,10 +27,21 @@ import monitoringRouter from '@/routes/monitoringRouter';
 import { startPushWorker } from '@/workers/pushWorker';
 import { httpRequestsTotal } from '@/config/metrics';
 
+import User from '@/models/user';
+import { clearAllOnlineUsers } from '@/socket/onlineUsers';
+
 const PORT = process.env.API_PORT || process.env.PORT || 5000;
 
 const app = express();
 connect();
+
+// Reset presence state on startup to prevent stale online statuses
+User.updateMany({ status: 'online' }, { status: 'offline' }).catch((err) =>
+  console.error('Failed to reset user statuses on startup:', err),
+);
+clearAllOnlineUsers().catch((err) =>
+  console.error('Failed to clear Redis online keys on startup:', err),
+);
 
 app.use(
   cors({

@@ -1,6 +1,6 @@
 'use client';
 
-import { App, Avatar, Badge, Dropdown, Empty, Flex, Skeleton, Typography } from 'antd';
+import { App, Avatar, Badge, Dropdown, Empty, Flex, Skeleton, theme, Typography } from 'antd';
 import { TeamOutlined, MutedOutlined, InboxOutlined, MoreOutlined } from '@ant-design/icons';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import type { AxiosError } from 'axios';
@@ -71,6 +71,7 @@ const ConversationsList = ({
   currentUserId,
 }: ConversationsListProps) => {
   const { modal } = App.useApp();
+  const { token } = theme.useToken();
   const { data, isLoading } = useListConversations(LIST_PARAMS);
   const muteMutation = useMuteConversation();
   const archiveMutation = useArchiveConversation();
@@ -153,6 +154,7 @@ const ConversationsList = ({
         const displayName = getDisplayName(conv);
         const avatarUrl = getAvatarUrl(conv);
         const hasUnread = (conv.unreadCount || 0) > 0;
+        const isSelected = selectedConversationId === conv._id;
 
         return (
           <div
@@ -163,7 +165,7 @@ const ConversationsList = ({
               padding: '10px 12px',
               borderRadius: 12,
               cursor: 'pointer',
-              background: selectedConversationId === conv._id ? '#eef0ff' : 'transparent',
+              background: isSelected ? token.colorBgTextActive : 'transparent',
               transition: 'background 0.2s',
               marginBottom: 2,
             }}

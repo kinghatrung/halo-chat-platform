@@ -127,6 +127,13 @@ const messageController = {
         String(id),
         String(lastReadMessageId),
       );
+
+      getIO().to(`conversation:${id}`).emit('message:read', {
+        conversationId: id,
+        userId,
+        lastReadMessageId,
+      });
+
       return sendSuccess(res, { memberSetting }, 'Mark as read success', 200);
     } catch (error) {
       return sendError(res, error instanceof Error ? error.message : 'Internal server error', 400);

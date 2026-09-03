@@ -1,15 +1,17 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
-import { ConfigProvider, App as AntdApp } from 'antd';
+import { ConfigProvider, App as AntdApp, theme } from 'antd';
 import viVN from 'antd/locale/vi_VN';
 
 import Notification from '@/components/Notification';
 import { antdTheme } from '@/lib/theme';
+import { useThemeStore } from '@/store/useThemeStore';
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const isDarkMode = useThemeStore((s) => s.isDarkMode);
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -22,13 +24,17 @@ export function Providers({ children }: { children: React.ReactNode }) {
       }),
   );
 
+  const mergedTheme = {
+    ...antdTheme,
+    algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+  };
+
   return (
-    <ConfigProvider locale={viVN} theme={antdTheme}>
+    <ConfigProvider locale={viVN} theme={mergedTheme}>
       <AntdApp>
         <QueryClientProvider client={queryClient}>
           <Notification />
           {children}
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
       </AntdApp>
     </ConfigProvider>

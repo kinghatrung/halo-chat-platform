@@ -18,3 +18,10 @@ export const isUserOnline = async (userId: string) => {
   const count = await redisClient.scard(onlineKey(userId));
   return count > 0;
 };
+
+export const clearAllOnlineUsers = async () => {
+  const keys = await redisClient.keys('online:*');
+  if (keys.length > 0) {
+    await redisClient.del(...keys);
+  }
+};

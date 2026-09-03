@@ -9,11 +9,4 @@ export const antdTheme: ThemeConfig = {
     borderRadius: 6,
     fontFamily: 'var(--font-geist-sans), Arial, Helvetica, sans-serif',
   },
-  components: {
-    Layout: {
-      headerBg: '#ffffff',
-      siderBg: '#ffffff',
-      bodyBg: '#f4f5fb',
-    },
-  },
 };
