@@ -205,12 +205,12 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
-"[project]/apps/web/src/app/(auth)/signin/page.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
     "default",
-    ()=>__TURBOPACK__default__export__
+    ()=>SignInClient
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__ = __turbopack_context__.i("[project]/apps/web/node_modules/antd/es/form/index.js [app-client] (ecmascript) <export default as Form>");
@@ -237,7 +237,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-const SignInPage = ()=>{
+function SignInClient() {
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const loginMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useAuth$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useLogin"])();
@@ -275,25 +275,25 @@ const SignInPage = ()=>{
                                         width: 32,
                                         height: 32
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 44,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$typography$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"].Text, {
                                         strong: true,
                                         className: "text-white!",
                                         children: "HaloChat"
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 45,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0))
+                                    }, this)
                                 ]
                             }, void 0, true, {
-                                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                 lineNumber: 39,
                                 columnNumber: 11
-                            }, ("TURBOPACK compile-time value", void 0)),
+                            }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$typography$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"].Title, {
                                 level: 1,
                                 style: {
@@ -305,17 +305,17 @@ const SignInPage = ()=>{
                                 children: [
                                     "Trò chuyện liền mạch,",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 54,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    }, this),
                                     "kết nối không giới hạn."
                                 ]
                             }, void 0, true, {
-                                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                 lineNumber: 49,
                                 columnNumber: 11
-                            }, ("TURBOPACK compile-time value", void 0)),
+                            }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$typography$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"].Text, {
                                 style: {
                                     color: 'rgba(255,255,255,0.85)',
@@ -323,16 +323,16 @@ const SignInPage = ()=>{
                                 },
                                 children: "Nhắn tin, chia sẻ và giữ liên lạc với bạn bè, đồng nghiệp mọi lúc mọi nơi cùng Halo Chat."
                             }, void 0, false, {
-                                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                 lineNumber: 57,
                                 columnNumber: 11
-                            }, ("TURBOPACK compile-time value", void 0))
+                            }, this)
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                         lineNumber: 38,
                         columnNumber: 9
-                    }, ("TURBOPACK compile-time value", void 0)),
+                    }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$flex$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Flex$3e$__["Flex"], {
                         justify: "center",
                         className: "mt-8! relative z-1",
@@ -348,31 +348,31 @@ const SignInPage = ()=>{
                             },
                             priority: true
                         }, void 0, false, {
-                            fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                            fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                             lineNumber: 64,
                             columnNumber: 11
-                        }, ("TURBOPACK compile-time value", void 0))
+                        }, this)
                     }, void 0, false, {
-                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                         lineNumber: 63,
                         columnNumber: 9
-                    }, ("TURBOPACK compile-time value", void 0))
+                    }, this)
                 ]
             }, void 0, true, {
-                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                 lineNumber: 37,
                 columnNumber: 7
-            }, ("TURBOPACK compile-time value", void 0)),
+            }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "relative flex flex-1 items-center justify-center overflow-hidden bg-[#f4f5fb] p-4 md:p-6",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "auth-glow-blob top-[8%] right-[8%] h-90 w-90"
                     }, void 0, false, {
-                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                         lineNumber: 77,
                         columnNumber: 9
-                    }, ("TURBOPACK compile-time value", void 0)),
+                    }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$card$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Card$3e$__["Card"], {
                         variant: "outlined",
                         className: "relative! z-1 w-full max-w-110 rounded-[20px]! shadow-[0_20px_48px_rgba(37,24,97,0.12)]!",
@@ -398,15 +398,15 @@ const SignInPage = ()=>{
                                             width: 32,
                                             height: 32
                                         }, void 0, false, {
-                                            fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                            fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                             lineNumber: 97,
                                             columnNumber: 15
-                                        }, ("TURBOPACK compile-time value", void 0))
+                                        }, this)
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 84,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$typography$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"].Title, {
                                         level: 3,
                                         style: {
@@ -414,24 +414,24 @@ const SignInPage = ()=>{
                                         },
                                         children: "Chào mừng trở lại"
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 99,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$typography$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"].Text, {
                                         type: "secondary",
                                         children: "Đăng nhập để tiếp tục cuộc trò chuyện của bạn"
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 102,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0))
+                                    }, this)
                                 ]
                             }, void 0, true, {
-                                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                 lineNumber: 83,
                                 columnNumber: 11
-                            }, ("TURBOPACK compile-time value", void 0)),
+                            }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"], {
                                 name: "signin",
                                 onFinish: handleLogin,
@@ -454,21 +454,21 @@ const SignInPage = ()=>{
                                         ],
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$input$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Input$3e$__["Input"], {
                                             prefix: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$MailOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MailOutlined$3e$__["MailOutlined"], {}, void 0, false, {
-                                                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                                 lineNumber: 122,
                                                 columnNumber: 30
-                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            }, this),
                                             placeholder: "ban@example.com"
                                         }, void 0, false, {
-                                            fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                            fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                             lineNumber: 122,
                                             columnNumber: 15
-                                        }, ("TURBOPACK compile-time value", void 0))
+                                        }, this)
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 114,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].Item, {
                                         name: "password",
                                         label: "Mật khẩu",
@@ -484,21 +484,21 @@ const SignInPage = ()=>{
                                         ],
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$input$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Input$3e$__["Input"].Password, {
                                             prefix: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$LockOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LockOutlined$3e$__["LockOutlined"], {}, void 0, false, {
-                                                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                                 lineNumber: 133,
                                                 columnNumber: 39
-                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            }, this),
                                             placeholder: "••••••••"
                                         }, void 0, false, {
-                                            fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                            fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                             lineNumber: 133,
                                             columnNumber: 15
-                                        }, ("TURBOPACK compile-time value", void 0))
+                                        }, this)
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 125,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$form$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Form$3e$__["Form"].Item, {
                                         style: {
                                             marginBottom: 12
@@ -515,30 +515,30 @@ const SignInPage = ()=>{
                                             },
                                             children: "Đăng nhập"
                                         }, void 0, false, {
-                                            fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                            fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                             lineNumber: 137,
                                             columnNumber: 15
-                                        }, ("TURBOPACK compile-time value", void 0))
+                                        }, this)
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 136,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0))
+                                    }, this)
                                 ]
                             }, void 0, true, {
-                                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                 lineNumber: 107,
                                 columnNumber: 11
-                            }, ("TURBOPACK compile-time value", void 0)),
+                            }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$divider$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Divider$3e$__["Divider"], {
                                 style: {
                                     margin: '16px 0'
                                 }
                             }, void 0, false, {
-                                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                 lineNumber: 150,
                                 columnNumber: 11
-                            }, ("TURBOPACK compile-time value", void 0)),
+                            }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "text-center",
                                 children: [
@@ -546,57 +546,56 @@ const SignInPage = ()=>{
                                         type: "secondary",
                                         children: "Chưa có tài khoản? "
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 153,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                         href: "/signup",
                                         children: "Đăng ký ngay"
                                     }, void 0, false, {
-                                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                         lineNumber: 154,
                                         columnNumber: 13
-                                    }, ("TURBOPACK compile-time value", void 0))
+                                    }, this)
                                 ]
                             }, void 0, true, {
-                                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                                 lineNumber: 152,
                                 columnNumber: 11
-                            }, ("TURBOPACK compile-time value", void 0))
+                            }, this)
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                         lineNumber: 79,
                         columnNumber: 9
-                    }, ("TURBOPACK compile-time value", void 0))
+                    }, this)
                 ]
             }, void 0, true, {
-                fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+                fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
                 lineNumber: 76,
                 columnNumber: 7
-            }, ("TURBOPACK compile-time value", void 0))
+            }, this)
         ]
     }, void 0, true, {
-        fileName: "[project]/apps/web/src/app/(auth)/signin/page.tsx",
+        fileName: "[project]/apps/web/src/app/(auth)/signin/SignInClient.tsx",
         lineNumber: 35,
         columnNumber: 5
-    }, ("TURBOPACK compile-time value", void 0));
-};
-_s(SignInPage, "Gphf24o+k9Eys4fE/hG4OjVsGqY=", false, function() {
+    }, this);
+}
+_s(SignInClient, "Gphf24o+k9Eys4fE/hG4OjVsGqY=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useAuth$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useLogin"]
     ];
 });
-_c = SignInPage;
-const __TURBOPACK__default__export__ = SignInPage;
+_c = SignInClient;
 var _c;
-__turbopack_context__.k.register(_c, "SignInPage");
+__turbopack_context__.k.register(_c, "SignInClient");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
 ]);
 
-//# sourceMappingURL=apps_web_src_1zwnvfv._.js.map
+//# sourceMappingURL=apps_web_src_1npb4au._.js.map
