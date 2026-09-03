@@ -1320,6 +1320,94 @@ function CallProvider({ children }) {
     const reset = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$store$2f$useCallStore$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallStore"])({
         "CallProvider.useCallStore[reset]": (s)=>s.reset
     }["CallProvider.useCallStore[reset]"]);
+    // Play ringtone audio on incoming / outgoing call phases using Web Audio API
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "CallProvider.useEffect": ()=>{
+            if (phase !== 'incoming' && phase !== 'outgoing' && phase !== 'connecting') {
+                return;
+            }
+            let audioCtx = null;
+            let timerId = null;
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                audioCtx = new AudioContextClass();
+                const playTonePattern = {
+                    "CallProvider.useEffect.playTonePattern": ()=>{
+                        if (!audioCtx || audioCtx.state === 'closed') return;
+                        if (audioCtx.state === 'suspended') {
+                            audioCtx.resume().catch({
+                                "CallProvider.useEffect.playTonePattern": ()=>{}
+                            }["CallProvider.useEffect.playTonePattern"]);
+                        }
+                        const now = audioCtx.currentTime;
+                        const isIncoming = phase === 'incoming';
+                        if (isIncoming) {
+                            // Melodic Messenger/Marimba Style Arpeggio (Notes: E5, G#5, B5, E6)
+                            const notes = [
+                                659.25,
+                                830.61,
+                                987.77,
+                                1318.51
+                            ];
+                            notes.forEach({
+                                "CallProvider.useEffect.playTonePattern": (freq, index)=>{
+                                    if (!audioCtx || audioCtx.state === 'closed') return;
+                                    const startTime = now + index * 0.12;
+                                    const osc = audioCtx.createOscillator();
+                                    const gain = audioCtx.createGain();
+                                    osc.type = 'triangle'; // Warm, marimba/bell tone
+                                    osc.frequency.setValueAtTime(freq, startTime);
+                                    gain.gain.setValueAtTime(0.001, startTime);
+                                    gain.gain.exponentialRampToValueAtTime(0.2, startTime + 0.02);
+                                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
+                                    osc.connect(gain);
+                                    gain.connect(audioCtx.destination);
+                                    osc.start(startTime);
+                                    osc.stop(startTime + 0.35);
+                                }
+                            }["CallProvider.useEffect.playTonePattern"]);
+                        } else {
+                            // Soft Outgoing Ringing Pulse (Soft 440Hz / 880Hz harmonic tone)
+                            const osc1 = audioCtx.createOscillator();
+                            const osc2 = audioCtx.createOscillator();
+                            const gain = audioCtx.createGain();
+                            osc1.type = 'sine';
+                            osc2.type = 'sine';
+                            osc1.frequency.setValueAtTime(440, now);
+                            osc2.frequency.setValueAtTime(880, now);
+                            gain.gain.setValueAtTime(0.001, now);
+                            gain.gain.exponentialRampToValueAtTime(0.08, now + 0.05);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+                            osc1.connect(gain);
+                            osc2.connect(gain);
+                            gain.connect(audioCtx.destination);
+                            osc1.start(now);
+                            osc2.start(now);
+                            osc1.stop(now + 1.0);
+                            osc2.stop(now + 1.0);
+                        }
+                    }
+                }["CallProvider.useEffect.playTonePattern"];
+                playTonePattern();
+                timerId = setInterval(playTonePattern, phase === 'incoming' ? 1800 : 3000);
+            } catch (e) {
+                console.warn('Could not play ringtone audio:', e);
+            }
+            return ({
+                "CallProvider.useEffect": ()=>{
+                    if (timerId) clearInterval(timerId);
+                    if (audioCtx && audioCtx.state !== 'closed') {
+                        audioCtx.close().catch({
+                            "CallProvider.useEffect": ()=>{}
+                        }["CallProvider.useEffect"]);
+                    }
+                }
+            })["CallProvider.useEffect"];
+        }
+    }["CallProvider.useEffect"], [
+        phase
+    ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "CallProvider.useEffect": ()=>{
             const onIncoming = {
@@ -1477,27 +1565,27 @@ function CallProvider({ children }) {
             children,
             phase === 'incoming' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$app$2f28$protected$292f$chat$2f$_components$2f$IncomingCallModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/apps/web/src/providers/CallProvider.tsx",
-                lineNumber: 172,
+                lineNumber: 260,
                 columnNumber: 32
             }, this),
             (phase === 'outgoing' || phase === 'connecting') && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$app$2f28$protected$292f$chat$2f$_components$2f$OutgoingCallOverlay$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/apps/web/src/providers/CallProvider.tsx",
-                lineNumber: 173,
+                lineNumber: 261,
                 columnNumber: 60
             }, this),
             phase === 'in-call' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$app$2f28$protected$292f$chat$2f$_components$2f$InCallView$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/apps/web/src/providers/CallProvider.tsx",
-                lineNumber: 174,
+                lineNumber: 262,
                 columnNumber: 31
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/src/providers/CallProvider.tsx",
-        lineNumber: 170,
+        lineNumber: 258,
         columnNumber: 5
     }, this);
 }
-_s1(CallProvider, "ZklbR4yN85Hww45dMSyrHdycH4E=", false, function() {
+_s1(CallProvider, "uMX0cFggMxaCGTqyBt5XKfOqf8s=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$providers$2f$SocketProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSocketContext"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"],

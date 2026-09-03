@@ -46,6 +46,94 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   const setError = useCallStore((s) => s.setError);
   const reset = useCallStore((s) => s.reset);
 
+  // Play ringtone audio on incoming / outgoing call phases using Web Audio API
+  useEffect(() => {
+    if (phase !== 'incoming' && phase !== 'outgoing' && phase !== 'connecting') {
+      return;
+    }
+
+    let audioCtx: AudioContext | null = null;
+    let timerId: ReturnType<typeof setInterval> | null = null;
+
+    try {
+      const AudioContextClass =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextClass) return;
+      audioCtx = new AudioContextClass();
+
+      const playTonePattern = () => {
+        if (!audioCtx || audioCtx.state === 'closed') return;
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(() => {});
+        }
+
+        const now = audioCtx.currentTime;
+        const isIncoming = phase === 'incoming';
+
+        if (isIncoming) {
+          // Melodic Messenger/Marimba Style Arpeggio (Notes: E5, G#5, B5, E6)
+          const notes = [659.25, 830.61, 987.77, 1318.51];
+          notes.forEach((freq, index) => {
+            if (!audioCtx || audioCtx.state === 'closed') return;
+            const startTime = now + index * 0.12;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'triangle'; // Warm, marimba/bell tone
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            gain.gain.setValueAtTime(0.001, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.2, startTime + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + 0.35);
+          });
+        } else {
+          // Soft Outgoing Ringing Pulse (Soft 440Hz / 880Hz harmonic tone)
+          const osc1 = audioCtx.createOscillator();
+          const osc2 = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc1.type = 'sine';
+          osc2.type = 'sine';
+          osc1.frequency.setValueAtTime(440, now);
+          osc2.frequency.setValueAtTime(880, now);
+
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.exponentialRampToValueAtTime(0.08, now + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc1.start(now);
+          osc2.start(now);
+          osc1.stop(now + 1.0);
+          osc2.stop(now + 1.0);
+        }
+      };
+
+      playTonePattern();
+      timerId = setInterval(playTonePattern, phase === 'incoming' ? 1800 : 3000);
+    } catch (e) {
+      console.warn('Could not play ringtone audio:', e);
+    }
+
+    return () => {
+      if (timerId) clearInterval(timerId);
+      if (audioCtx && audioCtx.state !== 'closed') {
+        audioCtx.close().catch(() => {});
+      }
+    };
+  }, [phase]);
+
   useEffect(() => {
     const onIncoming = ({ call }: { call: CallDTO }) => {
       if (useCallStore.getState().phase !== 'idle') return;
