@@ -63,7 +63,7 @@ body {
 }
 
 .chat-list-item:hover {
-  background: #f4f5fb !important;
+  background: rgba(140, 140, 180, 0.1) !important;
 }
 
 .auth-brand-panel {
