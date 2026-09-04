@@ -52,7 +52,7 @@ import { msg, notify } from '@/lib/notify';
 import GroupSettingsModal from './GroupSettingsModal';
 import MediaCenterDrawer from './MediaCenterDrawer';
 import ForwardMessageModal from './ForwardMessageModal';
-import { useDeleteMessage } from '@/hook/useMessages';
+import { useDeleteMessage, useReactToMessage } from '@/hook/useMessages';
 
 const TYPING_STOP_DELAY_MS = 2500;
 
@@ -200,6 +200,7 @@ const ChatWindow = ({
   const stickToBottomRef = useRef(true);
 
   const deleteMessageMutation = useDeleteMessage(conversationId ?? '');
+  const reactMutation = useReactToMessage(conversationId ?? '');
   const { startTyping, stopTyping, markRead } = useSocketContext();
   const typingMap = useChatStore((s) =>
     conversationId ? s.typingByConversation[conversationId] : undefined,
@@ -657,135 +658,171 @@ const ChatWindow = ({
                           </Avatar>
                         )}
                         {!msg.isDeleted && (
-                          <Dropdown
-                            trigger={['contextMenu']}
-                            menu={{
-                              items: [
-                                {
-                                  key: 'reply',
-                                  icon: <RollbackOutlined />,
-                                  label: 'Trả lời',
-                                  onClick: () => {
-                                    setReplyingTo(msg);
-                                    messageInputRef.current?.focus();
-                                  },
-                                },
-                                {
-                                  key: 'forward',
-                                  icon: <ShareAltOutlined />,
-                                  label: 'Chuyển tiếp',
-                                  onClick: () => {
-                                    setMessageToForward(msg);
-                                    setForwardModalOpen(true);
-                                  },
-                                },
-                                {
-                                  type: 'divider',
-                                },
-                                mine
-                                  ? {
-                                      key: 'revoke',
-                                      icon: <DeleteOutlined />,
-                                      danger: true,
-                                      label: 'Thu hồi với mọi người',
-                                      onClick: () => {
-                                        deleteMessageMutation.mutate(msg._id);
-                                      },
-                                    }
-                                  : {
-                                      key: 'deleteForMe',
-                                      icon: <DeleteOutlined />,
-                                      danger: true,
-                                      label: 'Gỡ ở phía tôi',
-                                      onClick: () => {
-                                        deleteMessageMutation.mutate(msg._id);
-                                      },
+                          <div style={{ position: 'relative' }}>
+                            <Dropdown
+                              trigger={['contextMenu']}
+                              menu={{
+                                items: [
+                                  {
+                                    key: 'reply',
+                                    icon: <RollbackOutlined />,
+                                    label: 'Trả lời',
+                                    onClick: () => {
+                                      setReplyingTo(msg);
+                                      messageInputRef.current?.focus();
                                     },
-                              ],
-                            }}
-                          >
-                            <div
-                              style={{
-                                minWidth: 0,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 6,
-                                padding:
-                                  !msg.isDeleted && msg.attachmentIds?.length && !msg.content
-                                    ? 4
-                                    : '10px 16px',
-                                borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                                background: mine ? '#5b5bf6' : token.colorBgContainer,
-                                color: mine ? '#fff' : token.colorText,
-                                boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
-                                wordBreak: 'break-word',
-                                fontStyle: msg.isDeleted ? 'italic' : 'normal',
-                                cursor: 'context-menu',
+                                  },
+                                  {
+                                    key: 'forward',
+                                    icon: <ShareAltOutlined />,
+                                    label: 'Chuyển tiếp',
+                                    onClick: () => {
+                                      setMessageToForward(msg);
+                                      setForwardModalOpen(true);
+                                    },
+                                  },
+                                  {
+                                    type: 'divider',
+                                  },
+                                  mine
+                                    ? {
+                                        key: 'revoke',
+                                        icon: <DeleteOutlined />,
+                                        danger: true,
+                                        label: 'Thu hồi với mọi người',
+                                        onClick: () => {
+                                          deleteMessageMutation.mutate(msg._id);
+                                        },
+                                      }
+                                    : {
+                                        key: 'deleteForMe',
+                                        icon: <DeleteOutlined />,
+                                        danger: true,
+                                        label: 'Gỡ ở phía tôi',
+                                        onClick: () => {
+                                          deleteMessageMutation.mutate(msg._id);
+                                        },
+                                      },
+                                ],
                               }}
                             >
-                              {msg.isForwarded && (
-                                <Text
-                                  italic
-                                  style={{
-                                    fontSize: 11,
-                                    display: 'block',
-                                    marginBottom: 2,
-                                    color: mine
-                                      ? 'rgba(255,255,255,0.85)'
-                                      : token.colorTextSecondary,
-                                  }}
-                                >
-                                  <ShareAltOutlined style={{ marginRight: 4 }} />
-                                  Đã chuyển tiếp
-                                </Text>
-                              )}
-                              {msg.replyToMessageId && (
-                                <div
-                                  style={{
-                                    borderLeft: `3px solid ${mine ? 'rgba(255,255,255,0.6)' : '#5b5bf6'}`,
-                                    background: mine
-                                      ? 'rgba(255,255,255,0.12)'
-                                      : 'rgba(91,91,246,0.06)',
-                                    borderRadius: 6,
-                                    padding: '4px 8px',
-                                    marginBottom: 2,
-                                  }}
-                                >
+                              <div
+                                style={{
+                                  minWidth: 0,
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  gap: 6,
+                                  padding:
+                                    !msg.isDeleted && msg.attachmentIds?.length && !msg.content
+                                      ? 4
+                                      : '10px 16px',
+                                  borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                                  background: mine ? '#5b5bf6' : token.colorBgContainer,
+                                  color: mine ? '#fff' : token.colorText,
+                                  boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
+                                  wordBreak: 'break-word',
+                                  fontStyle: msg.isDeleted ? 'italic' : 'normal',
+                                  cursor: 'context-menu',
+                                }}
+                              >
+                                {msg.isForwarded && (
                                   <Text
-                                    strong
+                                    italic
                                     style={{
                                       fontSize: 11,
                                       display: 'block',
-                                      color: mine ? 'rgba(255,255,255,0.85)' : '#5b5bf6',
-                                    }}
-                                  >
-                                    {msg.replyToMessageId.senderId.username}
-                                  </Text>
-                                  <Text
-                                    ellipsis
-                                    style={{
-                                      fontSize: 12,
-                                      display: 'block',
+                                      marginBottom: 2,
                                       color: mine
-                                        ? 'rgba(255,255,255,0.75)'
+                                        ? 'rgba(255,255,255,0.85)'
                                         : token.colorTextSecondary,
-                                      fontStyle: msg.replyToMessageId.isDeleted
-                                        ? 'italic'
-                                        : 'normal',
                                     }}
                                   >
-                                    {msg.replyToMessageId.isDeleted
-                                      ? 'Tin nhắn đã được thu hồi'
-                                      : msg.replyToMessageId.content || 'Tệp đính kèm'}
+                                    <ShareAltOutlined style={{ marginRight: 4 }} />
+                                    Đã chuyển tiếp
                                   </Text>
-                                </div>
-                              )}
-                              {msg.attachmentIds?.map((attachment) => (
-                                <AttachmentPreview key={attachment._id} attachment={attachment} />
-                              ))}
-                              {msg.content}
-                            </div>
-                          </Dropdown>
+                                )}
+                                {msg.replyToMessageId && (
+                                  <div
+                                    style={{
+                                      borderLeft: `3px solid ${mine ? 'rgba(255,255,255,0.6)' : '#5b5bf6'}`,
+                                      background: mine
+                                        ? 'rgba(255,255,255,0.12)'
+                                        : 'rgba(91,91,246,0.06)',
+                                      borderRadius: 6,
+                                      padding: '4px 8px',
+                                      marginBottom: 2,
+                                    }}
+                                  >
+                                    <Text
+                                      strong
+                                      style={{
+                                        fontSize: 11,
+                                        display: 'block',
+                                        color: mine ? 'rgba(255,255,255,0.85)' : '#5b5bf6',
+                                      }}
+                                    >
+                                      {msg.replyToMessageId.senderId.username}
+                                    </Text>
+                                    <Text
+                                      ellipsis
+                                      style={{
+                                        fontSize: 12,
+                                        display: 'block',
+                                        color: mine
+                                          ? 'rgba(255,255,255,0.75)'
+                                          : token.colorTextSecondary,
+                                        fontStyle: msg.replyToMessageId.isDeleted
+                                          ? 'italic'
+                                          : 'normal',
+                                      }}
+                                    >
+                                      {msg.replyToMessageId.isDeleted
+                                        ? 'Tin nhắn đã được thu hồi'
+                                        : msg.replyToMessageId.content || 'Tệp đính kèm'}
+                                    </Text>
+                                  </div>
+                                )}
+                                {msg.attachmentIds?.map((attachment) => (
+                                  <AttachmentPreview key={attachment._id} attachment={attachment} />
+                                ))}
+                                {msg.content}
+                              </div>
+                            </Dropdown>
+
+                            {/* Reaction Badges at bottom corner */}
+                            {Boolean(msg.reactions && msg.reactions.length > 0) && (
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  bottom: -10,
+                                  right: mine ? undefined : -8,
+                                  left: mine ? -8 : undefined,
+                                  zIndex: 10,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: 2,
+                                  padding: '2px 6px',
+                                  borderRadius: 12,
+                                  background: '#fff',
+                                  border: '1px solid #e5e7eb',
+                                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                  cursor: 'pointer',
+                                  fontSize: 12,
+                                }}
+                              >
+                                {Array.from(new Set(msg.reactions?.map((r) => r.emoji))).map(
+                                  (emoji) => (
+                                    <span key={emoji}>{emoji}</span>
+                                  ),
+                                )}
+                                {(msg.reactions?.length || 0) > 1 && (
+                                  <span style={{ fontSize: 10, color: '#6b7280', fontWeight: 600 }}>
+                                    {msg.reactions?.length}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         )}
                         {msg.isDeleted && (
                           <div
@@ -808,6 +845,40 @@ const ChatWindow = ({
                         )}
                         {!msg.isDeleted && hoveredMessageId === msg._id && (
                           <Flex gap={2} align="center">
+                            <Popover
+                              trigger="click"
+                              placement="top"
+                              content={
+                                <Flex gap={6} style={{ padding: '2px 4px' }}>
+                                  {['❤️', '👍', '😂', '😮', '😢', '🙏'].map((emoji) => (
+                                    <span
+                                      key={emoji}
+                                      style={{
+                                        fontSize: 18,
+                                        cursor: 'pointer',
+                                        transition: 'transform 0.15s ease',
+                                      }}
+                                      className="hover:scale-125"
+                                      onClick={() => {
+                                        if (conversationId) {
+                                          reactMutation.mutate({ messageId: msg._id, emoji });
+                                        }
+                                      }}
+                                    >
+                                      {emoji}
+                                    </span>
+                                  ))}
+                                </Flex>
+                              }
+                            >
+                              <Button
+                                type="text"
+                                size="small"
+                                shape="circle"
+                                icon={<SmileOutlined style={{ fontSize: 14 }} />}
+                                title="Bày tỏ cảm xúc"
+                              />
+                            </Popover>
                             <Button
                               type="text"
                               size="small"

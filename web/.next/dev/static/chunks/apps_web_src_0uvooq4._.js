@@ -506,6 +506,21 @@ function SocketProvider({ children }) {
                     }["SocketProvider.useEffect.onMessageDeleted"]);
                 }
             }["SocketProvider.useEffect.onMessageDeleted"];
+            const onMessageReaction = {
+                "SocketProvider.useEffect.onMessageReaction": ({ messageId, conversationId, reactions, message })=>{
+                    patchMessagesCache(conversationId, {
+                        "SocketProvider.useEffect.onMessageReaction": (result)=>({
+                                ...result,
+                                items: result.items.map({
+                                    "SocketProvider.useEffect.onMessageReaction": (m)=>m._id === messageId ? message || {
+                                            ...m,
+                                            reactions
+                                        } : m
+                                }["SocketProvider.useEffect.onMessageReaction"])
+                            })
+                    }["SocketProvider.useEffect.onMessageReaction"]);
+                }
+            }["SocketProvider.useEffect.onMessageReaction"];
             const onPresenceOnline = {
                 "SocketProvider.useEffect.onPresenceOnline": ({ userId })=>setUserOnline(userId)
             }["SocketProvider.useEffect.onPresenceOnline"];
@@ -591,6 +606,7 @@ function SocketProvider({ children }) {
             socket.on('message:created', onMessageCreated);
             socket.on('message:updated', onMessageUpdated);
             socket.on('message:deleted', onMessageDeleted);
+            socket.on('message:reaction', onMessageReaction);
             socket.on('presence:online', onPresenceOnline);
             socket.on('presence:offline', onPresenceOffline);
             socket.on('typing:start', onTypingStart);
@@ -612,6 +628,7 @@ function SocketProvider({ children }) {
                     socket.off('message:created', onMessageCreated);
                     socket.off('message:updated', onMessageUpdated);
                     socket.off('message:deleted', onMessageDeleted);
+                    socket.off('message:reaction', onMessageReaction);
                     socket.off('presence:online', onPresenceOnline);
                     socket.off('presence:offline', onPresenceOffline);
                     socket.off('typing:start', onTypingStart);
@@ -708,7 +725,7 @@ function SocketProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/apps/web/src/providers/SocketProvider.tsx",
-        lineNumber: 280,
+        lineNumber: 299,
         columnNumber: 10
     }, this);
 }

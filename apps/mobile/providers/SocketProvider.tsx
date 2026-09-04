@@ -31,17 +31,20 @@ export function useSocketContext() {
   return ctx;
 }
 
+import { useAuthStore } from '@/stores/auth';
+
 export function SocketProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
   const { data: meData } = useGetMe();
   const currentUserId = meData?.data?._id;
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   const setUserOnline = useChatStore((s) => s.setUserOnline);
   const setUserOffline = useChatStore((s) => s.setUserOffline);
   const setUserTyping = useChatStore((s) => s.setUserTyping);
   const setUserStoppedTyping = useChatStore((s) => s.setUserStoppedTyping);
 
-  const socket = getSocket();
+  const socket = getSocket(accessToken || undefined);
   const [connected, setConnected] = useState(false);
 
   const selectedConversationId = useChatStore((s) => s.selectedConversationId);
@@ -141,6 +144,23 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
       }));
     };
 
+    const onMessageReaction = ({
+      messageId,
+      conversationId,
+      reactions,
+      message,
+    }: {
+      messageId: string;
+      conversationId: string;
+      reactions: any[];
+      message?: Message;
+    }) => {
+      patchMessagesCache(conversationId, (result) => ({
+        ...result,
+        items: result.items.map((m) => (m._id === messageId ? message || { ...m, reactions } : m)),
+      }));
+    };
+
     const onPresenceOnline = ({ userId }: { userId: string }) => setUserOnline(userId);
     const onPresenceOffline = ({ userId }: { userId: string }) => setUserOffline(userId);
 
@@ -170,6 +190,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     socket.on('message:created', onMessageCreated);
     socket.on('message:updated', onMessageUpdated);
     socket.on('message:deleted', onMessageDeleted);
+    socket.on('message:reaction', onMessageReaction);
     socket.on('presence:online', onPresenceOnline);
     socket.on('presence:offline', onPresenceOffline);
     socket.on('typing:start', onTypingStart);
@@ -184,6 +205,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
       socket.off('message:created', onMessageCreated);
       socket.off('message:updated', onMessageUpdated);
       socket.off('message:deleted', onMessageDeleted);
+      socket.off('message:reaction', onMessageReaction);
       socket.off('presence:online', onPresenceOnline);
       socket.off('presence:offline', onPresenceOffline);
       socket.off('typing:start', onTypingStart);

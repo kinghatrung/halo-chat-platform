@@ -333,6 +333,44 @@ const messageService = {
       throw error;
     }
   },
+  reactToMessage: async (userId: string, messageId: string, emoji: string) => {
+    try {
+      const message = await Message.findById(messageId);
+      if (!message || message.isDeleted) {
+        throw new Error('Tin nhắn không tồn tại hoặc đã bị thu hồi!');
+      }
+
+      const conversationId = String(message.conversationId);
+      await assertMember(conversationId, userId);
+
+      const existingIndex = message.reactions.findIndex((r) => String(r.userId) === userId);
+
+      if (existingIndex > -1) {
+        if (message.reactions[existingIndex].emoji === emoji) {
+          // Bấm lại cùng emoji -> Gỡ reaction
+          message.reactions.splice(existingIndex, 1);
+        } else {
+          // Bấm emoji khác -> Cập nhật emoji
+          message.reactions[existingIndex].emoji = emoji;
+          message.reactions[existingIndex].createdAt = new Date();
+        }
+      } else {
+        // Thêm reaction mới
+        message.reactions.push({
+          userId: new mongoose.Types.ObjectId(userId),
+          emoji,
+          createdAt: new Date(),
+        });
+      }
+
+      await message.save();
+
+      const updatedMessage = await populateMessage(Message.findById(message._id)).exec();
+      return updatedMessage;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default messageService;

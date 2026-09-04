@@ -1,5 +1,14 @@
 import React, { useEffect } from 'react';
-import { View, Text, Pressable, Modal, StyleSheet, Dimensions, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Modal,
+  StyleSheet,
+  Dimensions,
+  Platform,
+  Clipboard,
+} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -10,7 +19,6 @@ import Animated, {
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import * as Clipboard from 'expo-clipboard';
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -28,6 +36,7 @@ export interface FloatingContextMenuProps {
   currentUserId?: string;
   onClose: () => void;
   onReply: (message: any) => void;
+  onSelectReaction?: (messageId: string, reaction: string) => void;
   onTogglePin: (messageId: string) => void;
   onDeleteForEveryone: (messageId: string) => void;
   onDeleteForMe: (messageId: string) => void;
@@ -52,6 +61,7 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
   currentUserId,
   onClose,
   onReply,
+  onSelectReaction,
   onTogglePin,
   onDeleteForEveryone,
   onDeleteForMe,
@@ -116,29 +126,23 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
 
   return (
     <Modal visible={visible} transparent animationType="none" onRequestClose={() => triggerClose()}>
-      <View style={StyleSheet.absoluteFillObject}>
+      <View style={StyleSheet.absoluteFill}>
         {/* Fullscreen Blur Backdrop */}
-        <Animated.View style={[StyleSheet.absoluteFillObject, backdropAnimStyle]}>
-          <Pressable style={StyleSheet.absoluteFillObject} onPress={() => triggerClose()}>
-            {Platform.OS === 'ios' || Platform.OS === 'android' ? (
-              <BlurView intensity={75} tint="dark" style={StyleSheet.absoluteFillObject} />
-            ) : (
-              <View
-                style={[
-                  StyleSheet.absoluteFillObject,
-                  {
-                    backgroundColor: 'rgba(15, 23, 42, 0.75)',
-                    // @ts-ignore
-                    backdropFilter: 'blur(16px)',
-                  },
-                ]}
-              />
-            )}
+        <Animated.View style={[StyleSheet.absoluteFill, backdropAnimStyle]}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => triggerClose()}>
+            <View
+              style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(15, 23, 42, 0.65)' }]}
+            />
+            {Platform.OS === 'ios' ? (
+              <BlurView intensity={60} tint="dark" style={StyleSheet.absoluteFill} />
+            ) : Platform.OS === 'android' ? (
+              <BlurView intensity={80} tint="dark" style={StyleSheet.absoluteFill} />
+            ) : null}
           </Pressable>
         </Animated.View>
 
         {/* Floating Message Container */}
-        <View style={StyleSheet.absoluteFillObject} pointerEvents="box-none">
+        <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
           {/* 1. EMOJI PILL (Floating above message) */}
           <Animated.View
             style={[
@@ -162,7 +166,11 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
                   key={emoji}
                   onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-                    triggerClose();
+                    triggerClose(() => {
+                      if (onSelectReaction && message?._id) {
+                        onSelectReaction(message._id, emoji);
+                      }
+                    });
                   }}
                   className="active:scale-125"
                 >
@@ -217,7 +225,9 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
                 {/* Main Reply Response Bubble (Overlapping bottom corner) */}
                 <View
                   className={`-mt-2.5 z-10 rounded-2xl px-4 py-2 ${
-                    isMe ? 'rounded-br-xs bg-[#6f6bff] self-end' : 'rounded-bl-xs bg-white self-start'
+                    isMe
+                      ? 'rounded-br-xs bg-[#6f6bff] self-end'
+                      : 'rounded-bl-xs bg-white self-start'
                   }`}
                   style={{
                     shadowColor: '#000',
@@ -334,20 +344,6 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
                   <Text className="ml-3 text-[14px] font-normal text-gray-800">Chuyển tiếp</Text>
                 </Pressable>
 
-                {/* Own message only: Thu hồi */}
-                {isMe && (
-                  <>
-                    <View className="h-[1px] bg-gray-100 ml-11" />
-                    <Pressable
-                      onPress={() => triggerClose(() => onDeleteForEveryone(message._id))}
-                      className="flex-row items-center px-4 py-2.5 active:bg-gray-100"
-                    >
-                      <Ionicons name="refresh-outline" size={18} color="#374151" />
-                      <Text className="ml-3 text-[14px] font-normal text-gray-800">Thu hồi</Text>
-                    </Pressable>
-                  </>
-                )}
-
                 {/* Ghim / Bỏ ghim */}
                 <View className="h-[1px] bg-gray-100 ml-11" />
                 <Pressable
@@ -360,15 +356,19 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
                   </Text>
                 </Pressable>
 
-                {/* Delete for me: Xóa cho tôi */}
-                <View className="h-[1px] bg-gray-100 ml-11" />
-                <Pressable
-                  onPress={() => triggerClose(() => onDeleteForMe(message._id))}
-                  className="flex-row items-center px-4 py-2.5 active:bg-gray-100"
-                >
-                  <Ionicons name="trash-outline" size={18} color="#EF4444" />
-                  <Text className="ml-3 text-[14px] font-normal text-red-500">Xóa cho tôi</Text>
-                </Pressable>
+                {/* Own message only: Thu hồi */}
+                {isMe && (
+                  <>
+                    <View className="h-[1px] bg-gray-100 ml-11" />
+                    <Pressable
+                      onPress={() => triggerClose(() => onDeleteForEveryone(message._id))}
+                      className="flex-row items-center px-4 py-2.5 active:bg-gray-100"
+                    >
+                      <Ionicons name="refresh-outline" size={18} color="#EF4444" />
+                      <Text className="ml-3 text-[14px] font-normal text-red-500">Thu hồi</Text>
+                    </Pressable>
+                  </>
+                )}
               </View>
             </View>
           </Animated.View>

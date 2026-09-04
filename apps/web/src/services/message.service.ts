@@ -40,4 +40,10 @@ export const messageService = {
       `/conversations/${conversationId}/unread-count`,
     );
   },
+  reactToMessage: async (messageId: string, emoji: string) => {
+    return axiosClient.post<never, ApiResponse<{ message: Message }>>(
+      `/messages/${messageId}/reactions`,
+      { emoji },
+    );
+  },
 };

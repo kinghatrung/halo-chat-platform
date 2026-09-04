@@ -869,6 +869,11 @@ const messageService = {
     },
     getUnreadCount: async (conversationId)=>{
         return __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$api$2f$axiosClient$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`/conversations/${conversationId}/unread-count`);
+    },
+    reactToMessage: async (messageId, emoji)=>{
+        return __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$api$2f$axiosClient$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`/messages/${messageId}/reactions`, {
+            emoji
+        });
     }
 };
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
@@ -887,6 +892,8 @@ __turbopack_context__.s([
     ()=>useListMessages,
     "useMarkAsRead",
     ()=>useMarkAsRead,
+    "useReactToMessage",
+    ()=>useReactToMessage,
     "useSendMessage",
     ()=>useSendMessage,
     "useUnreadCount",
@@ -897,7 +904,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$services$2f$message$2e$service$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/services/message.service.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$providers$2f$SocketProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/providers/SocketProvider.tsx [app-client] (ecmascript)");
-var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature();
+var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature(), _s6 = __turbopack_context__.k.signature();
 ;
 ;
 ;
@@ -1180,6 +1187,31 @@ function useUnreadCount(conversationId) {
 _s5(useUnreadCount, "4ZpngI1uv+Uo3WQHEZmTQ5FNM+k=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQuery"]
+    ];
+});
+function useReactToMessage(conversationId) {
+    _s6();
+    const queryClient = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"])();
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: {
+            "useReactToMessage.useMutation": ({ messageId, emoji })=>__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$services$2f$message$2e$service$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["messageService"].reactToMessage(messageId, emoji)
+        }["useReactToMessage.useMutation"],
+        onSuccess: {
+            "useReactToMessage.useMutation": ()=>{
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'messages',
+                        conversationId
+                    ]
+                });
+            }
+        }["useReactToMessage.useMutation"]
+    });
+}
+_s6(useReactToMessage, "YK0wzM21ECnncaq5SECwU+/SVdQ=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"]
     ];
 });
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
@@ -7114,6 +7146,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
     const prevConversationIdRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const stickToBottomRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(true);
     const deleteMessageMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useMessages$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeleteMessage"])(conversationId ?? '');
+    const reactMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useMessages$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReactToMessage"])(conversationId ?? '');
     const { startTyping, stopTyping, markRead } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$providers$2f$SocketProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSocketContext"])();
     const typingMap = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$store$2f$useChatStore$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useChatStore"])({
         "ChatWindow.useChatStore[typingMap]": (s)=>conversationId ? s.typingByConversation[conversationId] : undefined
@@ -7314,7 +7347,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                     }
                 }, void 0, false, {
                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                    lineNumber: 379,
+                    lineNumber: 380,
                     columnNumber: 18
                 }, ("TURBOPACK compile-time value", void 0)),
                 description: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
@@ -7322,17 +7355,17 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                     children: "Chọn một cuộc trò chuyện ở danh sách bên trái để bắt đầu nhắn tin"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                    lineNumber: 381,
+                    lineNumber: 382,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 378,
+                lineNumber: 379,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-            lineNumber: 369,
+            lineNumber: 370,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -7351,12 +7384,12 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                 active: true
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 393,
+                lineNumber: 394,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-            lineNumber: 392,
+            lineNumber: 393,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -7400,7 +7433,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                 type: "text",
                                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$ArrowLeftOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeftOutlined$3e$__["ArrowLeftOutlined"], {}, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                    lineNumber: 436,
+                                    lineNumber: 437,
                                     columnNumber: 21
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 onClick: onBack,
@@ -7409,7 +7442,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 434,
+                                lineNumber: 435,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$avatar$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Avatar$3e$__["Avatar"], {
@@ -7417,7 +7450,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                 src: avatarUrl || undefined,
                                 icon: isGroup ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$TeamOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TeamOutlined$3e$__["TeamOutlined"], {}, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                    lineNumber: 444,
+                                    lineNumber: 445,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0)) : undefined,
                                 style: {
@@ -7427,7 +7460,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                 children: !isGroup && displayName ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$avatar$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["initialOf"])(displayName) : undefined
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 441,
+                                lineNumber: 442,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7444,7 +7477,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         children: displayName || 'Người dùng'
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 450,
+                                        lineNumber: 451,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     isOtherTyping ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
@@ -7456,7 +7489,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         children: "Đang nhập..."
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 454,
+                                        lineNumber: 455,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)) : isGroup ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
                                         type: "secondary",
@@ -7469,7 +7502,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 458,
+                                        lineNumber: 459,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
                                         type: otherMemberStatus === 'online' ? 'success' : 'secondary',
@@ -7479,60 +7512,60 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         children: otherMemberStatus === 'online' ? '● Đang hoạt động' : 'Ngoại tuyến'
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 462,
+                                        lineNumber: 463,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 449,
+                                lineNumber: 450,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 432,
+                        lineNumber: 433,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
                         type: "text",
                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$PhoneOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PhoneOutlined$3e$__["PhoneOutlined"], {}, void 0, false, {
                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                            lineNumber: 473,
+                            lineNumber: 474,
                             columnNumber: 17
                         }, ("TURBOPACK compile-time value", void 0)),
                         disabled: !canStartCall,
                         onClick: ()=>conversation && startCall(conversation._id, 'audio')
                     }, void 0, false, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 471,
+                        lineNumber: 472,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
                         type: "text",
                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$VideoCameraOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__VideoCameraOutlined$3e$__["VideoCameraOutlined"], {}, void 0, false, {
                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                            lineNumber: 479,
+                            lineNumber: 480,
                             columnNumber: 17
                         }, ("TURBOPACK compile-time value", void 0)),
                         disabled: !canStartCall,
                         onClick: ()=>conversation && startCall(conversation._id, 'video')
                     }, void 0, false, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 477,
+                        lineNumber: 478,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
                         type: "text",
                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$PictureOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PictureOutlined$3e$__["PictureOutlined"], {}, void 0, false, {
                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                            lineNumber: 483,
+                            lineNumber: 484,
                             columnNumber: 35
                         }, ("TURBOPACK compile-time value", void 0)),
                         onClick: ()=>setMediaCenterOpen(true)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 483,
+                        lineNumber: 484,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     canBlock && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$dropdown$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Dropdown$3e$__["Dropdown"], {
@@ -7542,7 +7575,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                     key: 'block',
                                     icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$StopOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__StopOutlined$3e$__["StopOutlined"], {}, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 490,
+                                        lineNumber: 491,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     danger: !isBlocked,
@@ -7559,18 +7592,18 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                             type: "text",
                             icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$MoreOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MoreOutlined$3e$__["MoreOutlined"], {}, void 0, false, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 500,
+                                lineNumber: 501,
                                 columnNumber: 39
                             }, ("TURBOPACK compile-time value", void 0)),
                             loading: blockActionLoading
                         }, void 0, false, {
                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                            lineNumber: 500,
+                            lineNumber: 501,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 485,
+                        lineNumber: 486,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     isGroup && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$dropdown$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Dropdown$3e$__["Dropdown"], {
@@ -7580,7 +7613,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                     key: 'group-settings',
                                     icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$SettingOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__SettingOutlined$3e$__["SettingOutlined"], {}, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 509,
+                                        lineNumber: 510,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     label: 'Quản lý nhóm'
@@ -7595,23 +7628,23 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                             type: "text",
                             icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$MoreOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MoreOutlined$3e$__["MoreOutlined"], {}, void 0, false, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 517,
+                                lineNumber: 518,
                                 columnNumber: 39
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                            lineNumber: 517,
+                            lineNumber: 518,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 504,
+                        lineNumber: 505,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 425,
+                lineNumber: 426,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             isBlocked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$alert$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Alert$3e$__["Alert"], {
@@ -7621,7 +7654,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                 title: "Bạn đã chặn người dùng này. Bỏ chặn để có thể tiếp tục nhắn tin."
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 523,
+                lineNumber: 524,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             !isBlocked && blockedByOther && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$alert$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Alert$3e$__["Alert"], {
@@ -7631,7 +7664,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                 title: "Người dùng này đã chặn bạn. Bạn không thể nhắn tin cho họ."
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 532,
+                lineNumber: 533,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             activeCall && !isInActiveCall && callPhase === 'idle' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$alert$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Alert$3e$__["Alert"], {
@@ -7640,11 +7673,11 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                 banner: true,
                 icon: activeCall.type === 'video' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$VideoCameraOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__VideoCameraOutlined$3e$__["VideoCameraOutlined"], {}, void 0, false, {
                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                    lineNumber: 545,
+                    lineNumber: 546,
                     columnNumber: 47
                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$PhoneOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PhoneOutlined$3e$__["PhoneOutlined"], {}, void 0, false, {
                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                    lineNumber: 545,
+                    lineNumber: 546,
                     columnNumber: 73
                 }, ("TURBOPACK compile-time value", void 0)),
                 title: isGroup ? 'Cuộc gọi nhóm đang diễn ra' : 'Cuộc gọi đang diễn ra',
@@ -7656,12 +7689,12 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                     children: "Tham gia"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                    lineNumber: 548,
+                    lineNumber: 549,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 541,
+                lineNumber: 542,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7676,7 +7709,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                         active: true
                     }, void 0, false, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 565,
+                        lineNumber: 566,
                         columnNumber: 29
                     }, ("TURBOPACK compile-time value", void 0)),
                     !messagesLoading && messages.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$empty$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Empty$3e$__["Empty"], {
@@ -7687,7 +7720,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                         }
                     }, void 0, false, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 567,
+                        lineNumber: 568,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7716,12 +7749,12 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                             children: formatDateSeparator(msg.createdAt)
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                            lineNumber: 591,
+                                            lineNumber: 592,
                                             columnNumber: 23
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 584,
+                                        lineNumber: 585,
                                         columnNumber: 21
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     msg.type === 'system' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7742,12 +7775,12 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                             children: msg.content
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                            lineNumber: 606,
+                                            lineNumber: 607,
                                             columnNumber: 23
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 605,
+                                        lineNumber: 606,
                                         columnNumber: 21
                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         style: {
@@ -7767,7 +7800,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                                 children: msg.senderId.username
                                             }, void 0, false, {
                                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                lineNumber: 629,
+                                                lineNumber: 630,
                                                 columnNumber: 25
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7792,171 +7825,226 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$lib$2f$avatar$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["initialOf"])(msg.senderId.username)
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                        lineNumber: 651,
+                                                        lineNumber: 652,
                                                         columnNumber: 27
                                                     }, ("TURBOPACK compile-time value", void 0)),
-                                                    !msg.isDeleted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$dropdown$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Dropdown$3e$__["Dropdown"], {
-                                                        trigger: [
-                                                            'contextMenu'
-                                                        ],
-                                                        menu: {
-                                                            items: [
-                                                                {
-                                                                    key: 'reply',
-                                                                    icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$RollbackOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RollbackOutlined$3e$__["RollbackOutlined"], {}, void 0, false, {
-                                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                        lineNumber: 666,
-                                                                        columnNumber: 41
-                                                                    }, ("TURBOPACK compile-time value", void 0)),
-                                                                    label: 'Trả lời',
-                                                                    onClick: ()=>{
-                                                                        setReplyingTo(msg);
-                                                                        messageInputRef.current?.focus();
-                                                                    }
-                                                                },
-                                                                {
-                                                                    key: 'forward',
-                                                                    icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$ShareAltOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShareAltOutlined$3e$__["ShareAltOutlined"], {}, void 0, false, {
-                                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                        lineNumber: 675,
-                                                                        columnNumber: 41
-                                                                    }, ("TURBOPACK compile-time value", void 0)),
-                                                                    label: 'Chuyển tiếp',
-                                                                    onClick: ()=>{
-                                                                        setMessageToForward(msg);
-                                                                        setForwardModalOpen(true);
-                                                                    }
-                                                                },
-                                                                {
-                                                                    type: 'divider'
-                                                                },
-                                                                mine ? {
-                                                                    key: 'revoke',
-                                                                    icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$DeleteOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DeleteOutlined$3e$__["DeleteOutlined"], {}, void 0, false, {
-                                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                        lineNumber: 688,
-                                                                        columnNumber: 45
-                                                                    }, ("TURBOPACK compile-time value", void 0)),
-                                                                    danger: true,
-                                                                    label: 'Thu hồi với mọi người',
-                                                                    onClick: ()=>{
-                                                                        deleteMessageMutation.mutate(msg._id);
-                                                                    }
-                                                                } : {
-                                                                    key: 'deleteForMe',
-                                                                    icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$DeleteOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DeleteOutlined$3e$__["DeleteOutlined"], {}, void 0, false, {
-                                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                        lineNumber: 697,
-                                                                        columnNumber: 45
-                                                                    }, ("TURBOPACK compile-time value", void 0)),
-                                                                    danger: true,
-                                                                    label: 'Gỡ ở phía tôi',
-                                                                    onClick: ()=>{
-                                                                        deleteMessageMutation.mutate(msg._id);
-                                                                    }
-                                                                }
-                                                            ]
+                                                    !msg.isDeleted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        style: {
+                                                            position: 'relative'
                                                         },
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            style: {
-                                                                minWidth: 0,
-                                                                display: 'flex',
-                                                                flexDirection: 'column',
-                                                                gap: 6,
-                                                                padding: !msg.isDeleted && msg.attachmentIds?.length && !msg.content ? 4 : '10px 16px',
-                                                                borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                                                                background: mine ? '#5b5bf6' : token.colorBgContainer,
-                                                                color: mine ? '#fff' : token.colorText,
-                                                                boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
-                                                                wordBreak: 'break-word',
-                                                                fontStyle: msg.isDeleted ? 'italic' : 'normal',
-                                                                cursor: 'context-menu'
-                                                            },
-                                                            children: [
-                                                                msg.isForwarded && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
-                                                                    italic: true,
-                                                                    style: {
-                                                                        fontSize: 11,
-                                                                        display: 'block',
-                                                                        marginBottom: 2,
-                                                                        color: mine ? 'rgba(255,255,255,0.85)' : token.colorTextSecondary
-                                                                    },
-                                                                    children: [
-                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$ShareAltOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShareAltOutlined$3e$__["ShareAltOutlined"], {
-                                                                            style: {
-                                                                                marginRight: 4
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$dropdown$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Dropdown$3e$__["Dropdown"], {
+                                                                trigger: [
+                                                                    'contextMenu'
+                                                                ],
+                                                                menu: {
+                                                                    items: [
+                                                                        {
+                                                                            key: 'reply',
+                                                                            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$RollbackOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RollbackOutlined$3e$__["RollbackOutlined"], {}, void 0, false, {
+                                                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                                lineNumber: 668,
+                                                                                columnNumber: 43
+                                                                            }, ("TURBOPACK compile-time value", void 0)),
+                                                                            label: 'Trả lời',
+                                                                            onClick: ()=>{
+                                                                                setReplyingTo(msg);
+                                                                                messageInputRef.current?.focus();
                                                                             }
-                                                                        }, void 0, false, {
-                                                                            fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                            lineNumber: 738,
-                                                                            columnNumber: 35
-                                                                        }, ("TURBOPACK compile-time value", void 0)),
-                                                                        "Đã chuyển tiếp"
+                                                                        },
+                                                                        {
+                                                                            key: 'forward',
+                                                                            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$ShareAltOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShareAltOutlined$3e$__["ShareAltOutlined"], {}, void 0, false, {
+                                                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                                lineNumber: 677,
+                                                                                columnNumber: 43
+                                                                            }, ("TURBOPACK compile-time value", void 0)),
+                                                                            label: 'Chuyển tiếp',
+                                                                            onClick: ()=>{
+                                                                                setMessageToForward(msg);
+                                                                                setForwardModalOpen(true);
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            type: 'divider'
+                                                                        },
+                                                                        mine ? {
+                                                                            key: 'revoke',
+                                                                            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$DeleteOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DeleteOutlined$3e$__["DeleteOutlined"], {}, void 0, false, {
+                                                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                                lineNumber: 690,
+                                                                                columnNumber: 47
+                                                                            }, ("TURBOPACK compile-time value", void 0)),
+                                                                            danger: true,
+                                                                            label: 'Thu hồi với mọi người',
+                                                                            onClick: ()=>{
+                                                                                deleteMessageMutation.mutate(msg._id);
+                                                                            }
+                                                                        } : {
+                                                                            key: 'deleteForMe',
+                                                                            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$DeleteOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DeleteOutlined$3e$__["DeleteOutlined"], {}, void 0, false, {
+                                                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                                lineNumber: 699,
+                                                                                columnNumber: 47
+                                                                            }, ("TURBOPACK compile-time value", void 0)),
+                                                                            danger: true,
+                                                                            label: 'Gỡ ở phía tôi',
+                                                                            onClick: ()=>{
+                                                                                deleteMessageMutation.mutate(msg._id);
+                                                                            }
+                                                                        }
                                                                     ]
-                                                                }, void 0, true, {
-                                                                    fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                    lineNumber: 727,
-                                                                    columnNumber: 33
-                                                                }, ("TURBOPACK compile-time value", void 0)),
-                                                                msg.replyToMessageId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                },
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                     style: {
-                                                                        borderLeft: `3px solid ${mine ? 'rgba(255,255,255,0.6)' : '#5b5bf6'}`,
-                                                                        background: mine ? 'rgba(255,255,255,0.12)' : 'rgba(91,91,246,0.06)',
-                                                                        borderRadius: 6,
-                                                                        padding: '4px 8px',
-                                                                        marginBottom: 2
+                                                                        minWidth: 0,
+                                                                        display: 'flex',
+                                                                        flexDirection: 'column',
+                                                                        gap: 6,
+                                                                        padding: !msg.isDeleted && msg.attachmentIds?.length && !msg.content ? 4 : '10px 16px',
+                                                                        borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                                                                        background: mine ? '#5b5bf6' : token.colorBgContainer,
+                                                                        color: mine ? '#fff' : token.colorText,
+                                                                        boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
+                                                                        wordBreak: 'break-word',
+                                                                        fontStyle: msg.isDeleted ? 'italic' : 'normal',
+                                                                        cursor: 'context-menu'
                                                                     },
                                                                     children: [
-                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
-                                                                            strong: true,
+                                                                        msg.isForwarded && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
+                                                                            italic: true,
                                                                             style: {
                                                                                 fontSize: 11,
                                                                                 display: 'block',
-                                                                                color: mine ? 'rgba(255,255,255,0.85)' : '#5b5bf6'
+                                                                                marginBottom: 2,
+                                                                                color: mine ? 'rgba(255,255,255,0.85)' : token.colorTextSecondary
                                                                             },
-                                                                            children: msg.replyToMessageId.senderId.username
-                                                                        }, void 0, false, {
+                                                                            children: [
+                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$ShareAltOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShareAltOutlined$3e$__["ShareAltOutlined"], {
+                                                                                    style: {
+                                                                                        marginRight: 4
+                                                                                    }
+                                                                                }, void 0, false, {
+                                                                                    fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                                    lineNumber: 740,
+                                                                                    columnNumber: 37
+                                                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                                                "Đã chuyển tiếp"
+                                                                            ]
+                                                                        }, void 0, true, {
                                                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                            lineNumber: 754,
+                                                                            lineNumber: 729,
                                                                             columnNumber: 35
                                                                         }, ("TURBOPACK compile-time value", void 0)),
-                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
-                                                                            ellipsis: true,
+                                                                        msg.replyToMessageId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                             style: {
-                                                                                fontSize: 12,
-                                                                                display: 'block',
-                                                                                color: mine ? 'rgba(255,255,255,0.75)' : token.colorTextSecondary,
-                                                                                fontStyle: msg.replyToMessageId.isDeleted ? 'italic' : 'normal'
+                                                                                borderLeft: `3px solid ${mine ? 'rgba(255,255,255,0.6)' : '#5b5bf6'}`,
+                                                                                background: mine ? 'rgba(255,255,255,0.12)' : 'rgba(91,91,246,0.06)',
+                                                                                borderRadius: 6,
+                                                                                padding: '4px 8px',
+                                                                                marginBottom: 2
                                                                             },
-                                                                            children: msg.replyToMessageId.isDeleted ? 'Tin nhắn đã được thu hồi' : msg.replyToMessageId.content || 'Tệp đính kèm'
-                                                                        }, void 0, false, {
+                                                                            children: [
+                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
+                                                                                    strong: true,
+                                                                                    style: {
+                                                                                        fontSize: 11,
+                                                                                        display: 'block',
+                                                                                        color: mine ? 'rgba(255,255,255,0.85)' : '#5b5bf6'
+                                                                                    },
+                                                                                    children: msg.replyToMessageId.senderId.username
+                                                                                }, void 0, false, {
+                                                                                    fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                                    lineNumber: 756,
+                                                                                    columnNumber: 37
+                                                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
+                                                                                    ellipsis: true,
+                                                                                    style: {
+                                                                                        fontSize: 12,
+                                                                                        display: 'block',
+                                                                                        color: mine ? 'rgba(255,255,255,0.75)' : token.colorTextSecondary,
+                                                                                        fontStyle: msg.replyToMessageId.isDeleted ? 'italic' : 'normal'
+                                                                                    },
+                                                                                    children: msg.replyToMessageId.isDeleted ? 'Tin nhắn đã được thu hồi' : msg.replyToMessageId.content || 'Tệp đính kèm'
+                                                                                }, void 0, false, {
+                                                                                    fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                                    lineNumber: 766,
+                                                                                    columnNumber: 37
+                                                                                }, ("TURBOPACK compile-time value", void 0))
+                                                                            ]
+                                                                        }, void 0, true, {
                                                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                            lineNumber: 764,
+                                                                            lineNumber: 745,
                                                                             columnNumber: 35
-                                                                        }, ("TURBOPACK compile-time value", void 0))
+                                                                        }, ("TURBOPACK compile-time value", void 0)),
+                                                                        msg.attachmentIds?.map((attachment)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AttachmentPreview, {
+                                                                                attachment: attachment
+                                                                            }, attachment._id, false, {
+                                                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                                lineNumber: 786,
+                                                                                columnNumber: 35
+                                                                            }, ("TURBOPACK compile-time value", void 0))),
+                                                                        msg.content
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                    lineNumber: 743,
-                                                                    columnNumber: 33
-                                                                }, ("TURBOPACK compile-time value", void 0)),
-                                                                msg.attachmentIds?.map((attachment)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AttachmentPreview, {
-                                                                        attachment: attachment
-                                                                    }, attachment._id, false, {
+                                                                    lineNumber: 709,
+                                                                    columnNumber: 31
+                                                                }, ("TURBOPACK compile-time value", void 0))
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                lineNumber: 662,
+                                                                columnNumber: 29
+                                                            }, ("TURBOPACK compile-time value", void 0)),
+                                                            Boolean(msg.reactions && msg.reactions.length > 0) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                style: {
+                                                                    position: 'absolute',
+                                                                    bottom: -10,
+                                                                    right: mine ? undefined : -8,
+                                                                    left: mine ? -8 : undefined,
+                                                                    zIndex: 10,
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    gap: 2,
+                                                                    padding: '2px 6px',
+                                                                    borderRadius: 12,
+                                                                    background: '#fff',
+                                                                    border: '1px solid #e5e7eb',
+                                                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                                                    cursor: 'pointer',
+                                                                    fontSize: 12
+                                                                },
+                                                                children: [
+                                                                    Array.from(new Set(msg.reactions?.map((r)=>r.emoji))).map((emoji)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            children: emoji
+                                                                        }, emoji, false, {
+                                                                            fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                            lineNumber: 815,
+                                                                            columnNumber: 37
+                                                                        }, ("TURBOPACK compile-time value", void 0))),
+                                                                    (msg.reactions?.length || 0) > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                        style: {
+                                                                            fontSize: 10,
+                                                                            color: '#6b7280',
+                                                                            fontWeight: 600
+                                                                        },
+                                                                        children: msg.reactions?.length
+                                                                    }, void 0, false, {
                                                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                        lineNumber: 784,
-                                                                        columnNumber: 33
-                                                                    }, ("TURBOPACK compile-time value", void 0))),
-                                                                msg.content
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                            lineNumber: 707,
-                                                            columnNumber: 29
-                                                        }, ("TURBOPACK compile-time value", void 0))
-                                                    }, void 0, false, {
+                                                                        lineNumber: 819,
+                                                                        columnNumber: 35
+                                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                lineNumber: 794,
+                                                                columnNumber: 31
+                                                            }, ("TURBOPACK compile-time value", void 0))
+                                                        ]
+                                                    }, void 0, true, {
                                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                        lineNumber: 660,
+                                                        lineNumber: 661,
                                                         columnNumber: 27
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     msg.isDeleted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7976,13 +8064,78 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                                         children: "Tin nhắn đã được thu hồi"
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                        lineNumber: 791,
+                                                        lineNumber: 828,
                                                         columnNumber: 27
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     !msg.isDeleted && hoveredMessageId === msg._id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$flex$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Flex$3e$__["Flex"], {
                                                         gap: 2,
                                                         align: "center",
                                                         children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$popover$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Popover$3e$__["Popover"], {
+                                                                trigger: "click",
+                                                                placement: "top",
+                                                                content: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$flex$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Flex$3e$__["Flex"], {
+                                                                    gap: 6,
+                                                                    style: {
+                                                                        padding: '2px 4px'
+                                                                    },
+                                                                    children: [
+                                                                        '❤️',
+                                                                        '👍',
+                                                                        '😂',
+                                                                        '😮',
+                                                                        '😢',
+                                                                        '🙏'
+                                                                    ].map((emoji)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            style: {
+                                                                                fontSize: 18,
+                                                                                cursor: 'pointer',
+                                                                                transition: 'transform 0.15s ease'
+                                                                            },
+                                                                            className: "hover:scale-125",
+                                                                            onClick: ()=>{
+                                                                                if (conversationId) {
+                                                                                    reactMutation.mutate({
+                                                                                        messageId: msg._id,
+                                                                                        emoji
+                                                                                    });
+                                                                                }
+                                                                            },
+                                                                            children: emoji
+                                                                        }, emoji, false, {
+                                                                            fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                            lineNumber: 854,
+                                                                            columnNumber: 37
+                                                                        }, ("TURBOPACK compile-time value", void 0)))
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                    lineNumber: 852,
+                                                                    columnNumber: 33
+                                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
+                                                                    type: "text",
+                                                                    size: "small",
+                                                                    shape: "circle",
+                                                                    icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$SmileOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__SmileOutlined$3e$__["SmileOutlined"], {
+                                                                        style: {
+                                                                            fontSize: 14
+                                                                        }
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                        lineNumber: 878,
+                                                                        columnNumber: 39
+                                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                                    title: "Bày tỏ cảm xúc"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                    lineNumber: 874,
+                                                                    columnNumber: 31
+                                                                }, ("TURBOPACK compile-time value", void 0))
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
+                                                                lineNumber: 848,
+                                                                columnNumber: 29
+                                                            }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
                                                                 type: "text",
                                                                 size: "small",
@@ -7993,7 +8146,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                                                     }
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                    lineNumber: 815,
+                                                                    lineNumber: 886,
                                                                     columnNumber: 37
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 title: "Trả lời",
@@ -8003,7 +8156,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                lineNumber: 811,
+                                                                lineNumber: 882,
                                                                 columnNumber: 29
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -8016,7 +8169,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                                                     }
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                    lineNumber: 826,
+                                                                    lineNumber: 897,
                                                                     columnNumber: 37
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 title: "Chuyển tiếp",
@@ -8026,19 +8179,19 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                lineNumber: 822,
+                                                                lineNumber: 893,
                                                                 columnNumber: 29
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                        lineNumber: 810,
+                                                        lineNumber: 847,
                                                         columnNumber: 27
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                lineNumber: 636,
+                                                lineNumber: 637,
                                                 columnNumber: 23
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
@@ -8064,7 +8217,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                                                 children: "· Đã xem"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                                lineNumber: 851,
+                                                                lineNumber: 922,
                                                                 columnNumber: 31
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
@@ -8072,31 +8225,31 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                                lineNumber: 836,
+                                                lineNumber: 907,
                                                 columnNumber: 23
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 620,
+                                        lineNumber: 621,
                                         columnNumber: 21
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, msg._id, true, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 582,
+                                lineNumber: 583,
                                 columnNumber: 17
                             }, ("TURBOPACK compile-time value", void 0));
                         })
                     }, void 0, false, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 573,
+                        lineNumber: 574,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 560,
+                lineNumber: 561,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8138,7 +8291,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 888,
+                                        lineNumber: 959,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
@@ -8151,13 +8304,13 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         children: replyingTo.content || 'Tệp đính kèm'
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 894,
+                                        lineNumber: 965,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 887,
+                                lineNumber: 958,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -8170,19 +8323,19 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                    lineNumber: 905,
+                                    lineNumber: 976,
                                     columnNumber: 21
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 onClick: ()=>setReplyingTo(null)
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 901,
+                                lineNumber: 972,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 874,
+                        lineNumber: 945,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     pendingAttachments.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8215,7 +8368,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 927,
+                                        lineNumber: 998,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$FileOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FileOutlined$3e$__["FileOutlined"], {
                                         style: {
@@ -8223,7 +8376,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 933,
+                                        lineNumber: 1004,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
@@ -8237,7 +8390,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         children: attachment.fileName
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 935,
+                                        lineNumber: 1006,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -8245,24 +8398,24 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         size: "small",
                                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$CloseCircleFilled$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CloseCircleFilled$3e$__["CloseCircleFilled"], {}, void 0, false, {
                                             fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                            lineNumber: 949,
+                                            lineNumber: 1020,
                                             columnNumber: 25
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         onClick: ()=>handleRemovePendingAttachment(attachment._id)
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 946,
+                                        lineNumber: 1017,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, attachment._id, true, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 913,
+                                lineNumber: 984,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 911,
+                        lineNumber: 982,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8283,7 +8436,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                 onChange: handleFileChange
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 957,
+                                lineNumber: 1028,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -8294,7 +8447,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                    lineNumber: 967,
+                                    lineNumber: 1038,
                                     columnNumber: 19
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 shape: "circle",
@@ -8303,7 +8456,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                 onClick: handlePickFile
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 965,
+                                lineNumber: 1036,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$input$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Input$3e$__["Input"], {
@@ -8332,7 +8485,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         onEmojiClick: handleEmojiClick
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 996,
+                                        lineNumber: 1067,
                                         columnNumber: 26
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$SmileOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__SmileOutlined$3e$__["SmileOutlined"], {
@@ -8342,24 +8495,24 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                        lineNumber: 998,
+                                        lineNumber: 1069,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                    lineNumber: 990,
+                                    lineNumber: 1061,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 973,
+                                lineNumber: 1044,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$button$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Button$3e$__["Button"], {
                                 type: "primary",
                                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f40$ant$2d$design$2f$icons$2f$es$2f$icons$2f$SendOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__SendOutlined$3e$__["SendOutlined"], {}, void 0, false, {
                                     fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                    lineNumber: 1004,
+                                    lineNumber: 1075,
                                     columnNumber: 19
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 size: "large",
@@ -8369,19 +8522,19 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                                 onClick: handleSend
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                                lineNumber: 1002,
+                                lineNumber: 1073,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                        lineNumber: 956,
+                        lineNumber: 1027,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 866,
+                lineNumber: 937,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             isGroup && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$app$2f28$protected$292f$chat$2f$_components$2f$GroupSettingsModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -8394,7 +8547,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                 currentUserId: currentUserId
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 1015,
+                lineNumber: 1086,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$app$2f28$protected$292f$chat$2f$_components$2f$MediaCenterDrawer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -8403,7 +8556,7 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                 conversationId: conversation._id
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 1026,
+                lineNumber: 1097,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$app$2f28$protected$292f$chat$2f$_components$2f$ForwardMessageModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -8441,21 +8594,22 @@ const ChatWindow = ({ conversationId, currentUserId, messages, messagesLoading, 
                 }
             }, void 0, false, {
                 fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-                lineNumber: 1032,
+                lineNumber: 1103,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/src/app/(protected)/chat/_components/ChatWindow.tsx",
-        lineNumber: 422,
+        lineNumber: 423,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(ChatWindow, "DKSA8HbK35AzFaERPZ03QarXHSE=", false, function() {
+_s(ChatWindow, "+gOD/lLf2faAdsfe/6pf/VKeL0s=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$node_modules$2f$antd$2f$es$2f$theme$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__theme$3e$__["theme"].useToken,
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useMessages$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeleteMessage"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useMessages$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReactToMessage"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$providers$2f$SocketProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSocketContext"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$store$2f$useChatStore$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useChatStore"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$hook$2f$useConversations$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useConversationDetail"],

@@ -38,6 +38,7 @@ import {
   useDeleteMessage,
   useTogglePinMessage,
   usePinnedMessages,
+  useReactToMessage,
 } from '@/hooks/useMessages';
 import { useSocketContext } from '@/providers/SocketProvider';
 import { resolvePresence, useChatStore } from '@/stores/chat';
@@ -500,21 +501,19 @@ function MessageBubble({
                             ))}
                           </View>
                         )}
-                      {Boolean(message.content) && (
-                        <Text
-                          className={`text-[16px] leading-6 font-normal ${
-                            message.isDeleted
-                              ? isMe
-                                ? 'italic text-white/75'
-                                : 'italic text-gray-400'
-                              : isMe
-                                ? 'text-white'
-                                : 'text-gray-900'
-                          }`}
-                        >
-                          {message.isDeleted ? 'Tin nhắn đã được thu hồi' : message.content}
-                        </Text>
-                      )}
+                      <Text
+                        className={`text-[16px] leading-6 font-normal ${
+                          message.isDeleted
+                            ? isMe
+                              ? 'italic text-white/75'
+                              : 'italic text-gray-400'
+                            : isMe
+                              ? 'text-white'
+                              : 'text-gray-900'
+                        }`}
+                      >
+                        {message.isDeleted ? 'Tin nhắn đã được thu hồi' : message.content}
+                      </Text>
                     </Pressable>
                   </View>
                 ) : (
@@ -562,21 +561,19 @@ function MessageBubble({
                           ))}
                         </View>
                       )}
-                    {Boolean(message.content) && (
-                      <Text
-                        className={`text-[16px] leading-6 font-normal ${
-                          message.isDeleted
-                            ? isMe
-                              ? 'italic text-white/75'
-                              : 'italic text-gray-400'
-                            : isMe
-                              ? 'text-white'
-                              : 'text-gray-900'
-                        }`}
-                      >
-                        {message.isDeleted ? 'Tin nhắn đã được thu hồi' : message.content}
-                      </Text>
-                    )}
+                    <Text
+                      className={`text-[16px] leading-6 font-normal ${
+                        message.isDeleted
+                          ? isMe
+                            ? 'italic text-white/75'
+                            : 'italic text-gray-400'
+                          : isMe
+                            ? 'text-white'
+                            : 'text-gray-900'
+                      }`}
+                    >
+                      {message.isDeleted ? 'Tin nhắn đã được thu hồi' : message.content}
+                    </Text>
                   </Pressable>
                 )}
 
@@ -604,6 +601,45 @@ function MessageBubble({
                     </View>
                   </View>
                 )}
+
+                {/* Reaction badge overlaid at the bottom of the bubble (Messenger Style) */}
+                {Boolean(message.reactions && message.reactions.length > 0) &&
+                  !message.isDeleted && (
+                    <View
+                      style={{
+                        position: 'absolute',
+                        bottom: -10,
+                        left: isMe ? -8 : undefined,
+                        right: isMe ? undefined : -8,
+                        zIndex: 20,
+                      }}
+                    >
+                      <View
+                        className="flex-row items-center px-1.5 py-0.5 bg-white rounded-full border border-gray-200 shadow-md"
+                        style={{
+                          shadowColor: '#000',
+                          shadowOffset: { width: 0, height: 2 },
+                          shadowOpacity: 0.15,
+                          shadowRadius: 4,
+                          elevation: 4,
+                        }}
+                      >
+                        {/* Show unique emojis */}
+                        {Array.from(new Set(message.reactions?.map((r) => r.emoji))).map(
+                          (emoji) => (
+                            <Text key={emoji} className="text-xs mr-0.5">
+                              {emoji}
+                            </Text>
+                          ),
+                        )}
+                        {(message.reactions?.length || 0) > 1 && (
+                          <Text className="text-[10px] text-gray-600 font-semibold ml-0.5">
+                            {message.reactions?.length}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+                  )}
               </View>
             </SwipeToReply>
           </View>
@@ -675,6 +711,7 @@ export default function ChatDetailScreen() {
   const markReadMutation = useMarkAsRead(id);
   const deleteMutation = useDeleteMessage(id);
   const togglePinMutation = useTogglePinMessage(id);
+  const reactMutation = useReactToMessage(id);
 
   // States
   const [replyToMessage, setReplyToMessage] = useState<Message | null>(null);
@@ -1239,6 +1276,9 @@ export default function ChatDetailScreen() {
           }
         }}
         onReply={(msg) => setReplyToMessage(msg)}
+        onSelectReaction={(msgId, emoji) => {
+          reactMutation.mutate({ messageId: msgId, emoji });
+        }}
         onTogglePin={(msgId) => togglePinMutation.mutate(msgId)}
         onDeleteForEveryone={(msgId) => deleteMutation.mutate(msgId)}
         onDeleteForMe={(msgId) => setDeletedForMeIds((prev) => [...prev, msgId])}

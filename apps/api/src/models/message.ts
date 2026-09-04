@@ -1,5 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+export interface IMessageReaction {
+  userId: mongoose.Types.ObjectId;
+  emoji: string;
+  createdAt?: Date;
+}
+
 export interface IMessage extends Document {
   conversationId: mongoose.Types.ObjectId;
   senderId: mongoose.Types.ObjectId;
@@ -7,6 +13,7 @@ export interface IMessage extends Document {
   type: 'text' | 'image' | 'file' | 'video' | 'audio' | 'system';
   attachmentIds: mongoose.Types.ObjectId[];
   replyToMessageId?: mongoose.Types.ObjectId;
+  reactions: IMessageReaction[];
   isEdited: boolean;
   isDeleted: boolean;
   isForwarded: boolean;
@@ -48,6 +55,23 @@ const MessageSchema: Schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Message',
     },
+    reactions: [
+      {
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          required: true,
+        },
+        emoji: {
+          type: String,
+          required: true,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     isEdited: {
       type: Boolean,
       default: false,

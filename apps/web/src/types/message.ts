@@ -26,6 +26,12 @@ export interface MessageReplyPreview {
   isDeleted: boolean;
 }
 
+export interface MessageReaction {
+  userId: string | { _id: string; username: string };
+  emoji: string;
+  createdAt?: string;
+}
+
 export interface Message {
   _id: string;
   conversationId: string;
@@ -34,6 +40,7 @@ export interface Message {
   type: MessageType;
   attachmentIds: MessageAttachment[];
   replyToMessageId?: MessageReplyPreview | null;
+  reactions?: MessageReaction[];
   isEdited: boolean;
   isDeleted: boolean;
   isForwarded?: boolean;

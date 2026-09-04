@@ -198,6 +198,42 @@ const messageController = {
       return sendError(res, error instanceof Error ? error.message : 'Internal server error', 400);
     }
   },
+
+  reactToMessage: async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.id;
+      if (!userId) {
+        return sendError(res, 'Unauthorized', 401);
+      }
+
+      const { id } = req.params;
+      if (!id) {
+        return sendError(res, 'Message ID is required', 400);
+      }
+
+      const { emoji } = req.body;
+      if (!emoji) {
+        return sendError(res, 'Emoji is required', 400);
+      }
+
+      const message: any = await messageService.reactToMessage(
+        String(userId),
+        String(id),
+        String(emoji),
+      );
+
+      getIO().to(`conversation:${message.conversationId}`).emit('message:reaction', {
+        messageId: message._id,
+        conversationId: message.conversationId,
+        reactions: message.reactions,
+        message,
+      });
+
+      return sendSuccess(res, { message }, 'React to message success', 200);
+    } catch (error) {
+      return sendError(res, error instanceof Error ? error.message : 'Internal server error', 400);
+    }
+  },
 };
 
 export default messageController;

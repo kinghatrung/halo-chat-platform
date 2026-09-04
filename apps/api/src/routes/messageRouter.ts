@@ -57,6 +57,7 @@ const router = Router();
  */
 
 router.patch('/:id/pin', authMiddleware, messageController.togglePinMessage);
+router.post('/:id/reactions', authMiddleware, messageController.reactToMessage);
 router.patch('/:id', authMiddleware, messageController.editMessage);
 router.delete('/:id', authMiddleware, messageController.deleteMessage);
 

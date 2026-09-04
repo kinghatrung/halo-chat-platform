@@ -55,4 +55,10 @@ export const messageService = {
       params: { conversationId, q },
     });
   },
+  reactToMessage: async (messageId: string, emoji: string) => {
+    return axiosClient.post<never, ApiResponse<{ message: Message }>>(
+      `/messages/${messageId}/reactions`,
+      { emoji },
+    );
+  },
 };

@@ -214,3 +214,14 @@ export function useSearchMessages(conversationId: string, q: string) {
     enabled: !!conversationId && q.trim().length > 0,
   });
 }
+
+export function useReactToMessage(conversationId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ messageId, emoji }: { messageId: string; emoji: string }) =>
+      messageService.reactToMessage(messageId, emoji),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['messages', conversationId] });
+    },
+  });
+}
