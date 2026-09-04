@@ -159,6 +159,11 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
     };
 
+    const onStoryNew = () => {
+      queryClient.invalidateQueries({ queryKey: ['story-feed'] });
+      queryClient.invalidateQueries({ queryKey: ['user-stories'] });
+    };
+
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
     socket.on('connect_error', onConnectError);
@@ -170,6 +175,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     socket.on('typing:start', onTypingStart);
     socket.on('typing:stop', onTypingStop);
     socket.on('message:read', onMessageRead);
+    socket.on('story:new', onStoryNew);
 
     return () => {
       socket.off('connect', onConnect);
@@ -183,6 +189,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
       socket.off('typing:start', onTypingStart);
       socket.off('typing:stop', onTypingStop);
       socket.off('message:read', onMessageRead);
+      socket.off('story:new', onStoryNew);
       socket.disconnect();
     };
   }, [

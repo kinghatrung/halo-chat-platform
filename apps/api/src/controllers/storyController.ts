@@ -20,9 +20,10 @@ const storyController = {
       const story = await storyService.createStory(String(userId), file, caption);
 
       const friendIds = await getFriendIds(String(userId));
+      const targetUserIds = Array.from(new Set([...friendIds, String(userId)]));
       const io = getIO();
-      friendIds.forEach((friendId) => {
-        io.to(`user:${friendId}`).emit('story:new', { userId: String(userId) });
+      targetUserIds.forEach((targetId) => {
+        io.to(`user:${targetId}`).emit('story:new', { userId: String(userId) });
       });
 
       return sendSuccess(res, { story }, 'Create story success', 201);

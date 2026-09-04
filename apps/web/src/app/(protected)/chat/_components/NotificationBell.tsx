@@ -22,6 +22,32 @@ const formatTime = (isoDate: string) =>
     minute: '2-digit',
   });
 
+function getNotificationGroupTitle(dateString: string): string {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'Trước đó';
+
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfYesterday = new Date(startOfToday);
+  startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+
+  const sevenDaysAgo = new Date(startOfToday);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+
+  if (date >= startOfToday) {
+    return 'Hôm nay';
+  }
+  if (date >= startOfYesterday) {
+    return 'Hôm qua';
+  }
+  if (date >= sevenDaysAgo) {
+    const dayNames = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+    return dayNames[date.getDay()];
+  }
+
+  return 'Trước đó';
+}
+
 const NotificationBell = () => {
   const router = useRouter();
   const setSelectedConversationId = useChatStore((s) => s.setSelectedConversationId);
@@ -32,6 +58,20 @@ const NotificationBell = () => {
 
   const items = data?.data.items ?? [];
   const unreadCount = data?.data.meta.unreadCount ?? 0;
+
+  const groupedSections = items.reduce<{ title: string; items: NotificationItem[] }[]>(
+    (acc, item) => {
+      const title = getNotificationGroupTitle(item.createdAt);
+      const existing = acc.find((sec) => sec.title === title);
+      if (existing) {
+        existing.items.push(item);
+      } else {
+        acc.push({ title, items: [item] });
+      }
+      return acc;
+    },
+    [],
+  );
 
   const handleClickItem = (item: NotificationItem) => {
     if (!item.isRead) {
@@ -47,7 +87,14 @@ const NotificationBell = () => {
 
   const content = (
     <div style={{ width: 320, maxHeight: 420, overflowY: 'auto' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 8,
+        }}
+      >
         <Text strong>Thông báo</Text>
         {unreadCount > 0 && (
           <Button
@@ -66,22 +113,38 @@ const NotificationBell = () => {
         <Empty description="Không có thông báo nào" image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}
       {!isLoading &&
-        items.map((item) => (
-          <div
-            key={item._id}
-            onClick={() => handleClickItem(item)}
-            style={{
-              padding: '10px 8px',
-              borderRadius: 8,
-              cursor: 'pointer',
-              background: item.isRead ? 'transparent' : 'rgba(91,91,246,0.08)',
-              marginBottom: 2,
-            }}
-          >
-            <Text style={{ display: 'block', fontSize: 13 }}>{item.content}</Text>
-            <Text type="secondary" style={{ fontSize: 11 }}>
-              {formatTime(item.createdAt)}
+        groupedSections.map((section) => (
+          <div key={section.title} style={{ marginBottom: 10 }}>
+            <Text
+              type="secondary"
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                display: 'block',
+                marginBottom: 4,
+                paddingLeft: 4,
+              }}
+            >
+              {section.title}
             </Text>
+            {section.items.map((item) => (
+              <div
+                key={item._id}
+                onClick={() => handleClickItem(item)}
+                style={{
+                  padding: '10px 8px',
+                  borderRadius: 8,
+                  cursor: 'pointer',
+                  background: item.isRead ? 'transparent' : 'rgba(91,91,246,0.08)',
+                  marginBottom: 2,
+                }}
+              >
+                <Text style={{ display: 'block', fontSize: 13 }}>{item.content}</Text>
+                <Text type="secondary" style={{ fontSize: 11 }}>
+                  {formatTime(item.createdAt)}
+                </Text>
+              </div>
+            ))}
           </div>
         ))}
     </div>

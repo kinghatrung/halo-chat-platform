@@ -173,6 +173,7 @@ export default function ChatScreen() {
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}
           onScroll={(event) => {
+            // eslint-disable-next-line react-hooks/immutability
             scrollY.value = event.nativeEvent.contentOffset.y;
           }}
           ListHeaderComponent={

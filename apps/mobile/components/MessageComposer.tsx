@@ -1,10 +1,5 @@
 import React, { RefObject, useEffect } from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  TextInput,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Pressable, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   Easing,
@@ -86,7 +81,6 @@ export function MessageComposer({
 
   return (
     <View className="min-h-[54px] flex-row items-center rounded-[28px] bg-[#F2F4F7] px-2 py-1">
-
       {/* ── Expand chevron (compact mode only) ── */}
       <Animated.View style={expandBtnStyle} className="overflow-hidden justify-center items-center">
         <Pressable
@@ -110,9 +104,9 @@ export function MessageComposer({
           onPress={onTakeCamera}
           className="justify-center items-center w-10 h-10 rounded-full active:bg-gray-200"
         >
-          <Ionicons name="camera-outline" size={26} color="#6B7280" />
+          <Ionicons name="camera-outline" size={28} color="#6B7280" />
         </Pressable>
-        
+
         {/* <Pressable
           onPress={onVoice}
           className="justify-center items-center w-10 h-10 rounded-full active:bg-gray-200"
@@ -139,7 +133,7 @@ export function MessageComposer({
       {/* ── Send / Mic button ── */}
       <Pressable
         onPress={hasContent ? onSend : onVoice}
-        disabled={(hasContent && (isSending || isUploading))}
+        disabled={hasContent && (isSending || isUploading)}
         className={`ml-1 h-[42px] w-[42px] items-center justify-center rounded-full active:opacity-80 ${
           hasContent ? 'bg-[#6f6bff]' : 'bg-[#6f6bff]'
         }`}

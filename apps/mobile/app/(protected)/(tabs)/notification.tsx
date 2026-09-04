@@ -3,8 +3,6 @@ import { Pressable, ScrollView, Text, View, ActivityIndicator, RefreshControl } 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import ScreenWrapper from '@/providers/ScreenWrapper';
 import { useNotifications, useMarkNotificationAsRead } from '@/hooks/useNotifications';
 import type { NotificationItem as APINotificationItem } from '@/types/notification';
@@ -22,6 +20,32 @@ function formatNotificationTime(dateString: string): string {
   if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} ngày`;
 
   return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+}
+
+function getNotificationGroupTitle(dateString: string): string {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'Trước đó';
+
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfYesterday = new Date(startOfToday);
+  startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+
+  const sevenDaysAgo = new Date(startOfToday);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+
+  if (date >= startOfToday) {
+    return 'Hôm nay';
+  }
+  if (date >= startOfYesterday) {
+    return 'Hôm qua';
+  }
+  if (date >= sevenDaysAgo) {
+    const dayNames = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+    return dayNames[date.getDay()];
+  }
+
+  return 'Trước đó';
 }
 
 function NotificationItemRow({
@@ -89,7 +113,6 @@ function NotificationItemRow({
 
 export default function Notification() {
   const router = useRouter();
-  const insets = useSafeAreaInsets();
 
   const { data, isLoading, refetch, isRefetching } = useNotifications({ page: 1, pageSize: 30 });
   const markAsReadMutation = useMarkNotificationAsRead();
@@ -97,10 +120,23 @@ export default function Notification() {
   const rawItems = data?.data?.items;
   const notifications = useMemo(() => rawItems ?? [], [rawItems]);
 
-  const { unreadList, readList } = useMemo(() => {
-    const unread = notifications.filter((n) => !n.isRead);
-    const read = notifications.filter((n) => n.isRead);
-    return { unreadList: unread, readList: read };
+  const groupedSections = useMemo(() => {
+    const map: Map<string, APINotificationItem[]> = new Map();
+
+    notifications.forEach((item) => {
+      const groupTitle = getNotificationGroupTitle(item.createdAt);
+      if (!map.has(groupTitle)) {
+        map.set(groupTitle, []);
+      }
+      map.get(groupTitle)!.push(item);
+    });
+
+    const sections: { title: string; items: APINotificationItem[] }[] = [];
+    map.forEach((items, title) => {
+      sections.push({ title, items });
+    });
+
+    return sections;
   }, [notifications]);
 
   const handlePressItem = (item: APINotificationItem) => {
@@ -164,31 +200,17 @@ export default function Notification() {
               <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor="#0879D1" />
             }
           >
-            {/* Section: Mới */}
-            {unreadList.length > 0 && (
-              <View>
+            {groupedSections.map((section, idx) => (
+              <View key={section.title} className={idx > 0 ? 'mt-4' : ''}>
                 <View className="px-4 pt-1 pb-2">
-                  <Text className="text-[17px] font-bold text-[#111]">Mới</Text>
+                  <Text className="text-[17px] font-bold text-[#111]">{section.title}</Text>
                 </View>
 
-                {unreadList.map((item) => (
+                {section.items.map((item) => (
                   <NotificationItemRow key={item._id} item={item} onPress={handlePressItem} />
                 ))}
               </View>
-            )}
-
-            {/* Section: Trước đó */}
-            {readList.length > 0 && (
-              <View>
-                <View className={`px-4 pb-2 ${unreadList.length > 0 ? 'pt-6' : 'pt-1'}`}>
-                  <Text className="text-[17px] font-bold text-[#111]">Trước đó</Text>
-                </View>
-
-                {readList.map((item) => (
-                  <NotificationItemRow key={item._id} item={item} onPress={handlePressItem} />
-                ))}
-              </View>
-            )}
+            ))}
           </ScrollView>
         )}
       </View>

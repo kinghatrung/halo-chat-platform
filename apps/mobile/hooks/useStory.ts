@@ -30,6 +30,7 @@ export function useCreateStory() {
     }) => storyService.createStory(file, caption),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['story-feed'] });
+      queryClient.invalidateQueries({ queryKey: ['user-stories'] });
     },
   });
 }
@@ -41,6 +42,7 @@ export function useDeleteStory() {
     mutationFn: (id: string) => storyService.deleteStory(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['story-feed'] });
+      queryClient.invalidateQueries({ queryKey: ['user-stories'] });
     },
   });
 }

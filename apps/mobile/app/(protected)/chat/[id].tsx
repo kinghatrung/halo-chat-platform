@@ -82,17 +82,21 @@ function ImageViewerModal({
 
   const gesture = Gesture.Pan()
     .onUpdate((e) => {
+      // eslint-disable-next-line react-hooks/immutability
       translateY.value = e.translationY;
       const progress = Math.abs(e.translationY) / 300;
+      // eslint-disable-next-line react-hooks/immutability
       opacity.value = Math.max(0.3, 1 - progress);
     })
     .onEnd((e) => {
       if (Math.abs(e.translationY) > 90 || Math.abs(e.velocityY) > 400) {
+        // eslint-disable-next-line react-hooks/immutability
         translateY.value = withTiming(e.translationY > 0 ? 600 : -600, { duration: 150 }, () => {
           runOnJS(handleClose)();
         });
       } else {
         translateY.value = withSpring(0, { damping: 20, stiffness: 200 });
+        // eslint-disable-next-line react-hooks/immutability
         opacity.value = withTiming(1);
       }
     });
@@ -1105,7 +1109,7 @@ export default function ChatDetailScreen() {
           ) : visibleMessages.length === 0 ? (
             <View className="flex-1 justify-center items-center">
               <Text className="text-base font-normal text-gray-400">
-                Chưa có tin nhắn nào. Hãy gửi lời chào! 👋
+                Chưa có tin nhắn nào. Hãy gửi lời chào!
               </Text>
             </View>
           ) : (
@@ -1158,7 +1162,7 @@ export default function ChatDetailScreen() {
                 const isImg = item.type.startsWith('image/');
                 const isVid = item.type.startsWith('video/');
                 return (
-                  <View className="relative mr-3">
+                  <View className="relative mt-3 mr-3">
                     {isImg || isVid ? (
                       <View className="overflow-hidden relative w-16 h-16 bg-gray-100 rounded-xl">
                         <Image
