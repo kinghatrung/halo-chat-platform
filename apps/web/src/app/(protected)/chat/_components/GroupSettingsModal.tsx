@@ -80,7 +80,9 @@ const GroupSettingsModal = ({
   const generateInviteCodeMutation = useGenerateInviteCode(conversationId);
 
   const inviteLink =
-    inviteCode && typeof window !== 'undefined' ? `${window.location.origin}/join/${inviteCode}` : '';
+    inviteCode && typeof window !== 'undefined'
+      ? `${window.location.origin}/join/${inviteCode}`
+      : '';
 
   const handleApiError = (err: unknown, fallback: string) => {
     const axiosErr = err as AxiosError<ApiResponse<null>>;
@@ -217,6 +219,7 @@ const GroupSettingsModal = ({
           <Flex vertical align="center" gap={10} style={{ marginTop: 8 }}>
             {inviteCode ? (
               <>
+                {/* stays white in dark mode on purpose: QR scanners need a light quiet zone */}
                 <div style={{ padding: 8, background: '#fff', borderRadius: 8 }}>
                   <QRCodeSVG value={inviteLink} size={160} />
                 </div>

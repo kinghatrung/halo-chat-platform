@@ -128,7 +128,7 @@ const Sidebar = ({
 
   return (
     <div
-      className="flex h-full w-full flex-col md:w-85 md:min-w-85"
+      className="flex flex-col w-full h-full md:w-85 md:min-w-85"
       style={{
         background: token.colorBgContainer,
         borderRight: `1px solid ${token.colorBorder}`,
@@ -136,7 +136,7 @@ const Sidebar = ({
     >
       <div
         style={{
-          padding: '16px 20px',
+          padding: '12.5px 20px',
           display: 'flex',
           alignItems: 'center',
           gap: 12,
@@ -147,7 +147,7 @@ const Sidebar = ({
           size={44}
           icon={<UserOutlined />}
           src={currentUser?.avatar || undefined}
-          style={{ backgroundColor: currentUser ? colorForId(currentUser._id) : '#5b5bf6' }}
+          style={{ backgroundColor: currentUser ? colorForId(currentUser._id) : '#6366f1' }}
         >
           {currentUser ? initialOf(currentUser.username) : undefined}
         </Avatar>

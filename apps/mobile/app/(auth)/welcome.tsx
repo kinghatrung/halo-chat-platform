@@ -17,6 +17,8 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 
+import { APP_NAME, APP_TAGLINE, BRAND } from '@/constants/brand';
+
 const SHEET_DISMISS_THRESHOLD = 80;
 const VELOCITY_THRESHOLD = 400;
 
@@ -161,11 +163,11 @@ export default function WelcomeScreen() {
   }));
 
   return (
-    <GestureHandlerRootView className="flex-1 bg-[#4F3CC9]">
+    <GestureHandlerRootView className="flex-1 bg-[#6366F1]">
       <StatusBar style="light" />
 
       <LinearGradient
-        colors={['#3B2BB5', '#4F3CC9', '#7B5CFA']}
+        colors={BRAND.gradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={{ flex: 1 }}
@@ -179,7 +181,7 @@ export default function WelcomeScreen() {
         <Animated.View
           pointerEvents="none"
           style={animatedGlow2}
-          className="absolute top-1/3 -left-20 w-72 h-72 rounded-full bg-[#B357E0]"
+          className="absolute top-1/3 -left-20 w-72 h-72 rounded-full bg-[#38BDF8]"
         />
 
         {/* Dismiss sheet when pressing background area */}
@@ -196,19 +198,18 @@ export default function WelcomeScreen() {
           {/* Header */}
           <View>
             <View className="flex-row gap-3 items-center mb-8">
-              <View className="justify-center items-center w-12 h-12 rounded-2xl border shadow-md bg-white/20 border-white/30">
+              <View className="rounded-2xl border border-white/40 p-0.5 shadow-md">
                 <Image
-                  source={require('@/assets/images/hudo.png')}
-                  className="w-8 h-8"
-                  resizeMode="contain"
+                  source={require('@/assets/images/logo.png')}
+                  style={{ width: 48, height: 48, borderRadius: 14 }}
                 />
               </View>
-              <Text className="text-3xl font-bold tracking-wide text-white">HaloChat</Text>
+              <Text className="text-3xl font-bold tracking-wide text-white">{APP_NAME}</Text>
             </View>
 
             {/* Tiêu đề */}
             <Text className="mb-3 text-4xl font-extrabold leading-[48px] text-white">
-              Trò chuyện liền mạch,{'\n'}kết nối không giới hạn.
+              {APP_TAGLINE}.
             </Text>
 
             {/* Mô tả */}
@@ -247,7 +248,7 @@ export default function WelcomeScreen() {
                   <View className="ml-auto w-2 h-2 bg-emerald-500 rounded-full" />
                 </View>
                 <Text className="text-sm font-medium leading-5 text-gray-700">
-                  Chào bạn! Hôm nay thế nào rồi? 🎉
+                  Chào bạn! Hôm nay thế nào rồi?
                 </Text>
               </Animated.View>
 
@@ -266,9 +267,8 @@ export default function WelcomeScreen() {
                 className="absolute left-0 top-24 px-4 py-3 bg-white/90 rounded-2xl rounded-tl-xs max-w-[85%]"
               >
                 <View className="flex-row gap-2 items-center">
-                  <Ionicons name="sparkles" size={18} color="#7B5CFA" />
                   <Text className="text-sm font-semibold text-purple-900">
-                    Mình vừa gửi tài liệu cho bạn rồi nhé 🚀
+                    Mình vừa gửi tài liệu cho bạn rồi nhé
                   </Text>
                 </View>
               </Animated.View>
@@ -298,7 +298,7 @@ export default function WelcomeScreen() {
                       <Text className="text-xs text-gray-400">Vừa xong</Text>
                     </View>
                     <Text className="text-sm font-medium text-gray-700">
-                      Tuyệt vời quá! Cảm ơn bạn ❤️
+                      Tuyệt vời quá! Cảm ơn bạn
                     </Text>
                   </View>
                 </View>
@@ -319,7 +319,7 @@ export default function WelcomeScreen() {
                 elevation: 6,
               }}
             >
-              <Text className="text-lg font-bold text-[#4F3CC9]">Bắt đầu ngay</Text>
+              <Text className="text-lg font-bold text-[#6366F1]">Bắt đầu ngay</Text>
             </Pressable>
           </View>
         </Pressable>
@@ -358,7 +358,7 @@ export default function WelcomeScreen() {
             className="overflow-hidden mb-3.5 rounded-2xl active:opacity-90"
           >
             <LinearGradient
-              colors={['#6f6bff', '#8c5bf6', '#b357e0']}
+              colors={['#6366F1', '#8B5CF6', '#b357e0']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={{

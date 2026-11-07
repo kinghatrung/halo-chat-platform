@@ -90,8 +90,8 @@ function NotificationItemRow({
       className={`flex-row items-center px-3.5 py-3 ${!item.isRead ? 'bg-[#F0F7FF]' : 'bg-white'}`}
     >
       {/* Clean Avatar without badge */}
-      <View className="h-[52px] w-[52px] rounded-full bg-[#7B5CFA]/15 items-center justify-center">
-        <Text className="text-xl font-bold text-[#7B5CFA]">{initial}</Text>
+      <View className="h-[52px] w-[52px] rounded-full bg-[#7C5CF6]/15 items-center justify-center">
+        <Text className="text-xl font-bold text-[#7C5CF6]">{initial}</Text>
       </View>
 
       {/* Content */}

@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="banner.png" alt="Halo Chat Platform Hero Banner" width="100%" />
+  <img src="apps/web/public/logo.svg" alt="Nimbo logo" width="120" />
 </p>
 
-<h1 align="center">💬 Halo Chat Platform</h1>
+<h1 align="center">Nimbo</h1>
 
 <p align="center">
   <b>Hệ thống Trò chuyện Thời gian thực Đa nền tảng Hiện đại, Tốc độ cao & Bảo mật</b>
@@ -21,7 +21,7 @@
 
 ## 🌟 Giới thiệu
 
-**Halo Chat Platform** (trước đây là Hudu Chat) là giải pháp truyền thông nhắn tin thời gian thực thế hệ mới. Được thiết kế với kiến trúc **Monorepo** hiện đại, dự án mang tới trải nghiệm trò chuyện mượt mà, phản hồi tức thì với giao diện Messenger-style chuẩn 60fps, hỗ trợ đầy đủ cả Web và ứng dụng Di động (Mobile).
+**Nimbo** (trước đây là Halo Chat / Hudu Chat) là giải pháp truyền thông nhắn tin thời gian thực thế hệ mới. Được thiết kế với kiến trúc **Monorepo** hiện đại, dự án mang tới trải nghiệm trò chuyện mượt mà, phản hồi tức thì với giao diện Messenger-style chuẩn 60fps, hỗ trợ đầy đủ cả Web và ứng dụng Di động (Mobile).
 
 ---
 
@@ -100,12 +100,16 @@ hudu-chat-app/
 │   ├── web/          # Next.js 19 Web Frontend App
 │   └── mobile/       # React Native / Expo Mobile Application
 ├── docs/             # Tài liệu & Media Assets (Hero Banner, Screenshots)
-├── start.sh          # Script khởi chạy tự động
-├── docker-compose.yml# Cấu hình Docker container
+├── deploy/           # Triển khai production (Docker Compose, Nginx, hướng dẫn VPS)
+├── docker-compose.yml# Redis cho môi trường dev
 └── package.json      # Root Workspaces configuration
 ```
 
 ---
+
+## 🚢 Triển khai production
+
+Xem [deploy/README.md](deploy/README.md): Docker + GitHub Actions + Nginx + Cloudflare cho `chat.kun.io.vn`.
 
 ## 🚀 Hướng dẫn cài đặt & Khởi chạy
 
@@ -166,5 +170,5 @@ Mọi ý kiến đóng góp, báo lỗi hoặc đề xuất tính năng mới lu
 ---
 
 <p align="center">
-  Crafted with ❤️ by <b>Halo Chat Team</b>
+  Crafted with ❤️ by <b>Nimbo Team</b>
 </p>

@@ -9,6 +9,7 @@ import * as Haptics from 'expo-haptics';
 import { useAuthStore } from '@/stores/auth';
 import { useLogout } from '@/hooks/useAuth';
 import ScreenWrapper from '@/providers/ScreenWrapper';
+import { APP_NAME } from '@/constants/brand';
 
 interface MenuItemProps {
   icon: keyof typeof Ionicons.glyphMap;
@@ -40,10 +41,10 @@ function MenuItemRow({
       {/* Icon container - Purple tinted circle */}
       <View
         className={`w-10 h-10 rounded-full items-center justify-center mr-3.5 ${
-          isDestructive ? 'bg-red-50' : 'bg-[#7B5CFA]/10'
+          isDestructive ? 'bg-red-50' : 'bg-[#7C5CF6]/10'
         }`}
       >
-        <Ionicons name={icon} size={20} color={isDestructive ? '#EF4444' : '#7B5CFA'} />
+        <Ionicons name={icon} size={20} color={isDestructive ? '#EF4444' : '#7C5CF6'} />
       </View>
 
       {/* Title & Subtitle */}
@@ -95,7 +96,7 @@ export default function MenuScreen() {
     ]);
   };
 
-  const username = user?.username || 'Người dùng HuduChat';
+  const username = user?.username || `Người dùng ${APP_NAME}`;
   const email = user?.email || 'user@example.com';
   const initial = username.charAt(0).toUpperCase();
 
@@ -127,7 +128,7 @@ export default function MenuScreen() {
             {user?.avatar ? (
               <Image source={{ uri: user.avatar }} className="w-14 h-14 bg-gray-200 rounded-full" />
             ) : (
-              <View className="w-14 h-14 rounded-full bg-[#7B5CFA] items-center justify-center shadow-sm">
+              <View className="w-14 h-14 rounded-full bg-[#7C5CF6] items-center justify-center shadow-sm">
                 <Text className="text-2xl font-bold text-white">{initial}</Text>
               </View>
             )}
@@ -152,7 +153,7 @@ export default function MenuScreen() {
             <MenuItemRow icon="help-circle-outline" title="Trợ giúp & hỗ trợ" />
             <MenuItemRow
               icon="information-circle-outline"
-              title="Giới thiệu HuduChat"
+              title={`Giới thiệu ${APP_NAME}`}
               subtitle="Phiên bản 1.0.0"
               isLast
             />

@@ -1,3 +1,5 @@
+// shortcut: express-rate-limit keeps counters in process memory, so each API instance limits
+// separately; add a Redis store (rate-limit-redis) before running more than one instance.
 import rateLimit from 'express-rate-limit';
 import { Request, Response } from 'express';
 import { sendError } from '@/helpers';

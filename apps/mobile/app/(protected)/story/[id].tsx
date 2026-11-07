@@ -22,23 +22,30 @@ export default function StoryDetailScreen() {
 
   const currentStory = stories[currentIndex];
 
+  // Restart the bar when the story changes (reset during render, not in an effect).
+  const [progressForIndex, setProgressForIndex] = useState(currentIndex);
+  if (progressForIndex !== currentIndex) {
+    setProgressForIndex(currentIndex);
+    setProgress(0);
+  }
+
   useEffect(() => {
     if (!stories.length) return;
 
-    setProgress(0);
+    // 50 ticks x 100ms = 5s per story. Navigation happens here, not inside a setState updater:
+    // React may run updaters twice, which skipped a story or called router.back() twice.
+    const TICKS = 50;
+    let ticks = 0;
     const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 1) {
-          clearInterval(interval);
-          if (currentIndex < stories.length - 1) {
-            setCurrentIndex((idx) => idx + 1);
-          } else {
-            router.back();
-          }
-          return 1;
-        }
-        return prev + 0.02;
-      });
+      ticks += 1;
+      setProgress(Math.min(1, ticks / TICKS));
+      if (ticks < TICKS) return;
+      clearInterval(interval);
+      if (currentIndex < stories.length - 1) {
+        setCurrentIndex(currentIndex + 1);
+      } else {
+        router.back();
+      }
     }, 100);
 
     return () => clearInterval(interval);

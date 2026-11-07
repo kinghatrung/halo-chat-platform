@@ -1,0 +1,185 @@
+# Monorepo CI/CD for chat.kun.io.vn
+#  - every push / PR: type-check, lint and test only the apps that changed
+#  - push to main: build the changed app's Docker image, push it to GHCR, deploy it to the VPS
+# apps/mobile is not built or deployed here.
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      deploy_all:
+        description: 'Rebuild and redeploy both api and web'
+        type: boolean
+        default: false
+
+concurrency:
+  group: cicd-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api == 'true' || inputs.deploy_all == true }}
+      web: ${{ steps.filter.outputs.web == 'true' || inputs.deploy_all == true }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            shared: &shared
+              - 'package.json'
+              - 'package-lock.json'
+              - '.dockerignore'
+              - '.github/workflows/deploy.yml'
+            api:
+              - *shared
+              - 'apps/api/**'
+            web:
+              - *shared
+              - 'apps/web/**'
+
+  # ── Checks ────────────────────────────────────────────────────────────────────
+  check-api:
+    needs: changes
+    if: needs.changes.outputs.api == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install (api workspace only)
+        run: npm ci -w api --no-audit --no-fund
+        env:
+          MONGOMS_DISABLE_POSTINSTALL: '1'
+      - name: Cache MongoDB test binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/mongodb-binaries
+          key: mongodb-binaries-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: mongodb-binaries-${{ runner.os }}-
+      - run: npx tsc --noEmit -p apps/api
+      - run: npm test -w api
+
+  check-web:
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install (web workspace only)
+        run: npm ci -w web --no-audit --no-fund
+      - run: npx tsc --noEmit -p apps/web
+      - run: npm run lint -w web
+
+  # ── Images (main only) ────────────────────────────────────────────────────────
+  build:
+    needs: [changes, check-api, check-web]
+    # Run when at least one app changed and none of the checks failed (a skipped check is fine).
+    if: >-
+      always() && !failure() && !cancelled() &&
+      github.event_name != 'pull_request' && github.ref == 'refs/heads/main' &&
+      (needs.changes.outputs.api == 'true' || needs.changes.outputs.web == 'true')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: true
+      matrix:
+        app: [api, web]
+    steps:
+      - name: Skip unchanged app
+        id: gate
+        run: echo "run=${{ (matrix.app == 'api' && needs.changes.outputs.api == 'true') || (matrix.app == 'web' && needs.changes.outputs.web == 'true') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.run == 'true'
+      - name: Image name (GHCR needs lowercase)
+        if: steps.gate.outputs.run == 'true'
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/nimbo-${{ matrix.app }}" >> "$GITHUB_ENV"
+      - uses: docker/setup-buildx-action@v3
+        if: steps.gate.outputs.run == 'true'
+      - uses: docker/login-action@v3
+        if: steps.gate.outputs.run == 'true'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        if: steps.gate.outputs.run == 'true'
+        with:
+          context: .
+          file: apps/${{ matrix.app }}/Dockerfile
+          push: true
+          # :latest is what the VPS runs; :<sha> stays around for rollbacks.
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_VAPID_PUBLIC_KEY=${{ vars.NEXT_PUBLIC_VAPID_PUBLIC_KEY }}
+          cache-from: type=gha,scope=${{ matrix.app }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.app }}
+
+  # ── Deploy (main only) ────────────────────────────────────────────────────────
+  deploy:
+    needs: [changes, build]
+    # Off until the VPS is ready: set the repository variable DEPLOY_ENABLED=true to turn it on.
+    if: always() && needs.build.result == 'success' && vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      packages: read # lets the job token pull the private images on the VPS
+    steps:
+      - uses: actions/checkout@v4
+      - name: Services to update
+        run: |
+          s=""
+          [ "${{ needs.changes.outputs.api }}" = "true" ] && s="$s api"
+          [ "${{ needs.changes.outputs.web }}" = "true" ] && s="$s web"
+          echo "SERVICES=${s# }" >> "$GITHUB_ENV"
+      - name: Copy compose file to the VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: deploy/docker-compose.yml
+          target: /opt/nimbo
+          strip_components: 1
+      - name: Pull and restart
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          SERVICES: ${{ env.SERVICES }}
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          envs: SERVICES,GHCR_USER,GHCR_TOKEN
+          script: |
+            set -e
+            cd /opt/nimbo
+            # The job token is only valid during this run, so log in, pull, log out.
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            docker compose pull $SERVICES
+            docker logout ghcr.io
+            docker compose up -d --remove-orphans $SERVICES
+            docker image prune -f
+            docker compose ps

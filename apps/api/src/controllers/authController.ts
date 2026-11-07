@@ -9,7 +9,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 const cookieOptions: CookieOptions = {
   httpOnly: true,
   secure: isProduction,
-  sameSite: isProduction ? 'none' : 'lax',
+  // Lax, not None: the web app calls the API on its own origin (/api), and None let any other
+  // site fire cookie-authenticated POSTs (join group, friend requests, logout-all…) = CSRF.
+  sameSite: 'lax',
 };
 
 const setAccessCookie = (res: Response, token: string) =>

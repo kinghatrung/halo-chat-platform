@@ -97,11 +97,11 @@ function CustomTabBar({ state, navigation }: any) {
         <Ionicons
           name={(isFocused ? tab.icon : tab.iconOutline) as any}
           size={24}
-          color={isFocused ? '#8c5bf6' : '#9CA3AF'}
+          color={isFocused ? '#8B5CF6' : '#9CA3AF'}
         />
         <Text
           numberOfLines={1}
-          className={`mt-1 text-[11px] ${isFocused ? 'font-semibold text-[#8c5bf6]' : 'text-[#9CA3AF]'}`}
+          className={`mt-1 text-[11px] ${isFocused ? 'font-semibold text-[#8B5CF6]' : 'text-[#9CA3AF]'}`}
         >
           {tab.label}
         </Text>
@@ -119,7 +119,7 @@ function CustomTabBar({ state, navigation }: any) {
         {/* Bubble nằm cùng hàng flex với các tab -> tọa độ khớp nhau */}
         <Animated.View
           pointerEvents="none"
-          className="absolute top-[8px] rounded-full bg-[#8c5bf6]/10"
+          className="absolute top-[8px] rounded-full bg-[#8B5CF6]/10"
           style={[{ width: BUBBLE_SIZE, height: BUBBLE_SIZE }, bubbleStyle]}
         />
 
@@ -141,7 +141,7 @@ function CustomTabBar({ state, navigation }: any) {
         }}
         accessibilityRole="button"
         accessibilityLabel="Tạo mới"
-        className="absolute -top-[18px] h-[60px] w-[60px] items-center justify-center rounded-full bg-[#8c5bf6] shadow-lg shadow-[#8c5bf6]/40"
+        className="absolute -top-[18px] h-[60px] w-[60px] items-center justify-center rounded-full bg-[#8B5CF6] shadow-lg shadow-[#8B5CF6]/40"
         style={{ left: '50%', marginLeft: -30 }}
       >
         <Ionicons name="add" size={30} color="white" />

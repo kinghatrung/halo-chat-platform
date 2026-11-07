@@ -19,9 +19,11 @@ export const isUserOnline = async (userId: string) => {
   return count > 0;
 };
 
+// shortcut: wipes presence of every instance on startup, fine for one API process; with several
+// instances, keep socket sets per instance (online:<instanceId>:<userId>) and clear only your own.
 export const clearAllOnlineUsers = async () => {
-  const keys = await redisClient.keys('online:*');
-  if (keys.length > 0) {
-    await redisClient.del(...keys);
+  // SCAN instead of KEYS: KEYS blocks Redis while it walks the whole keyspace.
+  for await (const keys of redisClient.scanStream({ match: 'online:*', count: 500 })) {
+    if (keys.length > 0) await redisClient.del(...(keys as string[]));
   }
 };

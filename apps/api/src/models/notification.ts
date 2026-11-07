@@ -40,5 +40,10 @@ const NotificationSchema: Schema = new Schema(
   },
 );
 
+// Listing is "my notifications, newest first"; the single userId index made Mongo sort in memory.
+NotificationSchema.index({ userId: 1, createdAt: -1 });
+// One row per message per recipient adds up fast; Mongo drops rows older than 30 days by itself.
+NotificationSchema.index({ createdAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
+
 const Notification = mongoose.model<INotification>('Notification', NotificationSchema);
 export default Notification;

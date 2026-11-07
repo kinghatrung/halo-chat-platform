@@ -74,7 +74,7 @@ export default function ChatItem({ item, currentUserId }: ChatItemProps) {
       {avatarUrl ? (
         <Image source={{ uri: avatarUrl }} className="h-[58px] w-[58px] rounded-full" />
       ) : (
-        <View className="h-[58px] w-[58px] rounded-full items-center justify-center bg-[#5b5bf6]">
+        <View className="h-[58px] w-[58px] rounded-full items-center justify-center bg-[#6366F1]">
           <Text className="text-lg font-semibold text-white">
             {displayName.charAt(0).toUpperCase()}
           </Text>

@@ -1,4 +1,4 @@
-const PALETTE = ['#5b5bf6', '#8c5bf6', '#f65ba3', '#f6a05b', '#3ab795', '#3a8ef6'];
+const PALETTE = ['#6366f1', '#8b5cf6', '#f65ba3', '#f6a05b', '#3ab795', '#3a8ef6'];
 
 export function colorForId(id: string): string {
   let hash = 0;

@@ -72,8 +72,8 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
 
   useEffect(() => {
     if (visible && message && layout) {
-      progress.value = withSpring(1, SPRING_CONFIG);
-      backdropOpacity.value = withTiming(1, { duration: 200 });
+      progress.set(withSpring(1, SPRING_CONFIG));
+      backdropOpacity.set(withTiming(1, { duration: 200 }));
     }
   }, [visible, message, layout, progress, backdropOpacity]);
 
@@ -113,15 +113,15 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
   if (!visible || !message || !layout) return null;
 
   const triggerClose = (action?: () => void) => {
-    backdropOpacity.value = withTiming(0, { duration: 160 });
-    progress.value = withSpring(0, DISMISS_SPRING_CONFIG, (finished) => {
+    backdropOpacity.set(withTiming(0, { duration: 160 }));
+    progress.set(withSpring(0, DISMISS_SPRING_CONFIG, (finished) => {
       if (finished) {
         runOnJS(onClose)();
         if (action) {
           runOnJS(action)();
         }
       }
-    });
+    }));
   };
 
   return (
@@ -226,7 +226,7 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
                 <View
                   className={`-mt-2.5 z-10 rounded-2xl px-4 py-2 ${
                     isMe
-                      ? 'rounded-br-xs bg-[#6f6bff] self-end'
+                      ? 'rounded-br-xs bg-[#6366F1] self-end'
                       : 'rounded-bl-xs bg-white self-start'
                   }`}
                   style={{
@@ -255,7 +255,7 @@ export const FloatingMessageContextMenu: React.FC<FloatingContextMenuProps> = ({
             ) : (
               <View
                 className={`rounded-2xl px-3.5 py-2 ${
-                  isMe ? 'rounded-br-xs bg-[#6f6bff]' : 'rounded-bl-xs bg-white'
+                  isMe ? 'rounded-br-xs bg-[#6366F1]' : 'rounded-bl-xs bg-white'
                 }`}
                 style={{
                   shadowColor: '#000',

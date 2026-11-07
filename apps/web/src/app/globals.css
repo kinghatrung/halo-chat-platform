@@ -1,31 +1,66 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f6fb;
+  --foreground: #1c1d2b;
+  --brand: #6366f1;
+  --brand-sky: #38bdf8;
+  --brand-violet: #8b5cf6;
+  --brand-gradient: linear-gradient(135deg, #38bdf8 0%, #6366f1 55%, #8b5cf6 100%);
+  --bubble-mine: linear-gradient(135deg, #6366f1 0%, #7c5cf6 100%);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --scroll-thumb: #c9cbe8;
+  --chat-pattern: rgba(99, 102, 241, 0.06);
+  --surface: #ffffff;
+  --border: rgba(28, 29, 43, 0.07);
+  --muted: #6b6f85;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-brand: var(--brand);
+  --font-sans: var(--font-app-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Follows the in-app light/dark toggle (set on <html> by providers.tsx), not the OS setting. */
+:root[data-theme='dark'] {
+  --background: #101118;
+  --foreground: #ececf3;
+  --scroll-thumb: #34364a;
+  --chat-pattern: rgba(139, 92, 246, 0.07);
+  --surface: #1b1c25;
+  --border: rgba(255, 255, 255, 0.08);
+  --muted: #9a9db3;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    var(--font-app-sans),
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+::selection {
+  background: rgba(99, 102, 241, 0.22);
+}
+
+/* ── Scrollbars: thin, only visible on hover of the scroll area ─────────────── */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #c3c6f0 transparent;
+  scrollbar-color: var(--scroll-thumb) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -38,76 +73,151 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #c3c6f0;
+  background-color: var(--scroll-thumb);
   border-radius: 8px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #5b5bf6;
+  background-color: var(--brand);
 }
 
-@media (prefers-color-scheme: dark) {
-  * {
-    scrollbar-color: #3a3a5c transparent;
-  }
-
-  *::-webkit-scrollbar-thumb {
-    background-color: #3a3a5c;
-  }
-
-  *::-webkit-scrollbar-thumb:hover {
-    background-color: #8c5bf6;
-  }
+/* ── Conversation list ──────────────────────────────────────────────────────── */
+.chat-list-item {
+  border-radius: 14px;
+  transition:
+    background-color 0.18s ease,
+    transform 0.18s var(--ease-spring);
 }
 
 .chat-list-item:hover {
-  background: rgba(140, 140, 180, 0.1) !important;
+  background: rgba(99, 102, 241, 0.07) !important;
 }
 
+.chat-list-item:active {
+  transform: scale(0.985);
+}
+
+/* ── Chat canvas: soft dotted pattern like a messenger wallpaper ────────────── */
+.chat-canvas {
+  background-image: radial-gradient(var(--chat-pattern) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  scroll-behavior: smooth;
+}
+
+/* ── Messages ───────────────────────────────────────────────────────────────── */
+@keyframes msg-in-mine {
+  from {
+    opacity: 0;
+    transform: translate(10px, 10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes msg-in-theirs {
+  from {
+    opacity: 0;
+    transform: translate(-10px, 10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.msg-enter-mine {
+  animation: msg-in-mine 0.32s var(--ease-spring) both;
+  transform-origin: bottom right;
+}
+
+.msg-enter-theirs {
+  animation: msg-in-theirs 0.32s var(--ease-spring) both;
+  transform-origin: bottom left;
+}
+
+.msg-bubble {
+  transition:
+    transform 0.18s var(--ease-spring),
+    box-shadow 0.18s ease;
+}
+
+.msg-bubble:hover {
+  box-shadow: 0 6px 18px rgba(30, 27, 75, 0.1);
+}
+
+.msg-bubble-mine {
+  background: var(--bubble-mine);
+  color: #fff;
+}
+
+/* ── Generic entrance used by panels / empty states ─────────────────────────── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.45s var(--ease-spring) both;
+}
+
+/* ── Auth pages ─────────────────────────────────────────────────────────────── */
 .auth-brand-panel {
   position: relative;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.16), transparent 40%),
-    radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.12), transparent 45%),
-    linear-gradient(135deg, #5b5bf6 0%, #8c5bf6 55%, #b357e0 100%);
+  background: #4f46e5; /* flat brand indigo, same as the app icon */
   overflow: hidden;
 }
 
-.auth-brand-panel::before {
-  content: '';
+/* Mobile welcome-screen motion: bubbles bob (2.2-2.8s), glows breathe (3.5-4s). */
+@keyframes auth-bob {
+  from {
+    transform: translateY(var(--bob-from, 0px));
+  }
+  to {
+    transform: translateY(var(--bob-to, -8px));
+  }
+}
+
+.auth-bob {
+  animation: auth-bob 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes auth-breathe {
+  from {
+    transform: scale(1);
+    opacity: var(--glow-min, 0.1);
+  }
+  to {
+    transform: scale(var(--glow-scale, 1.2));
+    opacity: var(--glow-max, 0.22);
+  }
+}
+
+.auth-glow {
   position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1.5px, transparent 1.5px);
-  background-size: 26px 26px;
-  opacity: 0.5;
+  border-radius: 999px;
   pointer-events: none;
+  /* resting opacity, so the glow stays soft when "reduce motion" switches the animation off */
+  opacity: var(--glow-min, 0.1);
+  animation: auth-breathe 4s ease-in-out infinite alternate;
 }
 
-.auth-glow-blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  background: radial-gradient(
-    circle,
-    rgba(91, 91, 246, 0.35),
-    rgba(140, 91, 246, 0.12) 60%,
-    transparent 75%
-  );
-  pointer-events: none;
+.auth-glow--alt {
+  --glow-min: 0.15;
+  --glow-max: 0.3;
+  --glow-scale: 1.25;
+  animation-duration: 3.5s;
 }
 
-.auth-cta-button {
-  background: linear-gradient(135deg, #6f6bff 0%, #8c5bf6 55%, #b357e0 100%) !important;
-  border: none !important;
-  box-shadow: 0 12px 24px rgba(108, 82, 240, 0.35) !important;
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease !important;
-}
-
-.auth-cta-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 30px rgba(108, 82, 240, 0.42) !important;
+.auth-card {
+  animation: fade-up 0.5s var(--ease-spring) both;
 }

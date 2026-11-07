@@ -98,9 +98,7 @@ const UserSchema: Schema = new Schema(
   },
 );
 
-// Index
-UserSchema.index({ email: 1 }, { unique: true });
-UserSchema.index({ username: 1 }, { unique: true });
+// email/username unique indexes come from `unique: true` on the fields above.
 // Full-text search over username
 UserSchema.index({ username: 'text' });
 

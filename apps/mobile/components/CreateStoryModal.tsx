@@ -36,12 +36,6 @@ export default function CreateStoryModal({ visible, onClose }: CreateStoryModalP
 
   const createStoryMutation = useCreateStory();
 
-  useEffect(() => {
-    if (visible && !selectedImage) {
-      handleLaunchGallery();
-    }
-  }, [visible, selectedImage]);
-
   const handleLaunchGallery = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -65,6 +59,14 @@ export default function CreateStoryModal({ visible, onClose }: CreateStoryModalP
       console.error('Launch gallery error:', error);
     }
   };
+
+  // Opening the modal goes straight to the gallery.
+  useEffect(() => {
+    if (visible && !selectedImage) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- setState runs after the picker resolves
+      handleLaunchGallery();
+    }
+  }, [visible, selectedImage]);
 
   const handleTakePhoto = async () => {
     try {

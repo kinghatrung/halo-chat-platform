@@ -1,16 +1,12 @@
-const buckets = new Map<string, number[]>();
+import { redisClient } from '@/config/redis';
 
-// Simple in-memory sliding-window limiter for socket.io events (single-instance use).
-export const isRateLimited = (key: string, windowMs: number, max: number) => {
-  const now = Date.now();
-  const timestamps = (buckets.get(key) || []).filter((t) => now - t < windowMs);
-
-  if (timestamps.length >= max) {
-    buckets.set(key, timestamps);
-    return true;
+// Fixed-window limiter in Redis: shared by every API instance, and keys expire on their own
+// (the old in-memory Map was per-process and kept one entry per user forever).
+export const isRateLimited = async (key: string, windowMs: number, max: number) => {
+  const redisKey = `ratelimit:${key}`;
+  const count = await redisClient.incr(redisKey);
+  if (count === 1) {
+    await redisClient.pexpire(redisKey, windowMs);
   }
-
-  timestamps.push(now);
-  buckets.set(key, timestamps);
-  return false;
+  return count > max;
 };

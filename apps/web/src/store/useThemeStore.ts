@@ -15,7 +15,7 @@ export const useThemeStore = create<ThemeState>()(
       setDarkMode: (isDark: boolean) => set({ isDarkMode: isDark }),
     }),
     {
-      name: 'halo_chat_theme_mode',
+      name: 'halo_chat_theme_mode', // old brand name kept on purpose: renaming would reset users' choice
     },
   ),
 );

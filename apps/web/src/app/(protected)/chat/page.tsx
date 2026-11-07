@@ -23,6 +23,7 @@ import Sidebar from './_components/Sidebar';
 import ChatWindow from './_components/ChatWindow';
 import ProfileDrawer from './_components/ProfileDrawer';
 import BlockedUsersModal from './_components/BlockedUsersModal';
+import { APP_NAME } from '@/constants/brand';
 
 const BLOCKED_LIST_PARAMS = { page: 1, pageSize: 50 };
 
@@ -85,7 +86,7 @@ const ChatPage = () => {
     modal.confirm({
       title: 'Đăng xuất',
       icon: <ExclamationCircleFilled />,
-      content: 'Bạn có chắc chắn muốn đăng xuất khỏi Halo Chat?',
+      content: `Bạn có chắc chắn muốn đăng xuất khỏi ${APP_NAME}?`,
       okText: 'Đăng xuất',
       okButtonProps: { danger: true },
       cancelText: 'Hủy',

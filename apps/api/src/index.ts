@@ -32,8 +32,16 @@ import { clearAllOnlineUsers } from '@/socket/onlineUsers';
 import { corsOrigin } from '@/config/cors';
 
 const PORT = process.env.API_PORT || process.env.PORT || 5000;
+const isProduction = process.env.NODE_ENV === 'production';
 
 const app = express();
+
+// Behind Cloudflare + a reverse proxy every request arrives from the proxy's IP, so rate limits
+// would lump all users together. TRUST_PROXY = number of proxy hops in front of the API
+// (production: 1 = host nginx, which already resolves the Cloudflare visitor IP). Unset in dev.
+const trustProxy = process.env.TRUST_PROXY;
+if (trustProxy) app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustProxy) : trustProxy);
+app.disable('x-powered-by');
 connect();
 
 // Reset presence state on startup to prevent stale online statuses
@@ -50,7 +58,7 @@ process.on('unhandledRejection', (reason) => console.error('Unhandled rejection:
 app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
-app.use(morgan('dev'));
+app.use(morgan(isProduction ? 'short' : 'dev'));
 
 app.use((req, res, next) => {
   res.on('finish', () => {
@@ -61,8 +69,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// API docs list every endpoint: development only.
+if (!isProduction) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 // routes`
 app.use('/api/auth', authRouter);
@@ -86,5 +96,5 @@ startPushWorker();
 
 server.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`Server is running on http://0.0.0.0:${PORT}`);
-  console.log(`Swagger UI is available at http://localhost:${PORT}/api-docs`);
+  if (!isProduction) console.log(`Swagger UI is available at http://localhost:${PORT}/api-docs`);
 });

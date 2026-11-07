@@ -29,7 +29,7 @@ const AdminOverviewPage = () => {
               ) : (
                 <>
                   <Statistic title={card.title} value={card.stats?.total ?? 0} prefix={card.icon} />
-                  <div style={{ marginTop: 8, fontSize: 12, color: '#8c8ca0' }}>
+                  <div style={{ marginTop: 8, fontSize: 12, color: 'var(--muted)' }}>
                     +{card.stats?.new ?? 0} gần đây
                   </div>
                 </>

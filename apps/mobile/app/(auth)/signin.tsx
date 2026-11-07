@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   Animated,
   KeyboardAvoidingView,
@@ -29,8 +29,8 @@ export default function SignInScreen() {
   const [errorMsg, setErrorMsg] = useState('');
 
   // Values cho animation trượt và mờ dần
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-  const slideAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useState(() => new Animated.Value(1))[0];
+  const slideAnim = useState(() => new Animated.Value(0))[0];
 
   const loginMutation = useLogin();
   const { setUser } = useAuthStore();
@@ -159,7 +159,7 @@ export default function SignInScreen() {
             {/* Header Title */}
             <View className="items-center mb-8">
               <Text className="mb-2 text-3xl font-bold text-center text-gray-900">
-                {step === 'email' ? 'Chào mừng trở lại! 👋' : 'Nhập mật khẩu 🔐'}
+                {step === 'email' ? 'Chào mừng trở lại' : 'Nhập mật khẩu'}
               </Text>
 
               {step === 'email' ? (
@@ -176,7 +176,7 @@ export default function SignInScreen() {
                   />
                   <Text className="mr-2 text-base font-normal text-gray-700">{email}</Text>
                   <Pressable onPress={handleBackToEmail}>
-                    <Text className="text-sm font-normal text-[#6f6bff]">Thay đổi</Text>
+                    <Text className="text-sm font-normal text-[#6366F1]">Thay đổi</Text>
                   </Pressable>
                 </View>
               )}
@@ -257,7 +257,7 @@ export default function SignInScreen() {
                   {/* Forgot Password Link */}
                   <View className="flex-row justify-end mt-2.5 mb-2">
                     <Pressable>
-                      <Text className="text-base font-normal text-[#6f6bff]">Quên mật khẩu?</Text>
+                      <Text className="text-base font-normal text-[#6366F1]">Quên mật khẩu?</Text>
                     </Pressable>
                   </View>
                 </View>
@@ -273,7 +273,7 @@ export default function SignInScreen() {
               {step === 'email' ? (
                 <Pressable onPress={handleNextStep} className="mb-8 active:opacity-90">
                   <LinearGradient
-                    colors={['#6f6bff', '#8c5bf6', '#b357e0']}
+                    colors={['#6366F1', '#8B5CF6', '#b357e0']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={{
@@ -281,7 +281,7 @@ export default function SignInScreen() {
                       borderRadius: 16,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      shadowColor: '#8c5bf6',
+                      shadowColor: '#8B5CF6',
                       shadowOpacity: 0.3,
                       shadowRadius: 10,
                       shadowOffset: { width: 0, height: 4 },
@@ -298,7 +298,7 @@ export default function SignInScreen() {
                   className="mb-8 active:opacity-90"
                 >
                   <LinearGradient
-                    colors={['#6f6bff', '#8c5bf6', '#b357e0']}
+                    colors={['#6366F1', '#8B5CF6', '#b357e0']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={{
@@ -307,7 +307,7 @@ export default function SignInScreen() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       opacity: loginMutation.isPending ? 0.7 : 1,
-                      shadowColor: '#8c5bf6',
+                      shadowColor: '#8B5CF6',
                       shadowOpacity: 0.3,
                       shadowRadius: 10,
                       shadowOffset: { width: 0, height: 4 },
@@ -355,7 +355,7 @@ export default function SignInScreen() {
             <View className="flex-row justify-center items-center pb-4 mt-auto">
               <Text className="text-base font-normal text-gray-500">Chưa có tài khoản? </Text>
               <Pressable onPress={() => router.push('/signup')}>
-                <Text className="text-base font-bold text-[#6f6bff] underline">Đăng ký ngay</Text>
+                <Text className="text-base font-bold text-[#6366F1] underline">Đăng ký ngay</Text>
               </Pressable>
             </View>
           </ScrollView>

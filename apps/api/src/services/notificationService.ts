@@ -6,17 +6,10 @@ import { logger } from '@/helpers/logger';
 import { isUserOnline } from '@/socket/onlineUsers';
 import { pushQueue } from '@/queues/pushQueue';
 
-const isUserInConversationRoom = (io: Server, conversationId: string, userId: string) => {
-  const room = io.sockets.adapter.rooms.get(`conversation:${conversationId}`);
-  if (!room) return false;
-
-  for (const socketId of room) {
-    const socket = io.sockets.sockets.get(socketId);
-    if (socket?.data?.user?.id && String(socket.data.user.id) === userId) {
-      return true;
-    }
-  }
-  return false;
+// fetchSockets goes through the Redis adapter, so viewers connected to other API instances count too.
+const getViewingUserIds = async (io: Server, conversationId: string) => {
+  const sockets = await io.in(`conversation:${conversationId}`).fetchSockets();
+  return new Set(sockets.map((s) => String(s.data?.user?.id)));
 };
 
 const buildMessagePreview = (message: any) => {
@@ -52,11 +45,12 @@ const notificationService = {
 
       const senderName = message.senderId?.username || 'Ai đó';
       const content = `${senderName}: ${buildMessagePreview(message)}`;
+      const viewingUserIds = await getViewingUserIds(io, conversationId);
 
       await Promise.all(
         members.map(async (member) => {
           const recipientId = String(member.userId);
-          if (isUserInConversationRoom(io, conversationId, recipientId)) {
+          if (viewingUserIds.has(recipientId)) {
             return;
           }
 

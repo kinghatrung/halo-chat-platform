@@ -145,7 +145,7 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
         <Avatar
           size={80}
           src={topHeaderAvatar}
-          style={{ backgroundColor: currentUser ? colorForId(currentUser._id) : '#5b5bf6' }}
+          style={{ backgroundColor: currentUser ? colorForId(currentUser._id) : '#6366f1' }}
         >
           {currentUser ? initialOf(currentUser.username) : undefined}
         </Avatar>
@@ -184,7 +184,11 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
                       setAvatarPreview(localUrl);
                       return false; // Prevent auto upload
                     }}
-                    style={{ padding: '16px', background: '#f8fafc', borderRadius: '12px' }}
+                    style={{
+                      padding: '16px',
+                      background: 'var(--background)',
+                      borderRadius: '12px',
+                    }}
                   >
                     {draggerPreview ? (
                       <div className="flex flex-col gap-2 justify-center items-center">
@@ -199,7 +203,7 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
                         </p>
                         <p
                           className="ant-upload-hint"
-                          style={{ fontSize: 11, color: '#888', margin: 0 }}
+                          style={{ fontSize: 11, color: 'var(--muted)', margin: 0 }}
                         >
                           Bấm &quot;Lưu thay đổi&quot; phía dưới để áp dụng ảnh mới
                         </p>
@@ -207,12 +211,15 @@ const ProfileDrawer = ({ open, onClose, currentUser }: ProfileDrawerProps) => {
                     ) : (
                       <>
                         <p className="ant-upload-drag-icon" style={{ marginBottom: 8 }}>
-                          <InboxOutlined style={{ color: '#6f6bff', fontSize: 32 }} />
+                          <InboxOutlined style={{ color: '#6366f1', fontSize: 32 }} />
                         </p>
                         <p className="ant-upload-text" style={{ fontSize: 14, fontWeight: 500 }}>
                           Kéo thả ảnh vào đây hoặc nhấp để chọn ảnh
                         </p>
-                        <p className="ant-upload-hint" style={{ fontSize: 12, color: '#888' }}>
+                        <p
+                          className="ant-upload-hint"
+                          style={{ fontSize: 12, color: 'var(--muted)' }}
+                        >
                           Ảnh mới sẽ được lưu khi bạn bấm &quot;Lưu thay đổi&quot;
                         </p>
                       </>

@@ -160,7 +160,7 @@ export default function StoryScreen() {
                   {item.avatar ? (
                     <Image source={{ uri: item.avatar }} className="w-full h-full rounded-full" />
                   ) : (
-                    <View className="w-full h-full rounded-full bg-[#7B5CFA] items-center justify-center">
+                    <View className="w-full h-full rounded-full bg-[#7C5CF6] items-center justify-center">
                       <Text className="text-sm font-bold text-white">
                         {item.name.charAt(0).toUpperCase()}
                       </Text>
@@ -176,7 +176,7 @@ export default function StoryScreen() {
               </View>
             </ImageBackground>
           ) : (
-            <View className="flex-1 justify-between p-3 bg-gradient-to-b from-[#7B5CFA] to-[#6344F5] rounded-2xl">
+            <View className="flex-1 justify-between p-3 bg-gradient-to-b from-[#7C5CF6] to-[#6366F1] rounded-2xl">
               <View className="z-10">
                 <View
                   className={`h-10 w-10 items-center justify-center rounded-full p-[2px] ${

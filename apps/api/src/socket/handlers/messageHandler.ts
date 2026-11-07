@@ -23,7 +23,9 @@ export const registerMessageHandlers = (io: Server, socket: Socket) => {
     ) => {
       const userId = String(socket.data.user.id);
 
-      if (isRateLimited(`message:send:${userId}`, SEND_MESSAGE_WINDOW_MS, SEND_MESSAGE_MAX)) {
+      // Fail open if Redis is unreachable: losing the limiter beats losing every message.
+      const limited = await isRateLimited(`message:send:${userId}`, SEND_MESSAGE_WINDOW_MS, SEND_MESSAGE_MAX).catch(() => false);
+      if (limited) {
         const errorMessage = 'Bạn đang gửi tin nhắn quá nhanh. Vui lòng thử lại sau!';
         ack?.({ success: false, error: errorMessage, tempId: payload?.tempId });
         socket.emit('message:error', { tempId: payload?.tempId, message: errorMessage });

@@ -5,8 +5,18 @@ import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
   withTiming,
+  ZoomIn,
+  ZoomOut,
 } from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
+
+import { BRAND } from '@/constants/brand';
+
+// Telegram-style icon swap: the new icon springs in while the old one shrinks away.
+const ICON_IN = ZoomIn.springify().damping(14).stiffness(260);
+const ICON_OUT = ZoomOut.duration(120);
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 
@@ -48,10 +58,12 @@ export function MessageComposer({
   const expanded = useSharedValue(isKeyboardVisible ? 0 : 1);
 
   useEffect(() => {
-    expanded.value = withTiming(isKeyboardVisible ? 0 : 1, {
-      duration: ANIM_DURATION,
-      easing: Easing.out(Easing.quad),
-    });
+    expanded.set(
+      withTiming(isKeyboardVisible ? 0 : 1, {
+        duration: ANIM_DURATION,
+        easing: Easing.out(Easing.quad),
+      }),
+    );
   }, [isKeyboardVisible, expanded]);
 
   // ── Animated Styles ──────────────────────────────────────────────────────────
@@ -76,6 +88,15 @@ export function MessageComposer({
     width: expanded.value * 1,
     marginHorizontal: expanded.value * 4,
   }));
+
+  /** Send button squashes a little on press and springs back. */
+  const pressScale = useSharedValue(1);
+  const sendBtnStyle = useAnimatedStyle(() => ({ transform: [{ scale: pressScale.get() }] }));
+
+  const handleSendPress = () => {
+    if (hasContent) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    (hasContent ? onSend : onVoice)?.();
+  };
 
   // ── Render ───────────────────────────────────────────────────────────────────
 
@@ -131,21 +152,30 @@ export function MessageComposer({
       />
 
       {/* ── Send / Mic button ── */}
-      <Pressable
-        onPress={hasContent ? onSend : onVoice}
-        disabled={hasContent && (isSending || isUploading)}
-        className={`ml-1 h-[42px] w-[42px] items-center justify-center rounded-full active:opacity-80 ${
-          hasContent ? 'bg-[#6f6bff]' : 'bg-[#6f6bff]'
-        }`}
-      >
-        {isSending || isUploading ? (
-          <ActivityIndicator size="small" color="white" />
-        ) : hasContent ? (
-          <Ionicons name="send" size={18} color="white" />
-        ) : (
-          <Ionicons name="mic" size={20} color="white" />
-        )}
-      </Pressable>
+      <Animated.View style={sendBtnStyle} className="ml-1">
+        <Pressable
+          onPress={handleSendPress}
+          onPressIn={() => pressScale.set(withSpring(0.86, { damping: 15, stiffness: 400 }))}
+          onPressOut={() => pressScale.set(withSpring(1, { damping: 12, stiffness: 300 }))}
+          disabled={hasContent && (isSending || isUploading)}
+          accessibilityRole="button"
+          accessibilityLabel={hasContent ? 'Gửi tin nhắn' : 'Ghi âm'}
+          style={{ backgroundColor: BRAND.primary }}
+          className="h-[42px] w-[42px] items-center justify-center rounded-full"
+        >
+          {isSending || isUploading ? (
+            <ActivityIndicator size="small" color="white" />
+          ) : (
+            <Animated.View key={hasContent ? 'send' : 'mic'} entering={ICON_IN} exiting={ICON_OUT}>
+              <Ionicons
+                name={hasContent ? 'send' : 'mic'}
+                size={hasContent ? 18 : 20}
+                color="white"
+              />
+            </Animated.View>
+          )}
+        </Pressable>
+      </Animated.View>
     </View>
   );
 }

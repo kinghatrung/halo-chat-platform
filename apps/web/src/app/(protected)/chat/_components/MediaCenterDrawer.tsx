@@ -112,7 +112,17 @@ const MediaCenterDrawer = ({ open, onClose, conversationId }: MediaCenterDrawerP
   const [activeTab, setActiveTab] = useState<AttachmentMediaType>('image');
 
   return (
-    <Drawer title="Kho lưu trữ" open={open} onClose={onClose} size={isMobile ? '92%' : 400}>
+    <Drawer
+      title="Kho lưu trữ"
+      open={open}
+      onClose={onClose}
+      size={isMobile ? '92%' : 400}
+      styles={{
+        body: {
+          paddingTop: 0,
+        },
+      }}
+    >
       <Tabs
         activeKey={activeTab}
         onChange={(key) => setActiveTab(key as AttachmentMediaType)}

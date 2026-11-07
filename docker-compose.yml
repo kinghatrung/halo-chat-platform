@@ -1,23 +1,12 @@
+# Local development only: Redis for `npm run dev`.  Production lives in deploy/docker-compose.yml.
 services:
   redis:
     image: redis:7-alpine
     restart: unless-stopped
     ports:
-      - '6379:6379'
+      - '127.0.0.1:6379:6379' # loopback only, never expose Redis on a network
     volumes:
       - redis-data:/data
-
-  app:
-    build: .
-    restart: unless-stopped
-    depends_on:
-      - redis
-    env_file:
-      - apps/api/.env
-    environment:
-      REDIS_URL: redis://redis:6379
-    ports:
-      - '7860:7860'
 
 volumes:
   redis-data:

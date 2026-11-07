@@ -69,7 +69,7 @@ const ForwardMessageModal = ({
               key={conv._id}
               align="center"
               justify="space-between"
-              style={{ padding: '8px 4px', borderBottom: '1px solid #f0f0f0' }}
+              style={{ padding: '8px 4px', borderBottom: '1px solid var(--border)' }}
             >
               <Flex align="center" gap={10}>
                 <Avatar

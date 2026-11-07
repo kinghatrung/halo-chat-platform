@@ -37,7 +37,8 @@ import {
   ShareAltOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import EmojiPicker, { type EmojiClickData } from 'emoji-picker-react';
+import EmojiPicker, { Theme as EmojiTheme, type EmojiClickData } from 'emoji-picker-react';
+import { useThemeStore } from '@/store/useThemeStore';
 import { useConversationDetail } from '@/hook/useConversations';
 import type { Message, MessageAttachment, MessageType } from '@/types/message';
 import { colorForId, initialOf } from '@/lib/avatar';
@@ -123,7 +124,7 @@ const AttachmentPreview = ({ attachment }: { attachment: MessageAttachment }) =>
         gap: 8,
         padding: '8px 12px',
         borderRadius: 10,
-        background: 'rgba(0,0,0,0.04)',
+        background: 'rgba(127,127,127,0.14)',
         color: 'inherit',
         minWidth: 0,
       }}
@@ -189,6 +190,7 @@ const ChatWindow = ({
   const [replyResetKey, setReplyResetKey] = useState(conversationId);
   const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null);
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const isDarkMode = useThemeStore((s) => s.isDarkMode);
   const [forwardModalOpen, setForwardModalOpen] = useState(false);
   const [messageToForward, setMessageToForward] = useState<Message | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -561,7 +563,7 @@ const ChatWindow = ({
       <div
         ref={messagesContainerRef}
         onScroll={handleMessagesScroll}
-        className="overflow-y-auto flex-1 p-4 md:p-6"
+        className="chat-canvas overflow-y-auto flex-1 p-4 md:p-6"
       >
         {messagesLoading && <Skeleton paragraph={{ rows: 4 }} active />}
         {!messagesLoading && messages.length === 0 && (
@@ -619,6 +621,7 @@ const ChatWindow = ({
                     </div>
                   ) : (
                     <div
+                      className={mine ? 'msg-enter-mine' : 'msg-enter-theirs'}
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -707,6 +710,7 @@ const ChatWindow = ({
                               }}
                             >
                               <div
+                                className={mine ? 'msg-bubble msg-bubble-mine' : 'msg-bubble'}
                                 style={{
                                   minWidth: 0,
                                   display: 'flex',
@@ -716,10 +720,12 @@ const ChatWindow = ({
                                     !msg.isDeleted && msg.attachmentIds?.length && !msg.content
                                       ? 4
                                       : '10px 16px',
-                                  borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                                  background: mine ? '#5b5bf6' : token.colorBgContainer,
+                                  borderRadius: mine ? '18px 18px 6px 18px' : '18px 18px 18px 6px',
+                                  // mine: gradient comes from .msg-bubble-mine
+                                  background: mine ? undefined : token.colorBgContainer,
                                   color: mine ? '#fff' : token.colorText,
-                                  boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
+                                  boxShadow:
+                                    '0 1px 2px rgba(30,27,75,0.06), 0 2px 8px rgba(30,27,75,0.05)',
                                   wordBreak: 'break-word',
                                   fontStyle: msg.isDeleted ? 'italic' : 'normal',
                                   cursor: 'context-menu',
@@ -744,10 +750,10 @@ const ChatWindow = ({
                                 {msg.replyToMessageId && (
                                   <div
                                     style={{
-                                      borderLeft: `3px solid ${mine ? 'rgba(255,255,255,0.6)' : '#5b5bf6'}`,
+                                      borderLeft: `3px solid ${mine ? 'rgba(255,255,255,0.6)' : '#6366f1'}`,
                                       background: mine
                                         ? 'rgba(255,255,255,0.12)'
-                                        : 'rgba(91,91,246,0.06)',
+                                        : 'rgba(99, 102, 241,0.06)',
                                       borderRadius: 6,
                                       padding: '4px 8px',
                                       marginBottom: 2,
@@ -758,7 +764,7 @@ const ChatWindow = ({
                                       style={{
                                         fontSize: 11,
                                         display: 'block',
-                                        color: mine ? 'rgba(255,255,255,0.85)' : '#5b5bf6',
+                                        color: mine ? 'rgba(255,255,255,0.85)' : '#6366f1',
                                       }}
                                     >
                                       {msg.replyToMessageId.senderId.username}
@@ -803,9 +809,9 @@ const ChatWindow = ({
                                   gap: 2,
                                   padding: '2px 6px',
                                   borderRadius: 12,
-                                  background: '#fff',
-                                  border: '1px solid #e5e7eb',
-                                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                  background: token.colorBgElevated,
+                                  border: `1px solid ${token.colorBorderSecondary}`,
+                                  boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
                                   cursor: 'pointer',
                                   fontSize: 12,
                                 }}
@@ -816,7 +822,13 @@ const ChatWindow = ({
                                   ),
                                 )}
                                 {(msg.reactions?.length || 0) > 1 && (
-                                  <span style={{ fontSize: 10, color: '#6b7280', fontWeight: 600 }}>
+                                  <span
+                                    style={{
+                                      fontSize: 10,
+                                      color: token.colorTextSecondary,
+                                      fontWeight: 600,
+                                    }}
+                                  >
                                     {msg.reactions?.length}
                                   </span>
                                 )}
@@ -833,7 +845,7 @@ const ChatWindow = ({
                               gap: 6,
                               padding: '10px 16px',
                               borderRadius: mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                              background: mine ? '#5b5bf6' : token.colorBgContainer,
+                              background: mine ? '#6366f1' : token.colorBgContainer,
                               color: mine ? '#fff' : token.colorText,
                               boxShadow: '0 2px 6px rgba(20,20,60,0.06)',
                               fontStyle: 'italic',
@@ -919,7 +931,7 @@ const ChatWindow = ({
                             {formatMessageTime(msg.createdAt)}
                             {msg.isEdited && !msg.isDeleted ? ' · Đã chỉnh sửa' : ''}
                             {mine && index === messages.length - 1 && (
-                              <Text style={{ fontSize: 11, color: '#5b5bf6', marginLeft: 4 }}>
+                              <Text style={{ fontSize: 11, color: '#6366f1', marginLeft: 4 }}>
                                 · Đã xem
                               </Text>
                             )}
@@ -951,12 +963,12 @@ const ChatWindow = ({
               padding: '6px 10px',
               borderRadius: 10,
               background: token.colorBgTextHover,
-              borderLeft: '3px solid #5b5bf6',
+              borderLeft: '3px solid #6366f1',
               marginBottom: 10,
             }}
           >
             <div style={{ minWidth: 0 }}>
-              <Text strong style={{ fontSize: 12, display: 'block', color: '#5b5bf6' }}>
+              <Text strong style={{ fontSize: 12, display: 'block', color: '#6366f1' }}>
                 Đang trả lời{' '}
                 {replyingTo.senderId._id === currentUserId
                   ? 'chính mình'
@@ -989,7 +1001,7 @@ const ChatWindow = ({
                   gap: 8,
                   padding: '6px 10px',
                   borderRadius: 10,
-                  background: '#f4f5fb',
+                  background: token.colorFillTertiary,
                   width: 'fit-content',
                   maxWidth: '100%',
                 }}
@@ -1064,9 +1076,14 @@ const ChatWindow = ({
                 onOpenChange={setEmojiPickerOpen}
                 placement="topRight"
                 styles={{ content: { padding: 0 } }}
-                content={<EmojiPicker onEmojiClick={handleEmojiClick} />}
+                content={
+                  <EmojiPicker
+                    onEmojiClick={handleEmojiClick}
+                    theme={isDarkMode ? EmojiTheme.DARK : EmojiTheme.LIGHT}
+                  />
+                }
               >
-                <SmileOutlined style={{ color: 'rgba(0,0,0,0.35)', cursor: 'pointer' }} />
+                <SmileOutlined style={{ color: token.colorTextTertiary, cursor: 'pointer' }} />
               </Popover>
             }
           />

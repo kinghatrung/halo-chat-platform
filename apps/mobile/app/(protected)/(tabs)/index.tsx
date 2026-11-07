@@ -1,14 +1,14 @@
 import { useState, useMemo } from 'react';
-import { Pressable, Text, View, ScrollView } from 'react-native';
+import { Image, Pressable, Text, View, ScrollView } from 'react-native';
 import Animated, {
   Extrapolation,
   FadeInDown,
   FadeOutUp,
   interpolate,
+  LinearTransition,
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
@@ -23,6 +23,10 @@ import { useListConversations } from '@/hooks/useConversations';
 import { useStoryFeed } from '@/hooks/useStory';
 import { useAuthStore } from '@/stores/auth';
 import type { ConversationListItem } from '@/types/conversation';
+import { APP_NAME, BRAND } from '@/constants/brand';
+
+// When a new message lifts a chat to the top, the other rows glide down instead of jumping.
+const ROW_LAYOUT = LinearTransition.springify().damping(20).stiffness(200);
 
 // Animated badge with spring scale on press
 const FilterBadge = ({
@@ -38,7 +42,7 @@ const FilterBadge = ({
     <Pressable onPress={onPress}>
       {active ? (
         <LinearGradient
-          colors={['#7B5CFA', '#6344F5']}
+          colors={[BRAND.primary, BRAND.violet]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={{ borderRadius: 999, paddingHorizontal: 16, paddingVertical: 7 }}
@@ -151,8 +155,12 @@ export default function ChatScreen() {
     <ScreenWrapper className="bg-white">
       {/* Main white container */}
       <View className="flex-1 rounded-b-[32px] bg-white">
-        <View className="flex-row justify-between px-3 pt-2 pb-4">
-          <Text className="text-3xl font-bold">Chat</Text>
+        <View className="flex-row items-center px-3 pt-2 pb-4">
+          <Image
+            source={require('@/assets/images/logo.png')}
+            style={{ width: 34, height: 34, borderRadius: 10, marginRight: 10 }}
+          />
+          <Text className="text-[28px] font-bold tracking-tight text-[#1c1d2b]">{APP_NAME}</Text>
           {/* <View className="flex-row gap-4 items-center">
               <Pressable onPress={() => setIsCreateStoryOpen(true)}>
                 <Ionicons name="camera-outline" size={28} color="#1A1A1A" />
@@ -170,6 +178,7 @@ export default function ChatScreen() {
           data={filteredConversations}
           keyExtractor={(item) => item._id}
           renderItem={({ item, index }) => <AnimatedChatItem item={item} index={index} />}
+          itemLayoutAnimation={ROW_LAYOUT}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}
           onScroll={(event) => {

@@ -28,7 +28,13 @@ const StoryBar = ({ currentUser }: StoryBarProps) => {
   return (
     <div style={{ display: 'flex', gap: 14, overflowX: 'auto', padding: '12px 16px 4px' }}>
       <div
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, cursor: 'pointer' }}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 4,
+          cursor: 'pointer',
+        }}
         onClick={() => (ownGroup ? setViewingUserId(currentUser!._id) : setCreateOpen(true))}
       >
         <Badge
@@ -42,12 +48,12 @@ const StoryBar = ({ currentUser }: StoryBarProps) => {
                 width: 18,
                 height: 18,
                 borderRadius: '50%',
-                background: '#5b5bf6',
+                background: '#6366f1',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
-                border: '2px solid #fff',
+                border: '2px solid var(--surface)',
                 cursor: 'pointer',
               }}
             >
@@ -62,7 +68,7 @@ const StoryBar = ({ currentUser }: StoryBarProps) => {
             src={currentUser?.avatar || undefined}
             style={{
               backgroundColor: colorForId(currentUser?._id || 'me'),
-              border: ownGroup?.hasUnviewed ? '2px solid #5b5bf6' : '2px solid transparent',
+              border: ownGroup?.hasUnviewed ? '2px solid #6366f1' : '2px solid transparent',
             }}
           >
             {currentUser ? initialOf(currentUser.username) : undefined}
@@ -74,7 +80,13 @@ const StoryBar = ({ currentUser }: StoryBarProps) => {
       {friendGroups.map((group) => (
         <div
           key={group.userId}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, cursor: 'pointer' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 4,
+            cursor: 'pointer',
+          }}
           onClick={() => setViewingUserId(group.userId)}
         >
           <Avatar
@@ -82,7 +94,7 @@ const StoryBar = ({ currentUser }: StoryBarProps) => {
             src={group.user.avatar || undefined}
             style={{
               backgroundColor: colorForId(group.userId),
-              border: group.hasUnviewed ? '2px solid #5b5bf6' : '2px solid #d9d9e3',
+              border: group.hasUnviewed ? '2px solid #6366f1' : '2px solid #d9d9e3',
             }}
           >
             {initialOf(group.user.username)}

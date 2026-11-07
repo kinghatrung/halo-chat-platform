@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   Animated,
   KeyboardAvoidingView,
@@ -31,8 +31,8 @@ export default function SignUpScreen() {
   const [errorMsg, setErrorMsg] = useState('');
 
   // Values cho animation trượt và mờ dần
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-  const slideAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useState(() => new Animated.Value(1))[0];
+  const slideAnim = useState(() => new Animated.Value(0))[0];
 
   const registerMutation = useRegister();
 
@@ -199,10 +199,10 @@ export default function SignUpScreen() {
               <View className="items-center mb-8">
                 <Text className="mb-2 text-3xl font-bold text-center text-gray-900">
                   {step === 'name'
-                    ? 'Tạo tài khoản ✨'
+                    ? 'Tạo tài khoản'
                     : step === 'email'
-                      ? 'Địa chỉ Email 📧'
-                      : 'Tạo mật khẩu 🔐'}
+                      ? 'Địa chỉ email'
+                      : 'Tạo mật khẩu'}
                 </Text>
 
                 {step === 'name' && (
@@ -221,7 +221,7 @@ export default function SignUpScreen() {
                     />
                     <Text className="mr-2 text-base font-normal text-gray-700">{name}</Text>
                     <Pressable onPress={handleBackToName}>
-                      <Text className="text-sm font-normal text-[#6f6bff]">Thay đổi</Text>
+                      <Text className="text-sm font-normal text-[#6366F1]">Thay đổi</Text>
                     </Pressable>
                   </View>
                 )}
@@ -237,7 +237,7 @@ export default function SignUpScreen() {
                       />
                       <Text className="mr-2 text-base font-normal text-gray-700">{email}</Text>
                       <Pressable onPress={handleBackToEmail}>
-                        <Text className="text-sm font-normal text-[#6f6bff]">Thay đổi</Text>
+                        <Text className="text-sm font-normal text-[#6366F1]">Thay đổi</Text>
                       </Pressable>
                     </View>
                   </View>
@@ -418,7 +418,7 @@ export default function SignUpScreen() {
 
                   {/* Header Title */}
                   <Text className="mb-3 text-2xl font-bold text-center text-gray-900">
-                    Tạo tài khoản thành công! 🎉
+                    Tạo tài khoản thành công!
                   </Text>
 
                   {/* Description với khoảng cách rộng rãi */}
@@ -439,7 +439,7 @@ export default function SignUpScreen() {
               {step === 'name' && (
                 <Pressable onPress={handleNextToEmail} className="mb-8 active:opacity-90">
                   <LinearGradient
-                    colors={['#6f6bff', '#8c5bf6', '#b357e0']}
+                    colors={['#6366F1', '#8B5CF6', '#b357e0']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={{
@@ -447,7 +447,7 @@ export default function SignUpScreen() {
                       borderRadius: 16,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      shadowColor: '#8c5bf6',
+                      shadowColor: '#8B5CF6',
                       shadowOpacity: 0.3,
                       shadowRadius: 10,
                       shadowOffset: { width: 0, height: 4 },
@@ -462,7 +462,7 @@ export default function SignUpScreen() {
               {step === 'email' && (
                 <Pressable onPress={handleNextToPassword} className="mb-8 active:opacity-90">
                   <LinearGradient
-                    colors={['#6f6bff', '#8c5bf6', '#b357e0']}
+                    colors={['#6366F1', '#8B5CF6', '#b357e0']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={{
@@ -470,7 +470,7 @@ export default function SignUpScreen() {
                       borderRadius: 16,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      shadowColor: '#8c5bf6',
+                      shadowColor: '#8B5CF6',
                       shadowOpacity: 0.3,
                       shadowRadius: 10,
                       shadowOffset: { width: 0, height: 4 },
@@ -489,7 +489,7 @@ export default function SignUpScreen() {
                   className="mb-8 active:opacity-90"
                 >
                   <LinearGradient
-                    colors={['#6f6bff', '#8c5bf6', '#b357e0']}
+                    colors={['#6366F1', '#8B5CF6', '#b357e0']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={{
@@ -498,7 +498,7 @@ export default function SignUpScreen() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       opacity: registerMutation.isPending ? 0.7 : 1,
-                      shadowColor: '#8c5bf6',
+                      shadowColor: '#8B5CF6',
                       shadowOpacity: 0.3,
                       shadowRadius: 10,
                       shadowOffset: { width: 0, height: 4 },
@@ -515,7 +515,7 @@ export default function SignUpScreen() {
               {step === 'success' && (
                 <Pressable onPress={handleGoToSignIn} className="w-full active:opacity-90">
                   <LinearGradient
-                    colors={['#6f6bff', '#8c5bf6', '#b357e0']}
+                    colors={['#6366F1', '#8B5CF6', '#b357e0']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={{
@@ -523,7 +523,7 @@ export default function SignUpScreen() {
                       borderRadius: 16,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      shadowColor: '#8c5bf6',
+                      shadowColor: '#8B5CF6',
                       shadowOpacity: 0.3,
                       shadowRadius: 10,
                       shadowOffset: { width: 0, height: 4 },
@@ -570,7 +570,7 @@ export default function SignUpScreen() {
                   Bạn đã có tài khoản chưa?{' '}
                 </Text>
                 <Pressable onPress={() => router.replace('/signin')}>
-                  <Text className="text-base font-bold text-[#6f6bff] underline">Đăng nhập</Text>
+                  <Text className="text-base font-bold text-[#6366F1] underline">Đăng nhập</Text>
                 </Pressable>
               </View>
             )}

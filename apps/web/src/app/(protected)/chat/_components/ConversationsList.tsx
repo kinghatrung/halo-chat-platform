@@ -201,7 +201,7 @@ const ConversationsList = ({
                   {formatConversationTime(conv.lastMessage?.createdAt || conv.lastMessageAt)}
                 </Text>
                 {hasUnread && (
-                  <Badge count={conv.unreadCount} size="small" overflowCount={99} color="#5b5bf6" />
+                  <Badge count={conv.unreadCount} size="small" overflowCount={99} color="#6366f1" />
                 )}
                 <Dropdown
                   menu={{

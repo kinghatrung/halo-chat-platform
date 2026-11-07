@@ -18,9 +18,9 @@ export default function ErrorPage({
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 bg-[radial-gradient(circle_at_50%_0%,#F5F6FA_0%,#E9EBF2_60%,#E2E4ED_100%)]">
+    <div className="min-h-screen flex items-center justify-center px-6 bg-background">
       <div className="w-full max-w-md">
-        <div className="rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_rgb(15,23,42,0.06)] p-9 animate-[fadeIn_0.4s_ease-out]">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_8px_30px_rgb(15,23,42,0.06)] p-9 animate-[fadeIn_0.4s_ease-out]">
           {/* Icon: broken connection, không dùng icon mặc định của antd */}
           <div className="mb-6 flex justify-center">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
@@ -51,10 +51,10 @@ export default function ErrorPage({
             </svg>
           </div>
 
-          <h1 className="text-center text-xl font-semibold text-slate-900 tracking-tight">
+          <h1 className="text-center text-xl font-semibold text-foreground tracking-tight">
             Đã có lỗi xảy ra
           </h1>
-          <p className="mt-1.5 text-center text-sm text-slate-500">
+          <p className="mt-1.5 text-center text-sm text-[var(--muted)]">
             Một phần của trang không tải được như mong đợi.
           </p>
 

@@ -130,7 +130,7 @@ const AdminUsersPage = () => {
                 </Avatar>
                 <div>
                   <div>{user.username}</div>
-                  <div style={{ fontSize: 12, color: '#8c8ca0' }}>{user.email}</div>
+                  <div style={{ fontSize: 12, color: 'var(--muted)' }}>{user.email}</div>
                 </div>
               </div>
             ),
@@ -159,7 +159,11 @@ const AdminUsersPage = () => {
             width: 120,
             render: (_, user) =>
               user.accountStatus === 'locked' ? (
-                <Button size="small" loading={updateStatusMutation.isPending} onClick={() => handleUnlock(user)}>
+                <Button
+                  size="small"
+                  loading={updateStatusMutation.isPending}
+                  onClick={() => handleUnlock(user)}
+                >
                   Mở khóa
                 </Button>
               ) : (

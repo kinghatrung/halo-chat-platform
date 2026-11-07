@@ -23,7 +23,7 @@ export default function SearchInput({
   value = '',
   onChangeText,
   onClear,
-  placeholder = 'Tìm kiếm trên Hudu Chat',
+  placeholder = 'Tìm kiếm trên Nimbo',
   onSubmitEditing,
   onPress,
   editable = true,

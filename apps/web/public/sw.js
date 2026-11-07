@@ -3,9 +3,10 @@ self.addEventListener('push', (event) => {
 
   const payload = event.data.json();
   event.waitUntil(
-    self.registration.showNotification(payload.title || 'Hudu Chat', {
+    self.registration.showNotification(payload.title || 'Nimbo', {
       body: payload.body,
-      icon: '/hudo.svg',
+      icon: '/apple-touch-icon.png',
+      badge: '/apple-touch-icon.png',
       data: { link: payload.link || '/chat' },
     }),
   );

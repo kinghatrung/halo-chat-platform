@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Modal,
   View,
@@ -192,38 +192,33 @@ export default function ChatInfoModal({
   );
   const isArchived = Boolean(currentUserMember?.isArchived);
 
-  useEffect(() => {
-    if (visible) {
-      setIsMounted(true);
-      setNewGroupName(displayName);
-      progress.value = withTiming(1, {
-        duration: 250,
-        easing: Easing.bezier(0.25, 1, 0.5, 1),
-      });
-    } else if (isMounted) {
-      handleCloseAnimation();
-    }
-  }, [visible]);
-
   const completeClose = () => {
     setIsMounted(false);
     onClose();
   };
 
   const handleCloseAnimation = () => {
-    progress.value = withTiming(
-      0,
-      {
-        duration: 200,
-        easing: Easing.bezier(0.25, 1, 0.5, 1),
-      },
-      (finished) => {
+    progress.set(
+      withTiming(0, { duration: 200, easing: Easing.bezier(0.25, 1, 0.5, 1) }, (finished) => {
         if (finished) {
           runOnJS(completeClose)();
         }
-      },
+      }),
     );
   };
+
+  // Keeps the modal mounted while the close animation runs; runs only when `visible` flips.
+  useEffect(() => {
+    if (visible) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- mount before the open animation starts
+      setIsMounted(true);
+      setNewGroupName(displayName);
+      progress.set(withTiming(1, { duration: 250, easing: Easing.bezier(0.25, 1, 0.5, 1) }));
+    } else if (isMounted) {
+      handleCloseAnimation();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- re-run on visibility change only
+  }, [visible]);
 
   // ── ADMIN HANDLERS ─────────────────────────────────────────────────────────
 
@@ -318,7 +313,7 @@ export default function ChatInfoModal({
           try {
             await removeMemberMutation.mutateAsync(memberUserId);
             Alert.alert('Thành công', `Đã xóa ${username} khỏi nhóm.`);
-          } catch (err) {
+          } catch {
             Alert.alert('Lỗi', 'Không thể xóa thành viên này.');
           }
         },
@@ -335,7 +330,7 @@ export default function ChatInfoModal({
       setAddMemberInput('');
       setShowAddMemberInput(false);
       Alert.alert('Thành công', 'Đã thêm thành viên vào nhóm!');
-    } catch (error) {
+    } catch {
       Alert.alert('Lỗi', 'Không tìm thấy người dùng hoặc thêm thất bại.');
     }
   };
@@ -351,7 +346,7 @@ export default function ChatInfoModal({
             await leaveConvMutation.mutateAsync(conversationId);
             handleCloseAnimation();
             router.replace('/(protected)/(tabs)');
-          } catch (error) {
+          } catch {
             Alert.alert('Lỗi', 'Không thể rời nhóm lúc này.');
           }
         },
@@ -404,7 +399,7 @@ export default function ChatInfoModal({
                   className="w-24 h-24 rounded-full border-2 border-white shadow-sm"
                 />
               ) : (
-                <View className="h-24 w-24 rounded-full bg-[#6f6bff] items-center justify-center shadow-md">
+                <View className="h-24 w-24 rounded-full bg-[#6366F1] items-center justify-center shadow-md">
                   <Text className="text-3xl font-bold text-white">
                     {displayName.charAt(0).toUpperCase()}
                   </Text>
@@ -415,7 +410,7 @@ export default function ChatInfoModal({
               {isAdmin && (
                 <Pressable
                   onPress={handlePickAvatar}
-                  className="absolute bottom-0 right-0 h-8 w-8 rounded-full bg-[#6f6bff] items-center justify-center border-2 border-white shadow-md active:opacity-80"
+                  className="absolute bottom-0 right-0 h-8 w-8 rounded-full bg-[#6366F1] items-center justify-center border-2 border-white shadow-md active:opacity-80"
                 >
                   <Ionicons name="camera" size={16} color="#FFF" />
                 </Pressable>
@@ -438,11 +433,11 @@ export default function ChatInfoModal({
                   value={newGroupName}
                   onChangeText={setNewGroupName}
                   autoFocus
-                  className="flex-1 bg-white border border-[#6f6bff] rounded-xl px-3 py-2 text-lg font-bold text-gray-900"
+                  className="flex-1 bg-white border border-[#6366F1] rounded-xl px-3 py-2 text-lg font-bold text-gray-900"
                 />
                 <Pressable
                   onPress={handleSaveGroupName}
-                  className="ml-2 bg-[#6f6bff] px-3 py-2.5 rounded-xl active:opacity-80"
+                  className="ml-2 bg-[#6366F1] px-3 py-2.5 rounded-xl active:opacity-80"
                 >
                   <Ionicons name="checkmark" size={20} color="#FFF" />
                 </Pressable>
@@ -458,7 +453,7 @@ export default function ChatInfoModal({
                 >
                   {displayName}
                 </Text>
-                {isAdmin && <Ionicons name="pencil" size={18} color="#6f6bff" />}
+                {isAdmin && <Ionicons name="pencil" size={18} color="#6366F1" />}
               </Pressable>
             )}
 
@@ -639,7 +634,7 @@ export default function ChatInfoModal({
               <Switch
                 value={isMuted}
                 onValueChange={handleToggleMute}
-                trackColor={{ false: '#E5E7EB', true: '#6f6bff' }}
+                trackColor={{ false: '#E5E7EB', true: '#6366F1' }}
                 thumbColor="#FFFFFF"
               />
             </View>
@@ -655,7 +650,7 @@ export default function ChatInfoModal({
               <Switch
                 value={isArchived}
                 onValueChange={handleToggleArchive}
-                trackColor={{ false: '#E5E7EB', true: '#6f6bff' }}
+                trackColor={{ false: '#E5E7EB', true: '#6366F1' }}
                 thumbColor="#FFFFFF"
               />
             </View>
@@ -676,7 +671,7 @@ export default function ChatInfoModal({
                   </Text>
                 </View>
                 {generateInviteMutation.isPending ? (
-                  <ActivityIndicator size="small" color="#6f6bff" />
+                  <ActivityIndicator size="small" color="#6366F1" />
                 ) : (
                   <Ionicons name="copy-outline" size={18} color="#1F2937" />
                 )}
@@ -771,7 +766,7 @@ export default function ChatInfoModal({
                       />
                       <Pressable
                         onPress={handleAddMemberSubmit}
-                        className="bg-[#6f6bff] px-3 py-2 rounded-xl"
+                        className="bg-[#6366F1] px-3 py-2 rounded-xl"
                       >
                         <Text className="text-xs font-bold text-white">Thêm</Text>
                       </Pressable>
@@ -781,8 +776,8 @@ export default function ChatInfoModal({
                       onPress={() => setShowAddMemberInput(true)}
                       className="flex-row justify-center items-center p-3 bg-blue-50 rounded-xl border border-blue-100"
                     >
-                      <Ionicons name="person-add" size={18} color="#6f6bff" className="mr-2" />
-                      <Text className="text-sm font-semibold text-[#6f6bff]">
+                      <Ionicons name="person-add" size={18} color="#6366F1" className="mr-2" />
+                      <Text className="text-sm font-semibold text-[#6366F1]">
                         Thêm thành viên mới
                       </Text>
                     </Pressable>
@@ -808,7 +803,7 @@ export default function ChatInfoModal({
                             className="mr-3 w-11 h-11 rounded-full"
                           />
                         ) : (
-                          <View className="h-11 w-11 rounded-full bg-[#6f6bff] items-center justify-center mr-3">
+                          <View className="h-11 w-11 rounded-full bg-[#6366F1] items-center justify-center mr-3">
                             <Text className="text-base font-bold text-white">
                               {u.username?.charAt(0).toUpperCase() || 'U'}
                             </Text>
@@ -855,7 +850,7 @@ export default function ChatInfoModal({
               <Text className="text-base font-bold text-gray-900">Tin nhắn đã ghim</Text>
               {/* Capacity pill */}
               <View className="px-2.5 py-1 rounded-full bg-blue-50 border border-blue-100">
-                <Text className="text-xs font-bold text-[#6f6bff]">{pinnedMessages.length}/5</Text>
+                <Text className="text-xs font-bold text-[#6366F1]">{pinnedMessages.length}/5</Text>
               </View>
             </View>
 
@@ -924,7 +919,7 @@ export default function ChatInfoModal({
                               className="w-9 h-9 rounded-full"
                             />
                           ) : (
-                            <View className="w-9 h-9 rounded-full bg-[#6f6bff] items-center justify-center">
+                            <View className="w-9 h-9 rounded-full bg-[#6366F1] items-center justify-center">
                               <Text className="text-sm font-bold text-white">
                                 {senderName.charAt(0).toUpperCase()}
                               </Text>
@@ -1009,7 +1004,7 @@ export default function ChatInfoModal({
               </View>
             ) : searchQueryRes.isLoading ? (
               <View className="flex-1 justify-center items-center">
-                <ActivityIndicator size="large" color="#6f6bff" />
+                <ActivityIndicator size="large" color="#6366F1" />
               </View>
             ) : searchResults.length === 0 ? (
               <View className="flex-1 justify-center items-center px-8">
@@ -1051,7 +1046,7 @@ export default function ChatInfoModal({
                           className="mr-3 w-10 h-10 rounded-full"
                         />
                       ) : (
-                        <View className="w-10 h-10 rounded-full bg-[#6f6bff] items-center justify-center mr-3">
+                        <View className="w-10 h-10 rounded-full bg-[#6366F1] items-center justify-center mr-3">
                           <Text className="text-sm font-bold text-white">
                             {senderName.charAt(0).toUpperCase()}
                           </Text>
@@ -1146,7 +1141,7 @@ export default function ChatInfoModal({
                   >
                     <View className="flex-row flex-1 items-center mr-3">
                       <View className="justify-center items-center mr-3 w-10 h-10 bg-blue-50 rounded-xl">
-                        <Ionicons name="document-text" size={22} color="#6f6bff" />
+                        <Ionicons name="document-text" size={22} color="#6366F1" />
                       </View>
                       <View className="flex-1">
                         <Text className="text-sm font-bold text-gray-900" numberOfLines={1}>
@@ -1163,7 +1158,7 @@ export default function ChatInfoModal({
                       onPress={() => Alert.alert('Đang mở file', file.url)}
                       className="p-2 bg-white rounded-full border border-gray-200"
                     >
-                      <Ionicons name="download-outline" size={18} color="#6f6bff" />
+                      <Ionicons name="download-outline" size={18} color="#6366F1" />
                     </Pressable>
                   </View>
                 ))}

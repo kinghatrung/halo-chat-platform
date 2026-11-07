@@ -1,5 +1,5 @@
 node_modules
-package-lock.json
+# root package-lock.json is committed: the Dockerfile runs `npm ci`, which needs it
 
 # env files (mẫu: .env.example từng app)
 apps/api/.env
@@ -26,3 +26,6 @@ apps/web/package-lock.json
 # local verification files (contained session cookies)
 .scratch_verify/
 apps/mobile/.env
+
+# production secrets live only on the VPS
+deploy/.env

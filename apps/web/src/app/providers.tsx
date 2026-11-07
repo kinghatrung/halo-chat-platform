@@ -1,7 +1,7 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ConfigProvider, App as AntdApp } from 'antd';
 import viVN from 'antd/locale/vi_VN';
 
@@ -25,6 +25,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 
   const themeConfig = isDarkMode ? darkTheme : lightTheme;
+
+  // Lets plain CSS (scrollbars, chat wallpaper) follow the same toggle as the antd tokens.
+  useEffect(() => {
+    document.documentElement.dataset.theme = isDarkMode ? 'dark' : 'light';
+  }, [isDarkMode]);
 
   return (
     <ConfigProvider locale={viVN} theme={themeConfig}>

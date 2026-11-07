@@ -135,7 +135,7 @@ const NotificationBell = () => {
                   padding: '10px 8px',
                   borderRadius: 8,
                   cursor: 'pointer',
-                  background: item.isRead ? 'transparent' : 'rgba(91,91,246,0.08)',
+                  background: item.isRead ? 'transparent' : 'rgba(99, 102, 241,0.08)',
                   marginBottom: 2,
                 }}
               >

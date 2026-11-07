@@ -86,7 +86,7 @@ const callService = {
       return callService.joinCall(io, userId, existing);
     }
 
-    if (isRateLimited(`call:invite:${userId}`, INVITE_WINDOW_MS, INVITE_MAX)) {
+    if (await isRateLimited(`call:invite:${userId}`, INVITE_WINDOW_MS, INVITE_MAX)) {
       throw new Error('Bạn đang gọi quá nhanh. Vui lòng thử lại sau!');
     }
 

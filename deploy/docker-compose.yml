@@ -1,0 +1,87 @@
+# Production stack for chat.kun.io.vn — lives at /opt/nimbo on the VPS (copied there by CI).
+# Host nginx (deploy/nginx/) terminates TLS and proxies to the 127.0.0.1 ports below.
+# Images are built by GitHub Actions and pulled from GHCR; nothing is built on the VPS.
+# Secrets come from /opt/nimbo/.env (see .env.example) and never enter an image.
+name: nimbo
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: '10m'
+    max-file: '3'
+
+services:
+  api:
+    image: ${IMAGE_PREFIX:?set IMAGE_PREFIX in .env}/nimbo-api:${API_TAG:-latest}
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: '5000'
+      REDIS_URL: redis://:${REDIS_PASSWORD:?set REDIS_PASSWORD in .env}@redis:6379
+      # One hop: host nginx already resolved the visitor IP from Cloudflare (cloudflare-realip.conf)
+      # and forwards it as X-Forwarded-For; the API only has to trust that one proxy.
+      TRUST_PROXY: '1'
+    depends_on:
+      redis:
+        condition: service_healthy
+    # Loopback only: reachable by nginx on the host, never directly from the internet
+    # (Docker-published ports bypass ufw, so binding to 127.0.0.1 is what keeps them private).
+    ports:
+      - '127.0.0.1:5100:5000'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:5000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    mem_limit: 768m
+    logging: *logging
+
+  web:
+    image: ${IMAGE_PREFIX}/nimbo-web:${WEB_TAG:-latest}
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:3100:3000'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:3000/signin').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    mem_limit: 512m
+    logging: *logging
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    # Presence, socket.io adapter, rate limits and the push queue: all disposable, so no disk
+    # persistence. BullMQ requires the "noeviction" policy.
+    command:
+      [
+        'sh',
+        '-c',
+        'exec redis-server --requirepass "$$REDIS_PASSWORD" --maxmemory 256mb --maxmemory-policy noeviction --save "" --appendonly no',
+      ]
+    # No "ports:" on purpose — only the api container can reach Redis.
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli -a "$$REDIS_PASSWORD" --no-auth-warning ping | grep -q PONG']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    mem_limit: 320m
+    logging: *logging

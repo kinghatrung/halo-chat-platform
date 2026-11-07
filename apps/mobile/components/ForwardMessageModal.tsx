@@ -73,7 +73,7 @@ export const ForwardMessageModal: React.FC<ForwardMessageModalProps> = ({
           {/* Message Preview */}
           {messageToForward && (
             <View className="flex-row items-center p-3 my-3 bg-gray-50 rounded-xl border border-gray-100">
-              <Ionicons name="arrow-redo" size={18} color="#6F6BFF" />
+              <Ionicons name="arrow-redo" size={18} color="#6366F1" />
               <Text numberOfLines={1} className="flex-1 ml-2 text-sm font-medium text-gray-700">
                 {messageToForward.content || 'Tệp đính kèm'}
               </Text>
@@ -100,7 +100,7 @@ export const ForwardMessageModal: React.FC<ForwardMessageModalProps> = ({
           {/* Conversation List */}
           {isLoading ? (
             <View className="flex-1 justify-center items-center">
-              <ActivityIndicator size="large" color="#6F6BFF" />
+              <ActivityIndicator size="large" color="#6366F1" />
             </View>
           ) : (
             <FlatList
@@ -119,8 +119,8 @@ export const ForwardMessageModal: React.FC<ForwardMessageModalProps> = ({
                       {avatarUrl ? (
                         <Image source={{ uri: avatarUrl }} className="w-11 h-11 rounded-full" />
                       ) : (
-                        <View className="w-11 h-11 rounded-full bg-[#6F6BFF]/10 items-center justify-center">
-                          <Text className="text-[#6F6BFF] font-semibold text-base">
+                        <View className="w-11 h-11 rounded-full bg-[#6366F1]/10 items-center justify-center">
+                          <Text className="text-[#6366F1] font-semibold text-base">
                             {(displayName || 'C')[0].toUpperCase()}
                           </Text>
                         </View>
@@ -134,7 +134,7 @@ export const ForwardMessageModal: React.FC<ForwardMessageModalProps> = ({
                       onPress={() => handleSend(item)}
                       disabled={isDone || isSending}
                       className={`px-4 py-2 rounded-xl flex-row items-center ${
-                        isDone ? 'bg-gray-100' : 'bg-[#6F6BFF]'
+                        isDone ? 'bg-gray-100' : 'bg-[#6366F1]'
                       }`}
                     >
                       {isSending ? (

@@ -25,7 +25,17 @@ const monitoringController = {
     });
   },
 
-  metrics: async (_req: Request, res: Response) => {
+  metrics: async (req: Request, res: Response) => {
+    // Metrics expose route names and traffic. Scrapers send "Authorization: Bearer $METRICS_TOKEN";
+    // without a token configured the endpoint is open only outside production.
+    const token = process.env.METRICS_TOKEN;
+    const allowed = token
+      ? req.headers.authorization === `Bearer ${token}`
+      : process.env.NODE_ENV !== 'production';
+    if (!allowed) {
+      return res.status(403).json({ success: false, message: 'Forbidden' });
+    }
+
     res.set('Content-Type', register.contentType);
     return res.send(await register.metrics());
   },

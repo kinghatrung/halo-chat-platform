@@ -51,7 +51,7 @@ export interface StoryFont {
 }
 
 export const STORY_FONTS: StoryFont[] = [
-  { id: 'modern', name: 'Hiện đại', family: 'system-ui, -apple-system, sans-serif' },
+  { id: 'modern', name: 'Hiện đại', family: 'var(--font-app-sans), system-ui, sans-serif' },
   { id: 'serif', name: 'Trang trọng', family: 'Georgia, serif' },
   { id: 'handwriting', name: 'Viết tay', family: 'cursive, "Brush Script MT"' },
   { id: 'headline', name: 'Tiêu đề', family: '"Impact", "Arial Black", sans-serif' },

@@ -19,6 +19,8 @@ import * as Haptics from 'expo-haptics';
 
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
+  FadeInDown,
+  LinearTransition,
   runOnJS,
   useAnimatedKeyboard,
   useAnimatedStyle,
@@ -28,6 +30,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import ScreenWrapper from '@/providers/ScreenWrapper';
+import TypingDots from '@/components/TypingDots';
 import ChatInfoModal from '@/components/ChatInfoModal';
 import { useConversationDetail } from '@/hooks/useConversations';
 import { useGetMe } from '@/hooks/useAuth';
@@ -54,6 +57,10 @@ import { SwipeToReply } from '@/components/SwipeToReply';
 import { MessageComposer } from '@/components/MessageComposer';
 
 const TYPING_STOP_DELAY_MS = 2500;
+
+// Telegram-like motion: new bubbles spring up from the composer, the rest of the list glides.
+const BUBBLE_ENTER = FadeInDown.springify().damping(17).stiffness(210).mass(0.7);
+const LIST_LAYOUT = LinearTransition.springify().damping(20).stiffness(220);
 
 // ─── Image Viewer Modal with Safe Area & Swipe-to-Dismiss ─────────────────────
 
@@ -231,8 +238,8 @@ function AttachmentDisplay({
       }`}
       style={{ width: 230 }}
     >
-      <View className="mr-3 justify-center items-center w-10 h-10 rounded-xl bg-[#6f6bff]/20">
-        <Ionicons name="document-text" size={22} color="#6f6bff" />
+      <View className="mr-3 justify-center items-center w-10 h-10 rounded-xl bg-[#6366F1]/20">
+        <Ionicons name="document-text" size={22} color="#6366F1" />
       </View>
       <View className="flex-1">
         <Text
@@ -354,7 +361,7 @@ function MessageBubble({
                 avatarUrl ? (
                   <Image source={{ uri: avatarUrl }} className="w-8 h-8 rounded-full" />
                 ) : (
-                  <View className="h-8 w-8 rounded-full bg-[#6f6bff] items-center justify-center">
+                  <View className="h-8 w-8 rounded-full bg-[#6366F1] items-center justify-center">
                     <Text className="text-xs font-semibold text-white">
                       {message.senderId?.username?.charAt(0).toUpperCase() || 'U'}
                     </Text>
@@ -455,7 +462,7 @@ function MessageBubble({
                         message.attachmentIds.length > 0 &&
                         !message.content
                           ? 'p-0 bg-transparent'
-                          : `px-4 py-2 ${isMe ? 'rounded-br-xs bg-[#6f6bff] self-end' : 'rounded-bl-xs bg-white self-start'}`
+                          : `px-4 py-2 ${isMe ? 'rounded-br-xs bg-[#6366F1] self-end' : 'rounded-bl-xs bg-white self-start'}`
                       }`}
                       style={
                         message.attachmentIds &&
@@ -517,7 +524,7 @@ function MessageBubble({
                     className={`rounded-2xl ${
                       message.attachmentIds && message.attachmentIds.length > 0 && !message.content
                         ? 'p-0 bg-transparent'
-                        : `px-3.5 py-2 ${isMe ? 'rounded-br-xs bg-[#6f6bff]' : 'rounded-bl-xs bg-white'}`
+                        : `px-3.5 py-2 ${isMe ? 'rounded-br-xs bg-[#6366F1]' : 'rounded-bl-xs bg-white'}`
                     }`}
                     style={
                       message.attachmentIds && message.attachmentIds.length > 0 && !message.content
@@ -572,9 +579,9 @@ function MessageBubble({
                     }}
                   >
                     <View
-                      className="justify-center items-center w-5 h-5 bg-[#6f6bff] rounded-full"
+                      className="justify-center items-center w-5 h-5 bg-[#6366F1] rounded-full"
                       style={{
-                        shadowColor: '#6f6bff',
+                        shadowColor: '#6366F1',
                         shadowOffset: { width: 0, height: 1 },
                         shadowOpacity: 0.4,
                         shadowRadius: 2,
@@ -989,6 +996,8 @@ export default function ChatDetailScreen() {
 
   // Fullscreen Image Viewer State
   const [previewImageUri, setPreviewImageUri] = useState<string | null>(null);
+  const [openedAt] = useState(() => Date.now());
+  const didInitialScroll = useRef(false);
 
   const renderItem = useCallback(
     ({ item }: { item: ListItem }) => {
@@ -997,21 +1006,31 @@ export default function ChatDetailScreen() {
       const { message, isFirstInGroup, isLastInGroup } = item;
       if (message.type === 'system') return <SystemMessage content={message.content} />;
 
+      // Animate only what arrives while the chat is open: my optimistic "temp-" bubble, and
+      // other people's new messages. The server copy that replaces my temp bubble does not
+      // animate again, and history loaded on open appears instantly.
+      const mine = message.senderId._id === currentUserId;
+      const isNew = mine
+        ? message._id.startsWith('temp-')
+        : new Date(message.createdAt).getTime() > openedAt;
+
       return (
-        <MessageBubble
-          message={message}
-          currentUserId={currentUserId || ''}
-          isGroup={isGroup}
-          isFirstInGroup={isFirstInGroup}
-          isLastInGroup={isLastInGroup}
-          isContextMenuActive={selectedActionMessage?._id === message._id}
-          onLongPress={handleLongPressMessage}
-          onReply={(msg) => setReplyToMessage(msg)}
-          onPressImage={(url) => setPreviewImageUri(url)}
-        />
+        <Animated.View entering={isNew ? BUBBLE_ENTER : undefined}>
+          <MessageBubble
+            message={message}
+            currentUserId={currentUserId || ''}
+            isGroup={isGroup}
+            isFirstInGroup={isFirstInGroup}
+            isLastInGroup={isLastInGroup}
+            isContextMenuActive={selectedActionMessage?._id === message._id}
+            onLongPress={handleLongPressMessage}
+            onReply={(msg) => setReplyToMessage(msg)}
+            onPressImage={(url) => setPreviewImageUri(url)}
+          />
+        </Animated.View>
       );
     },
-    [currentUserId, isGroup, selectedActionMessage, handleLongPressMessage],
+    [currentUserId, isGroup, selectedActionMessage, handleLongPressMessage, openedAt],
   );
 
   const handleBackPress = () => {
@@ -1054,7 +1073,7 @@ export default function ChatDetailScreen() {
               {avatarUrl ? (
                 <Image source={{ uri: avatarUrl }} className="w-11 h-11 rounded-full" />
               ) : (
-                <View className="h-11 w-11 rounded-full bg-[#6f6bff] items-center justify-center">
+                <View className="h-11 w-11 rounded-full bg-[#6366F1] items-center justify-center">
                   <Text className="text-xl font-bold text-white">
                     {displayName.charAt(0).toUpperCase()}
                   </Text>
@@ -1067,7 +1086,7 @@ export default function ChatDetailScreen() {
                 </Text>
 
                 {convLoading ? null : isOtherTyping ? (
-                  <Text className="text-xs text-[#6f6bff] italic font-medium">Đang nhập...</Text>
+                  <TypingDots />
                 ) : isGroup ? (
                   <Text className="text-sm text-gray-500">{members.length} thành viên</Text>
                 ) : (
@@ -1107,7 +1126,7 @@ export default function ChatDetailScreen() {
         {latestPinned && (
           <Pressable
             onPress={() => setChatInfoVisible(true)}
-            className="flex-row items-center px-4 py-3 bg-[#6f6bff] active:bg-[#5B52E0]"
+            className="flex-row items-center px-4 py-3 bg-[#6366F1] active:bg-[#4F46E5]"
           >
             <View className="w-7 h-7 rounded-full bg-white/20 items-center justify-center mr-2.5">
               <FontAwesome5 name="thumbtack" size={14} color="white" />
@@ -1125,7 +1144,7 @@ export default function ChatDetailScreen() {
         <View className="flex-1 bg-[#F4F5FB]">
           {messagesLoading ? (
             <View className="flex-1 justify-center items-center">
-              <ActivityIndicator size="large" color="#6f6bff" />
+              <ActivityIndicator size="large" color="#6366F1" />
             </View>
           ) : visibleMessages.length === 0 ? (
             <View className="flex-1 justify-center items-center">
@@ -1134,15 +1153,20 @@ export default function ChatDetailScreen() {
               </Text>
             </View>
           ) : (
-            <FlatList
+            <Animated.FlatList
               ref={flatListRef}
               data={listItems}
               keyExtractor={(item) => item.key}
               renderItem={renderItem}
+              itemLayoutAnimation={LIST_LAYOUT}
               contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 14, paddingBottom: 10 }}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
-              onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
+              onContentSizeChange={() => {
+                // Jump on first load, glide for every new message after that.
+                flatListRef.current?.scrollToEnd({ animated: didInitialScroll.current });
+                didInitialScroll.current = true;
+              }}
               onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
             />
           )}
@@ -1150,11 +1174,11 @@ export default function ChatDetailScreen() {
 
         {/* ── REPLY BANNER ── */}
         {replyToMessage && (
-          <View className="flex-row justify-between items-center px-4 py-2.5 bg-white border-t-2 border-[#6f6bff]">
+          <View className="flex-row justify-between items-center px-4 py-2.5 bg-white border-t-2 border-[#6366F1]">
             <View className="flex-row flex-1 items-center mr-2">
-              <View className="mr-3 w-[3px] h-9 bg-[#6f6bff] rounded-full" />
+              <View className="mr-3 w-[3px] h-9 bg-[#6366F1] rounded-full" />
               <View className="flex-1">
-                <Text className="text-[12px] font-bold text-[#6f6bff] mb-0.5">
+                <Text className="text-[12px] font-bold text-[#6366F1] mb-0.5">
                   Trả lời {replyToMessage.senderId.username}
                 </Text>
                 <Text className="text-[12px] text-gray-500" numberOfLines={1}>
@@ -1199,7 +1223,7 @@ export default function ChatDetailScreen() {
                       </View>
                     ) : (
                       <View className="justify-center p-2 w-28 h-16 bg-gray-100 rounded-xl">
-                        <Ionicons name="document-text-outline" size={20} color="#6f6bff" />
+                        <Ionicons name="document-text-outline" size={20} color="#6366F1" />
                         <Text numberOfLines={1} className="mt-1 text-xs font-medium text-gray-700">
                           {item.name}
                         </Text>

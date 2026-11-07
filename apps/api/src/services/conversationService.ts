@@ -1,5 +1,6 @@
 import { escapeRegex } from '@/helpers';
 import crypto from 'crypto';
+import mongoose from 'mongoose';
 import Conversation from '@/models/conversation';
 import ConversationMember from '@/models/conversation_member';
 import Message from '@/models/message';
@@ -148,13 +149,15 @@ const conversationService = {
           : [];
         const matchingConvIdsFromUsers = matchingMemberships.map((m) => m.conversationId);
 
-        // 3. Find messages matching content
-        const matchingMessages = await Message.find({
+        // 3. Conversations with a message matching the text. distinct() returns only the ids,
+        // instead of loading every matching message document into memory.
+        // shortcut: still a substring scan of this user's messages (keeps "type-ahead" matching);
+        // switch to the existing $text index or Atlas Search once histories get large.
+        const matchingConvIdsFromMessages = await Message.distinct('conversationId', {
           conversationId: { $in: conversationIds },
           content: queryRegex,
           isDeleted: false,
-        }).select('conversationId');
-        const matchingConvIdsFromMessages = matchingMessages.map((m) => m.conversationId);
+        });
 
         const matchedConvIds = Array.from(
           new Set([
@@ -202,22 +205,30 @@ const conversationService = {
         : [];
       const lastMessageById = new Map(lastMessages.map((m) => [String(m._id), m]));
 
-      const unreadCounts = await Promise.all(
-        items.map((conversation) => {
-          const lastReadMessageId = lastReadMessageIdByConversationId.get(String(conversation._id));
-          const unreadFilter: any = {
-            conversationId: conversation._id,
-            isDeleted: false,
-            senderId: { $ne: userId },
-          };
-          if (lastReadMessageId) {
-            unreadFilter._id = { $gt: lastReadMessageId };
-          }
-          return Message.countDocuments(unreadFilter);
-        }),
-      );
+      // One aggregate for the whole page instead of one count query per conversation.
+      // (aggregate does not cast types, hence the explicit ObjectIds.)
+      const unreadRows = items.length
+        ? await Message.aggregate<{ _id: mongoose.Types.ObjectId; count: number }>([
+            {
+              $match: {
+                isDeleted: false,
+                senderId: { $ne: new mongoose.Types.ObjectId(userId) },
+                $or: items.map((conversation) => {
+                  const lastReadMessageId = lastReadMessageIdByConversationId.get(
+                    String(conversation._id),
+                  );
+                  return lastReadMessageId
+                    ? { conversationId: conversation._id, _id: { $gt: lastReadMessageId } }
+                    : { conversationId: conversation._id };
+                }),
+              },
+            },
+            { $group: { _id: '$conversationId', count: { $sum: 1 } } },
+          ])
+        : [];
+      const unreadByConversationId = new Map(unreadRows.map((r) => [String(r._id), r.count]));
 
-      const enrichedItems = items.map((conversation, index) => ({
+      const enrichedItems = items.map((conversation) => ({
         ...conversation.toObject(),
         memberSetting: settingByConversationId.get(String(conversation._id)) || null,
         otherMember:
@@ -227,7 +238,7 @@ const conversationService = {
         lastMessage: conversation.lastMessageId
           ? lastMessageById.get(String(conversation.lastMessageId)) || null
           : null,
-        unreadCount: unreadCounts[index],
+        unreadCount: unreadByConversationId.get(String(conversation._id)) || 0,
       }));
 
       const totalPages = Math.ceil(total / pageSize);

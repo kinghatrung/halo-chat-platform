@@ -35,7 +35,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <Flex style={{ height: '100vh' }}>
-      <div style={{ width: 220, borderRight: '1px solid #eef0f7', background: '#fff' }}>
+      <div
+        style={{ width: 220, borderRight: '1px solid var(--border)', background: 'var(--surface)' }}
+      >
         <div style={{ padding: '20px 16px', fontWeight: 600, fontSize: 16 }}>Quản trị hệ thống</div>
         <Menu
           mode="inline"
@@ -45,7 +47,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           style={{ border: 'none' }}
         />
       </div>
-      <div style={{ flex: 1, overflowY: 'auto', padding: 24, background: '#f4f5fb' }}>{children}</div>
+      <div style={{ flex: 1, overflowY: 'auto', padding: 24, background: 'var(--background)' }}>
+        {children}
+      </div>
     </Flex>
   );
 }

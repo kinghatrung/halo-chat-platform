@@ -80,30 +80,6 @@ export default function SearchOverlayModal({
     inputRef.current?.focus();
   };
 
-  useEffect(() => {
-    if (visible) {
-      setIsMounted(true);
-      loadRecentSearches();
-
-      progress.value = 0;
-      // Ultra-smooth spring physics for fluid GPU transition
-      progress.value = withSpring(1, {
-        damping: 26,
-        stiffness: 280,
-        mass: 0.8,
-      });
-
-      // Focus text input after morph transition completes to prevent keyboard stutter
-      const focusTimer = setTimeout(() => {
-        runOnJS(focusInput)();
-      }, 200);
-
-      return () => clearTimeout(focusTimer);
-    } else if (isMounted) {
-      handleCloseAnimation();
-    }
-  }, [visible]);
-
   const completeClose = () => {
     setIsMounted(false);
     setSearchQuery('');
@@ -114,17 +90,12 @@ export default function SearchOverlayModal({
     inputRef.current?.blur();
     Keyboard.dismiss();
 
-    progress.value = withTiming(
-      0,
-      {
-        duration: 220,
-        easing: Easing.bezier(0.25, 1, 0.5, 1),
-      },
-      (finished) => {
+    progress.set(
+      withTiming(0, { duration: 220, easing: Easing.bezier(0.25, 1, 0.5, 1) }, (finished) => {
         if (finished) {
           runOnJS(completeClose)();
         }
-      },
+      }),
     );
   };
 
@@ -138,6 +109,25 @@ export default function SearchOverlayModal({
       console.error('Error loading recent searches:', error);
     }
   };
+
+  // Keeps the overlay mounted while the close animation runs; runs only when `visible` flips.
+  useEffect(() => {
+    if (visible) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- mount before the open animation starts
+      setIsMounted(true);
+      loadRecentSearches();
+
+      progress.set(0);
+      progress.set(withSpring(1, { damping: 26, stiffness: 280, mass: 0.8 }));
+
+      // Focus after the morph transition so the keyboard does not stutter the animation.
+      const focusTimer = setTimeout(focusInput, 200);
+      return () => clearTimeout(focusTimer);
+    } else if (isMounted) {
+      handleCloseAnimation();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- re-run on visibility change only
+  }, [visible]);
 
   const saveRecentSearch = async (term: string) => {
     const trimmed = term.trim();
@@ -398,7 +388,7 @@ export default function SearchOverlayModal({
                 <Pressable
                   key={cat.id}
                   onPress={() => setActiveCategory(cat.id as SearchCategory)}
-                  className={`px-3.5 py-1.5 rounded-full ${active ? 'bg-[#7B5CFA]' : 'bg-[#F3F4F6]'}`}
+                  className={`px-3.5 py-1.5 rounded-full ${active ? 'bg-[#7C5CF6]' : 'bg-[#F3F4F6]'}`}
                 >
                   <Text
                     className={`text-sm font-semibold ${active ? 'text-white' : 'text-[#4B5563]'}`}
@@ -421,7 +411,7 @@ export default function SearchOverlayModal({
                 <View className="flex-row justify-between items-center mb-2">
                   <Text className="text-[15px] font-bold text-gray-900">Tìm kiếm gần đây</Text>
                   <Pressable onPress={handleClearAllRecent} hitSlop={8}>
-                    <Text className="text-xs font-semibold text-[#7B5CFA]">Xóa tất cả</Text>
+                    <Text className="text-xs font-semibold text-[#7C5CF6]">Xóa tất cả</Text>
                   </Pressable>
                 </View>
 
@@ -478,7 +468,7 @@ export default function SearchOverlayModal({
                         className="mr-3 w-11 h-11 bg-gray-200 rounded-full"
                       />
                     ) : (
-                      <View className="w-11 h-11 rounded-full bg-[#7B5CFA] items-center justify-center mr-3">
+                      <View className="w-11 h-11 rounded-full bg-[#7C5CF6] items-center justify-center mr-3">
                         <Text className="text-lg font-bold text-white">
                           {name.charAt(0).toUpperCase()}
                         </Text>
@@ -530,7 +520,7 @@ export default function SearchOverlayModal({
                         className="mr-3 w-11 h-11 rounded-full"
                       />
                     ) : (
-                      <View className="w-11 h-11 rounded-full bg-[#7B5CFA] items-center justify-center mr-3">
+                      <View className="w-11 h-11 rounded-full bg-[#7C5CF6] items-center justify-center mr-3">
                         <Text className="text-lg font-bold text-white">
                           {(item.username || 'U').charAt(0).toUpperCase()}
                         </Text>
@@ -567,7 +557,7 @@ export default function SearchOverlayModal({
                         className="mr-3 w-11 h-11 rounded-full"
                       />
                     ) : (
-                      <View className="w-11 h-11 rounded-full bg-[#6344F5] items-center justify-center mr-3">
+                      <View className="w-11 h-11 rounded-full bg-[#6366F1] items-center justify-center mr-3">
                         <Ionicons name="people" size={20} color="#FFF" />
                       </View>
                     )}
@@ -607,7 +597,7 @@ export default function SearchOverlayModal({
                       className="flex-row items-center px-2 py-3 rounded-xl active:bg-gray-100"
                     >
                       <View className="justify-center items-center mr-3 w-10 h-10 bg-purple-50 rounded-full">
-                        <Ionicons name="chatbubble-ellipses-outline" size={20} color="#7B5CFA" />
+                        <Ionicons name="chatbubble-ellipses-outline" size={20} color="#7C5CF6" />
                       </View>
                       <View className="flex-1 justify-center">
                         <Text className="text-[16px] font-semibold text-gray-900">{title}</Text>

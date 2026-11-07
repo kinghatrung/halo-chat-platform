@@ -53,7 +53,7 @@ export default function StoryItem({
         {avatar ? (
           <Image source={{ uri: avatar }} className="w-full h-full rounded-full" />
         ) : (
-          <View className="h-full w-full rounded-full bg-[#7B5CFA] items-center justify-center">
+          <View className="h-full w-full rounded-full bg-[#7C5CF6] items-center justify-center">
             <Text className="text-lg font-bold text-white">{name.charAt(0).toUpperCase()}</Text>
           </View>
         )}

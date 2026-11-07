@@ -48,6 +48,8 @@ axiosClient.interceptors.response.use(
           (window.location.pathname === '/signin' || window.location.pathname === '/signup');
 
         if (typeof window !== 'undefined' && !isPublicPage) {
+          // Full reload on purpose: drops every cached query/socket of the expired session.
+          // eslint-disable-next-line @next/next/no-location-assign-relative-destination
           window.location.href = '/signin';
         }
         return Promise.reject(refreshError);
