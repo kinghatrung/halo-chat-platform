@@ -45,12 +45,16 @@ const StoryViewerModal = ({ open, onClose, userId, currentUserId }: StoryViewerM
   const { data: viewersData } = useStoryViewers(activeStory?._id ?? '', isOwn && open);
   const viewers = viewersData?.data.viewers ?? [];
 
-  useEffect(() => {
+  // Start from the first story each time the viewer opens (reset during render, not in an effect).
+  const resetKey = `${open}:${userId}`;
+  const [lastResetKey, setLastResetKey] = useState(resetKey);
+  if (resetKey !== lastResetKey) {
+    setLastResetKey(resetKey);
     if (open) {
       setIndex(0);
       setReplyText('');
     }
-  }, [open, userId]);
+  }
 
   useEffect(() => {
     if (!open || stories.length === 0) return;

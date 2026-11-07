@@ -104,5 +104,8 @@ UserSchema.index({ username: 1 }, { unique: true });
 // Full-text search over username
 UserSchema.index({ username: 'text' });
 
+// Fields any logged-in user may see about another user (no email, role or lock details).
+export const PUBLIC_USER_FIELDS = '_id username avatar status bio lastSeen';
+
 const User = mongoose.model<IUser>('User', UserSchema);
 export default User;

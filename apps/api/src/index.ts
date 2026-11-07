@@ -29,6 +29,7 @@ import { httpRequestsTotal } from '@/config/metrics';
 
 import User from '@/models/user';
 import { clearAllOnlineUsers } from '@/socket/onlineUsers';
+import { corsOrigin } from '@/config/cors';
 
 const PORT = process.env.API_PORT || process.env.PORT || 5000;
 
@@ -43,19 +44,19 @@ clearAllOnlineUsers().catch((err) =>
   console.error('Failed to clear Redis online keys on startup:', err),
 );
 
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  }),
-);
+// A malformed socket payload must not take the whole server down (Node exits on unhandled rejections).
+process.on('unhandledRejection', (reason) => console.error('Unhandled rejection:', reason));
+
+app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(morgan('dev'));
 
 app.use((req, res, next) => {
   res.on('finish', () => {
-    httpRequestsTotal.inc({ method: req.method, route: req.path, status: res.statusCode });
+    // Route pattern, not req.path: raw paths contain ids and would create one metric series per id.
+    const route = req.route ? `${req.baseUrl}${req.route.path}` : 'unmatched';
+    httpRequestsTotal.inc({ method: req.method, route, status: res.statusCode });
   });
   next();
 });

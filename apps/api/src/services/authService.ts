@@ -9,12 +9,11 @@ const authService = {
   login: async (email: string, password: string) => {
     try {
       if (!email || !password) throw Error('Mật khẩu và email không được để trống!');
-      const user = await User.findOne({ email }).select('+password');
-      if (!user) throw Error('Không tìm thấy người dùng này!');
-      if (password.length < 8) throw new Error('Mật khẩu phải có ít nhất 8 ký tự!');
-
-      const validatePassword = await bcrypt.compare(password, user.password);
-      if (!validatePassword) throw Error('Mật khẩu không chính xác!');
+      // String() blocks {"$ne": null}-style operator injection from the JSON body.
+      const user = await User.findOne({ email: String(email) }).select('+password');
+      // One message for both cases so the login form can't be used to test which emails exist.
+      const isValid = user && (await bcrypt.compare(String(password), user.password));
+      if (!user || !isValid) throw new Error('Email hoặc mật khẩu không chính xác!');
 
       if (user.accountStatus === 'locked') {
         throw new Error(
@@ -118,6 +117,9 @@ const authService = {
       if (!user) {
         throw new Error('User not found!');
       }
+      if (user.accountStatus === 'locked') {
+        throw new Error('Tài khoản của bạn đã bị khóa!');
+      }
 
       const payload = {
         id: user._id,
@@ -174,7 +176,12 @@ const authService = {
     }
   },
 
-  changePassword: async (userId: string, oldPass: string, newPass: string) => {
+  changePassword: async (
+    userId: string,
+    oldPass: string,
+    newPass: string,
+    currentRefreshToken?: string,
+  ) => {
     try {
       if (!oldPass || !newPass) {
         throw new Error('Vui lòng cung cấp mật khẩu cũ và mật khẩu mới!');
@@ -192,6 +199,9 @@ const authService = {
       const hashedNewPassword = await bcrypt.hash(newPass, 12);
       user.password = hashedNewPassword;
       await user.save();
+
+      // A changed password must end sessions on other devices (e.g. a stolen one); keep this device.
+      await RefreshToken.deleteMany({ userId, token: { $ne: currentRefreshToken } });
 
       return { success: true };
     } catch (error) {

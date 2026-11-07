@@ -27,7 +27,7 @@ export const registerCallHandlers = (io: Server, socket: Socket) => {
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Không thể chấp nhận cuộc gọi!';
       ack?.({ success: false, error: message });
-      socket.emit('call:error', { callId: payload.callId, message });
+      socket.emit('call:error', { callId: payload?.callId, message });
     }
   });
 

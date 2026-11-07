@@ -11,7 +11,7 @@ import { IMAGE_MIME_TYPES, MAX_IMAGE_SIZE } from '@/config/upload';
 
 const THUMBNAIL_MAX_DIMENSION = 320;
 
-const assertCanAccess = async (userId: string, attachment: IAttachment) => {
+export const assertCanAccess = async (userId: string, attachment: IAttachment) => {
   if (String(attachment.uploaderId) === userId) {
     return;
   }

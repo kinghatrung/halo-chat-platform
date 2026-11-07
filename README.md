@@ -131,13 +131,19 @@ hudu-chat-app/
    ```
 
 3. **Cấu hình biến môi trường:**
-   Tạo file `.env` tại thư mục `apps/api/.env` (tham khảo `.env.example` nếu có):
+   Copy `apps/api/.env.example` thành `apps/api/.env` và điền giá trị. Tối thiểu cần:
 
    ```env
    PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/halo_chat
-   JWT_SECRET=your_super_secret_key
+   MONGODB_CONNECT_URL=mongodb://localhost:27017/halo_chat
+   CLIENT_URL=http://localhost:3000
+   JWT_ACCESS_TOKEN=chuoi_bi_mat_1
+   JWT_REFRESH_TOKEN=chuoi_bi_mat_2
+   REDIS_URL=redis://localhost:6379
    ```
+
+   Redis là bắt buộc (presence, Socket.IO adapter, hàng đợi push): `docker compose up -d redis`.
+   Mobile: copy `apps/mobile/.env.example` thành `apps/mobile/.env` và trỏ tới IP máy chạy API.
 
 4. **Khởi chạy ứng dụng (Chế độ phát triển):**
    ```bash

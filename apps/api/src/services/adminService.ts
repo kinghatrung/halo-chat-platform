@@ -1,4 +1,6 @@
+import { escapeRegex, toPageSize } from '@/helpers';
 import User from '@/models/user';
+import RefreshToken from '@/models/refresh_token';
 import Message from '@/models/message';
 import Conversation from '@/models/conversation';
 import { sanitizeText } from '@/helpers/sanitize';
@@ -15,7 +17,7 @@ const adminService = {
   }) => {
     try {
       const page = Math.max(1, Number(options.page) || 1);
-      const pageSize = Math.max(1, Number(options.pageSize) || 20);
+      const pageSize = toPageSize(options.pageSize, 20);
       const skip = (page - 1) * pageSize;
 
       const filter: any = {};
@@ -24,8 +26,8 @@ const adminService = {
       }
       if (options.q) {
         filter.$or = [
-          { username: { $regex: options.q, $options: 'i' } },
-          { email: { $regex: options.q, $options: 'i' } },
+          { username: { $regex: escapeRegex(options.q), $options: 'i' } },
+          { email: { $regex: escapeRegex(options.q), $options: 'i' } },
         ];
       }
 
@@ -64,6 +66,11 @@ const adminService = {
       user.lockReason = data.status === 'locked' ? sanitizeText(data.reason) || '' : null;
       user.lockedAt = data.status === 'locked' ? new Date() : null;
       await user.save();
+
+      // Without this a locked user keeps refreshing access tokens for up to 7 days.
+      if (data.status === 'locked') {
+        await RefreshToken.deleteMany({ userId: targetUserId });
+      }
 
       const { password, ...safeUser } = user.toObject();
       return safeUser;

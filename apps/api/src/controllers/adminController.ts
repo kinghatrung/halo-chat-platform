@@ -5,14 +5,8 @@ import { sendSuccess, sendError } from '@/helpers';
 import { logger } from '@/helpers/logger';
 import { getIO } from '@/socket';
 
-const disconnectUserSockets = (userId: string) => {
-  const io = getIO();
-  const room = io.sockets.adapter.rooms.get(`user:${userId}`);
-  if (!room) return;
-  for (const socketId of room) {
-    io.sockets.sockets.get(socketId)?.disconnect(true);
-  }
-};
+// Goes through the Redis adapter, so sockets on every server instance are closed, not just this one.
+const disconnectUserSockets = (userId: string) => getIO().in(`user:${userId}`).disconnectSockets(true);
 
 const adminController = {
   getReports: async (req: Request, res: Response) => {

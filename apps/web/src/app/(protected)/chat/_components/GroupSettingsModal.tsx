@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { App, Avatar, Button, Empty, Flex, Input, Modal, Skeleton, Tag, Typography } from 'antd';
 import {
   SearchOutlined,
@@ -54,9 +54,13 @@ const GroupSettingsModal = ({
   const [memberQuery, setMemberQuery] = useState('');
   const debouncedQuery = useDebouncedValue(memberQuery, 350);
 
-  useEffect(() => {
+  // Reset the name field when the modal (re)opens; done during render, not in an effect (React docs pattern).
+  const resetKey = `${open}:${conversationName}`;
+  const [lastResetKey, setLastResetKey] = useState(resetKey);
+  if (resetKey !== lastResetKey) {
+    setLastResetKey(resetKey);
     if (open) setName(conversationName || '');
-  }, [open, conversationName]);
+  }
 
   const { data: searchData, isLoading: searchLoading } = useFriends({
     q: debouncedQuery,

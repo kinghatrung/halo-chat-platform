@@ -30,7 +30,7 @@ export const authService = {
   logoutAll: async () => {
     return axiosClient.post<never, ApiResponse<null>>('/auth/logout-all');
   },
-  refresh: async (refreshToken: string) => {
+  refresh: async (refreshToken?: string) => {
     return axiosClient.post<never, ApiResponse<{ accessToken: string }>>('/auth/refresh', {
       refreshToken,
     });

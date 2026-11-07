@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import conversationService from '@/services/conversationService';
 import attachmentService from '@/services/attachmentService';
-import { sendSuccess, sendError } from '@/helpers';
+import { sendSuccess, sendError, toPageSize } from '@/helpers';
 
 const conversationController = {
   createDirectConversation: async (req: Request, res: Response) => {
@@ -58,7 +58,7 @@ const conversationController = {
       }
 
       const page = Math.max(1, Number(req.query.page) || 1);
-      const pageSize = Math.max(1, Number(req.query.pageSize) || 20);
+      const pageSize = toPageSize(req.query.pageSize, 20);
       const q = req.query.q ? String(req.query.q) : undefined;
 
       const result = await conversationService.listMyConversations(

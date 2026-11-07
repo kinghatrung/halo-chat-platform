@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
-  const token = cookieStore.get('accessToken');
+  // The access cookie lives 15 min; the refresh cookie keeps the session, axios refreshes on first 401.
+  const token = cookieStore.has('accessToken') || cookieStore.has('refreshToken');
   if (!token) {
     redirect('/signin');
   }

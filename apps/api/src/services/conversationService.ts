@@ -1,3 +1,4 @@
+import { escapeRegex } from '@/helpers';
 import crypto from 'crypto';
 import Conversation from '@/models/conversation';
 import ConversationMember from '@/models/conversation_member';
@@ -132,7 +133,7 @@ const conversationService = {
 
       let filter: any = { _id: { $in: conversationIds } };
       if (q && q.trim()) {
-        const queryRegex = { $regex: q.trim(), $options: 'i' };
+        const queryRegex = { $regex: escapeRegex(q.trim()), $options: 'i' };
 
         // 1. Find users whose username matches query
         const matchingUsers = await User.find({ username: queryRegex }).select('_id');

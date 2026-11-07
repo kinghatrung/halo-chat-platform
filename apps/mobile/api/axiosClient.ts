@@ -2,9 +2,11 @@ import axios, { type AxiosError, type AxiosResponse, type InternalAxiosRequestCo
 
 import { useAuthStore } from '@/stores/auth';
 import { authService } from '@/services/auth.service';
+import { queryClient } from '@/api/query';
+import { API_BASE } from '@/utils/url';
 
 const axiosClient = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.23:5000/api',
+  baseURL: API_BASE,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -53,8 +55,10 @@ axiosClient.interceptors.response.use(
       _retry?: boolean;
     };
 
-    // Only handle 401 errors that have not already been retried
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    // Only handle 401 errors that have not already been retried. Auth routes are skipped: a 401
+    // from /auth/refresh itself would otherwise queue behind the refresh it belongs to and hang.
+    const isAuthRoute = /\/auth\/(login|refresh|register)/.test(originalRequest?.url || '');
+    if (error.response?.status !== 401 || !originalRequest || originalRequest._retry || isAuthRoute) {
       return Promise.reject(error);
     }
 
@@ -87,8 +91,6 @@ axiosClient.interceptors.response.use(
       const result = await authService.refresh(refreshToken);
       const newAccessToken = result.data.accessToken;
 
-      console.log('newAccessToken', newAccessToken);
-
       // Persist the new access token
       useAuthStore.getState().setAccessToken(newAccessToken);
 
@@ -103,6 +105,7 @@ axiosClient.interceptors.response.use(
       processQueue(refreshError, null);
       authService.logout().catch(() => {}); // best-effort – tokens are already invalid
       useAuthStore.getState().logout();
+      queryClient.clear(); // otherwise the next account on this device sees the old user's cache
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;

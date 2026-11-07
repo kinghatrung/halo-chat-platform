@@ -3,8 +3,8 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Resolve and set default ports API_PORT (3001) and PORT (7860)
-export API_PORT=${API_PORT:-3001}
+# Resolve and set default ports API_PORT (5000, must match the port next.config.ts rewrites to at build time) and PORT (7860)
+export API_PORT=${API_PORT:-5000}
 export PORT=${PORT:-7860}
 
 echo "Starting Express API on port $API_PORT..."

@@ -33,8 +33,8 @@ const RefreshTokenSchema: Schema = new Schema(
   },
 );
 
-// Index for automatic deletion after expiration (optional, set up in MongoDB)
-// RefreshTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+// Mongo deletes expired tokens itself; without this the collection grows by one row per login forever.
+RefreshTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const RefreshToken = mongoose.model<IRefreshToken>('RefreshToken', RefreshTokenSchema);
 export default RefreshToken;

@@ -11,6 +11,7 @@ import type { Message, ListMessagesResult, SendMessagePayload } from '@/types/me
 import type { ConversationListItem } from '@/types/conversation';
 import type { NotificationItem } from '@/types/notification';
 import type { ApiResponse, PagedResult } from '@/types/api';
+import { authService } from '@/services/auth.service';
 
 interface SocketContextValue {
   socket: Socket;
@@ -58,10 +59,22 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
 
     socket.connect();
 
-    const onConnect = () => setConnected(true);
+    let authRetried = false;
+    const onConnect = () => {
+      authRetried = false;
+      setConnected(true);
+    };
     const onDisconnect = () => setConnected(false);
     const onConnectError = (err: Error) => {
       console.error('Socket connect_error:', err.message);
+      // Expired access cookie: socket.io does not retry auth errors, so refresh and reconnect once.
+      // If refresh fails, the next API call's 401 sends the user to /signin.
+      if (err.message !== 'unauthorized' || authRetried) return;
+      authRetried = true;
+      authService
+        .refresh()
+        .then(() => socket.connect())
+        .catch(() => {});
     };
 
     const patchMessagesCache = (
@@ -152,7 +165,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     }: {
       messageId: string;
       conversationId: string;
-      reactions: any[];
+      reactions: Message['reactions'];
       message?: Message;
     }) => {
       patchMessagesCache(conversationId, (result) => ({

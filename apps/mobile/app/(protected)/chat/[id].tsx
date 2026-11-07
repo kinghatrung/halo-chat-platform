@@ -45,6 +45,7 @@ import { resolvePresence, useChatStore } from '@/stores/chat';
 import * as ImagePicker from 'expo-image-picker';
 import { attachmentService, type MobileFile } from '@/services/attachment.service';
 import type { Message, MessageAttachment, MessageType } from '@/types/message';
+import { buildAttachmentUrl as getAttachmentUrl } from '@/utils/url';
 import {
   FloatingMessageContextMenu,
   MessageBubbleLayout,
@@ -166,23 +167,6 @@ const isSameDayStr = (a: string, b: string) => {
 };
 
 // ─── Attachment Component ──────────────────────────────────────────────────────
-
-const API_BASE = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.7:5000/api';
-const SERVER_URL = API_BASE.replace(/\/api\/?$/, '');
-
-const getAttachmentUrl = (url: string) => {
-  if (!url) return '';
-  if (
-    url.startsWith('http://') ||
-    url.startsWith('https://') ||
-    url.startsWith('file://') ||
-    url.startsWith('content://')
-  ) {
-    return url;
-  }
-  const cleanPath = url.startsWith('/') ? url : `/${url}`;
-  return `${SERVER_URL}${cleanPath}`;
-};
 
 function AttachmentDisplay({
   attachment,

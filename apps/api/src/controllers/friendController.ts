@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import friendService from '@/services/friendService';
-import { sendSuccess, sendError } from '@/helpers';
+import { sendSuccess, sendError, toPageSize } from '@/helpers';
 
 const friendController = {
   sendRequest: async (req: Request, res: Response) => {
@@ -88,7 +88,7 @@ const friendController = {
 
       const q = String(req.query.q || '');
       const page = Math.max(1, Number(req.query.page) || 1);
-      const pageSize = Math.max(1, Number(req.query.pageSize) || 10);
+      const pageSize = toPageSize(req.query.pageSize, 10);
 
       const result = await friendService.getFriends(String(currentUserId), q, page, pageSize);
       return sendSuccess(res, result, 'Get friends success', 200);

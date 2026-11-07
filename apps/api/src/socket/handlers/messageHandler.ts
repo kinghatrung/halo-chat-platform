@@ -25,8 +25,8 @@ export const registerMessageHandlers = (io: Server, socket: Socket) => {
 
       if (isRateLimited(`message:send:${userId}`, SEND_MESSAGE_WINDOW_MS, SEND_MESSAGE_MAX)) {
         const errorMessage = 'Bạn đang gửi tin nhắn quá nhanh. Vui lòng thử lại sau!';
-        ack?.({ success: false, error: errorMessage, tempId: payload.tempId });
-        socket.emit('message:error', { tempId: payload.tempId, message: errorMessage });
+        ack?.({ success: false, error: errorMessage, tempId: payload?.tempId });
+        socket.emit('message:error', { tempId: payload?.tempId, message: errorMessage });
         return;
       }
 
@@ -40,17 +40,17 @@ export const registerMessageHandlers = (io: Server, socket: Socket) => {
 
         io.to(`conversation:${payload.conversationId}`).emit('message:created', {
           message,
-          tempId: payload.tempId,
+          tempId: payload?.tempId,
         });
 
         await notificationService.notifyNewMessage(io, message, payload.conversationId, userId);
 
-        ack?.({ success: true, data: message, tempId: payload.tempId });
+        ack?.({ success: true, data: message, tempId: payload?.tempId });
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Gửi tin nhắn thất bại!';
         logger.error('socket message:send failed', error);
-        ack?.({ success: false, error: errorMessage, tempId: payload.tempId });
-        socket.emit('message:error', { tempId: payload.tempId, message: errorMessage });
+        ack?.({ success: false, error: errorMessage, tempId: payload?.tempId });
+        socket.emit('message:error', { tempId: payload?.tempId, message: errorMessage });
       }
     },
   );

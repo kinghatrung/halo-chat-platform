@@ -8,6 +8,8 @@ import { useChatStore } from '@/stores/chat';
 import type { Message, ListMessagesResult, SendMessagePayload } from '@/types/message';
 import type { ConversationListItem } from '@/types/conversation';
 import type { ApiResponse, PagedResult } from '@/types/api';
+import { authService } from '@/services/auth.service';
+import { useAuthStore } from '@/stores/auth';
 
 interface SocketContextValue {
   socket: Socket;
@@ -30,8 +32,6 @@ export function useSocketContext() {
   }
   return ctx;
 }
-
-import { useAuthStore } from '@/stores/auth';
 
 export function SocketProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
@@ -58,10 +58,26 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
 
     socket.connect();
 
-    const onConnect = () => setConnected(true);
+    let authRetried = false;
+    const onConnect = () => {
+      authRetried = false;
+      setConnected(true);
+    };
     const onDisconnect = () => setConnected(false);
-    const onConnectError = (err: Error) => {
+    const onConnectError = async (err: Error) => {
       console.error('Socket connect_error:', err.message);
+      // Server rejects an expired access token and socket.io does not retry auth errors by itself.
+      const { refreshToken, setAccessToken, logout } = useAuthStore.getState();
+      if (err.message !== 'unauthorized' || !refreshToken || authRetried) return;
+      authRetried = true;
+      try {
+        const res = await authService.refresh(refreshToken);
+        setAccessToken(res.data.accessToken);
+        socket.auth = { token: res.data.accessToken };
+        socket.connect();
+      } catch {
+        logout();
+      }
     };
 
     const patchMessagesCache = (

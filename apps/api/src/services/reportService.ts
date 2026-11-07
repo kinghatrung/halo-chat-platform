@@ -1,3 +1,4 @@
+import { toPageSize } from '@/helpers';
 import Report from '@/models/report';
 import Message from '@/models/message';
 import User from '@/models/user';
@@ -67,7 +68,7 @@ const reportService = {
   listReports: async (options: { status?: string; page?: number; pageSize?: number }) => {
     try {
       const page = Math.max(1, Number(options.page) || 1);
-      const pageSize = Math.max(1, Number(options.pageSize) || 20);
+      const pageSize = toPageSize(options.pageSize, 20);
       const skip = (page - 1) * pageSize;
 
       const filter: any = {};

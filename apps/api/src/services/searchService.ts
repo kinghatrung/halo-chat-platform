@@ -1,3 +1,4 @@
+import { escapeRegex } from '@/helpers';
 import mongoose from 'mongoose';
 import Message from '@/models/message';
 import Conversation from '@/models/conversation';
@@ -61,7 +62,7 @@ const searchService = {
 
       const filter: any = { _id: { $in: conversationIds } };
       if (keyword) {
-        filter.name = { $regex: keyword, $options: 'i' };
+        filter.name = { $regex: escapeRegex(keyword), $options: 'i' };
       }
 
       const items = await Conversation.find(filter)
@@ -82,7 +83,7 @@ const searchService = {
         return { users: [], conversations: [], messages: [] };
       }
 
-      const regex = { $regex: keyword, $options: 'i' };
+      const regex = { $regex: escapeRegex(keyword), $options: 'i' };
 
       // 1. Search Accepted Friends only
       const friendsResult = await friendService.getFriends(userId, keyword, 1, 10);

@@ -13,15 +13,13 @@ import { registerTypingHandlers } from '@/socket/handlers/typingHandler';
 import { registerReadHandlers } from '@/socket/handlers/readHandler';
 import { registerCallHandlers } from '@/socket/handlers/callHandler';
 import callService from '@/services/callService';
+import { corsOrigin } from '@/config/cors';
 
 let io: Server | null = null;
 
 export const initSocket = (server: HttpServer) => {
   io = new Server(server, {
-    cors: {
-      origin: true,
-      credentials: true,
-    },
+    cors: { origin: corsOrigin, credentials: true },
   });
 
   const pubClient = attachErrorHandler(redisClient.duplicate(), 'socket.io pub client');

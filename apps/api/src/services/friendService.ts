@@ -1,3 +1,4 @@
+import { escapeRegex } from '@/helpers';
 import User from '@/models/user';
 import Friend from '@/models/friend';
 import { getIO } from '@/socket';
@@ -135,8 +136,8 @@ const friendService = {
 
       if (q) {
         filter.$or = [
-          { username: { $regex: q, $options: 'i' } },
-          { email: { $regex: q, $options: 'i' } },
+          { username: { $regex: escapeRegex(q), $options: 'i' } },
+          { email: { $regex: escapeRegex(q), $options: 'i' } },
         ];
       }
 

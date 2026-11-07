@@ -1,3 +1,4 @@
+import { toPageSize } from '@/helpers';
 import { Server } from 'socket.io';
 import Notification from '@/models/notification';
 import ConversationMember from '@/models/conversation_member';
@@ -44,9 +45,10 @@ const notificationService = {
       const members = await ConversationMember.find({
         conversationId,
         userId: { $ne: senderId },
-      }).select('userId');
+      }).select('userId mutedUntil');
 
       if (members.length === 0) return;
+      const now = new Date();
 
       const senderName = message.senderId?.username || 'Ai đó';
       const content = `${senderName}: ${buildMessagePreview(message)}`;
@@ -62,6 +64,9 @@ const notificationService = {
           // chat, or another tab) — mirror message:created to their user room so
           // the conversations list can still reorder/preview in realtime.
           io.to(`user:${recipientId}`).emit('message:created', { message });
+
+          // Muted conversation: the list still updates, but no notification or push.
+          if (member.mutedUntil && member.mutedUntil > now) return;
 
           const notification = await Notification.create({
             userId: recipientId,
@@ -95,7 +100,7 @@ const notificationService = {
   ) => {
     try {
       const page = Math.max(1, Number(options.page) || 1);
-      const pageSize = Math.max(1, Number(options.pageSize) || 20);
+      const pageSize = toPageSize(options.pageSize, 20);
       const skip = (page - 1) * pageSize;
 
       const filter: any = { userId };

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import userService from '@/services/userService';
-import { sendSuccess, sendError } from '@/helpers';
+import { sendSuccess, sendError, toPageSize } from '@/helpers';
 import { getIO } from '@/socket';
 
 const userController = {
@@ -37,7 +37,7 @@ const userController = {
 
       const q = String(req.query.q || '');
       const page = Math.max(1, Number(req.query.page) || 1);
-      const pageSize = Math.max(1, Number(req.query.pageSize) || 10);
+      const pageSize = toPageSize(req.query.pageSize, 10);
 
       const result = await userService.searchUsers(String(currentUserId), q, page, pageSize);
       return sendSuccess(res, result, 'Search users success', 200);
@@ -108,7 +108,7 @@ const userController = {
       }
 
       const page = Math.max(1, Number(req.query.page) || 1);
-      const pageSize = Math.max(1, Number(req.query.pageSize) || 10);
+      const pageSize = toPageSize(req.query.pageSize, 10);
 
       const result = await userService.getBlockedUsers(String(currentUserId), page, pageSize);
       return sendSuccess(res, result, 'Get blocked users success', 200);

@@ -20,3 +20,9 @@ apps/**/dist/
 
 apps/api/package-lock.json
 apps/web/package-lock.json
+
+# build output in any folder (web/.next was committed by mistake)
+**/.next/
+# local verification files (contained session cookies)
+.scratch_verify/
+apps/mobile/.env

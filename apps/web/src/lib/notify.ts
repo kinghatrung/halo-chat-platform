@@ -1,5 +1,5 @@
-import type { NotificationArgsProps, ModalFuncProps } from 'antd';
-import type { message, notification, Modal } from 'antd';
+import type { NotificationArgsProps } from 'antd';
+import type { message, notification } from 'antd';
 
 export let messageApi: ReturnType<typeof message.useMessage>[0];
 

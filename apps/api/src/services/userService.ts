@@ -1,4 +1,5 @@
-import User from '@/models/user';
+import { escapeRegex } from '@/helpers';
+import User, { PUBLIC_USER_FIELDS } from '@/models/user';
 import Block from '@/models/block';
 import { sanitizeText } from '@/helpers/sanitize';
 
@@ -20,7 +21,11 @@ const userService = {
         }
       }
 
-      const updatedUser = await User.findByIdAndUpdate(userId, update, { new: true });
+      // runValidators: without it bio maxlength and username minlength were silently skipped.
+      const updatedUser = await User.findByIdAndUpdate(userId, update, {
+        new: true,
+        runValidators: true,
+      });
       if (!updatedUser) throw new Error('Không tìm thấy người dùng!');
 
       return updatedUser;
@@ -31,7 +36,7 @@ const userService = {
 
   getAllUsers: async () => {
     try {
-      const users = await User.find().select('-password');
+      const users = await User.find().select(PUBLIC_USER_FIELDS);
       return users;
     } catch (error) {
       throw error;
@@ -53,13 +58,14 @@ const userService = {
 
       if (q) {
         filter.$or = [
-          { username: { $regex: q, $options: 'i' } },
-          { email: { $regex: q, $options: 'i' } },
+          { username: { $regex: escapeRegex(q), $options: 'i' } },
+          // Exact email only: a substring match let any user list everyone's email address.
+          { email: q.trim().toLowerCase() },
         ];
       }
 
       const [items, total] = await Promise.all([
-        User.find(filter).skip(skip).limit(pageSize).exec(),
+        User.find(filter).select(PUBLIC_USER_FIELDS).skip(skip).limit(pageSize).exec(),
         User.countDocuments(filter),
       ]);
 
@@ -81,7 +87,7 @@ const userService = {
 
   getUserProfile: async (userId: string) => {
     try {
-      const user = await User.findById(userId).select('-password');
+      const user = await User.findById(userId).select(PUBLIC_USER_FIELDS);
       if (!user) throw new Error('Không tìm thấy người dùng!');
       return user;
     } catch (error) {

@@ -162,7 +162,7 @@ export default function WelcomeScreen() {
 
   return (
     <GestureHandlerRootView className="flex-1 bg-[#4F3CC9]">
-      <StatusBar style="light" translucent backgroundColor="transparent" />
+      <StatusBar style="light" />
 
       <LinearGradient
         colors={['#3B2BB5', '#4F3CC9', '#7B5CFA']}

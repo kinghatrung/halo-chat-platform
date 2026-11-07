@@ -7,8 +7,11 @@ import User from '@/models/user';
 import Block from '@/models/block';
 import { assertMember, assertAdmin } from '@/services/membershipService';
 import { sanitizeText } from '@/helpers/sanitize';
+import { assertCanAccess } from '@/services/attachmentService';
 
 const EDIT_WINDOW_MS = 15 * 60 * 1000; // 15 phút
+const USER_MESSAGE_TYPES = ['text', 'image', 'file', 'video', 'audio'];
+const MAX_EMOJI_LENGTH = 16;
 
 const populateMessage = (query: any) =>
   query
@@ -100,7 +103,20 @@ const messageService = {
         throw new Error('Nội dung tin nhắn không được để trống!');
       }
 
-      if (attachmentIds.length > 0 && !data.isForwarded) {
+      // 'system' is reserved for server-made messages (call logs, "X pinned a message").
+      if (data.type && !USER_MESSAGE_TYPES.includes(data.type)) {
+        throw new Error('Loại tin nhắn không hợp lệ!');
+      }
+
+      if (attachmentIds.length > 0 && data.isForwarded) {
+        // Forwarding re-uses existing files: the sender must already be allowed to see each one,
+        // otherwise any guessed attachment id could be pulled into the sender's own chat.
+        const attachments = await Attachment.find({ _id: { $in: attachmentIds } });
+        if (attachments.length !== attachmentIds.length) {
+          throw new Error('Một số tệp đính kèm không hợp lệ!');
+        }
+        await Promise.all(attachments.map((a) => assertCanAccess(userId, a)));
+      } else if (attachmentIds.length > 0) {
         const count = await Attachment.countDocuments({
           _id: { $in: attachmentIds },
           uploaderId: userId,
@@ -132,7 +148,9 @@ const messageService = {
         isForwarded: !!data.isForwarded,
       });
 
-      if (attachmentIds.length > 0) {
+      // Forwarded files stay linked to their original message; re-pointing them removed the
+      // file from the source chat's media list and let the forwarder's chat "own" it.
+      if (attachmentIds.length > 0 && !data.isForwarded) {
         await Attachment.updateMany({ _id: { $in: attachmentIds } }, { messageId: message._id });
       }
 
@@ -335,6 +353,9 @@ const messageService = {
   },
   reactToMessage: async (userId: string, messageId: string, emoji: string) => {
     try {
+      if (!emoji || emoji.length > MAX_EMOJI_LENGTH) {
+        throw new Error('Biểu tượng cảm xúc không hợp lệ!');
+      }
       const message = await Message.findById(messageId);
       if (!message || message.isDeleted) {
         throw new Error('Tin nhắn không tồn tại hoặc đã bị thu hồi!');

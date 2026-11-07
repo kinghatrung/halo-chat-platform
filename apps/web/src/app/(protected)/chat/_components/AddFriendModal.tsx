@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { App, Avatar, Button, Empty, Flex, Input, Modal, Skeleton, Tag, Typography } from 'antd';
+import { Avatar, Button, Empty, Flex, Input, Modal, Skeleton, Tag, Typography } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import type { AxiosError } from 'axios';
 import { colorForId, initialOf } from '@/lib/avatar';
@@ -136,7 +136,7 @@ const AddFriendModal = ({ open, onClose }: AddFriendModalProps) => {
                     {user.username}
                   </Text>
                   <Text type="secondary" ellipsis style={{ fontSize: 12 }}>
-                    {user.email}
+                    {user.bio}
                   </Text>
                 </Flex>
 

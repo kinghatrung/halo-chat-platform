@@ -45,22 +45,7 @@ import {
 import { useConversationAttachments } from '@/hooks/useAttachments';
 import type { ConversationMember } from '@/types/conversation';
 import type { Message, MessageAttachment } from '@/types/message';
-
-export function getFullFileUrl(url?: string): string {
-  if (!url) return '';
-  if (
-    url.startsWith('http://') ||
-    url.startsWith('https://') ||
-    url.startsWith('data:') ||
-    url.startsWith('file:')
-  ) {
-    return url;
-  }
-  const apiBase = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.7:5000/api';
-  const rootHost = apiBase.replace(/\/api\/?$/, '');
-  const cleanPath = url.startsWith('/') ? url : `/${url}`;
-  return `${rootHost}${cleanPath}`;
-}
+import { buildAttachmentUrl } from '@/utils/url';
 
 export interface ChatInfoModalProps {
   visible: boolean;
@@ -188,12 +173,12 @@ export default function ChatInfoModal({
     if (mediaAttachments.length > 0) {
       return mediaAttachments.map((att) => ({
         _id: att._id,
-        url: getFullFileUrl(att.thumbnailUrl || att.url),
+        url: buildAttachmentUrl(att.thumbnailUrl || att.url),
       }));
     }
     return fallbackMediaList.map((item) => ({
       _id: item._id,
-      url: getFullFileUrl(item.url),
+      url: buildAttachmentUrl(item.url),
     }));
   }, [mediaAttachments, fallbackMediaList]);
 
@@ -415,7 +400,7 @@ export default function ChatInfoModal({
             <View className="relative">
               {avatarUrl ? (
                 <Image
-                  source={{ uri: getFullFileUrl(avatarUrl) }}
+                  source={{ uri: buildAttachmentUrl(avatarUrl) }}
                   className="w-24 h-24 rounded-full border-2 border-white shadow-sm"
                 />
               ) : (
@@ -891,7 +876,7 @@ export default function ChatInfoModal({
                 {pinnedMessages.map((msg, index) => {
                   const sender = msg.senderId;
                   const senderName = typeof sender === 'object' ? sender.username : 'Người dùng';
-                  const senderAvatar = getFullFileUrl(
+                  const senderAvatar = buildAttachmentUrl(
                     typeof sender === 'object' ? sender.avatar : undefined,
                   );
                   const pinTime = msg.pinnedAt
@@ -1041,7 +1026,7 @@ export default function ChatInfoModal({
                 {searchResults.map((item) => {
                   const sender = item.senderId;
                   const senderName = typeof sender === 'object' ? sender.username : 'Người dùng';
-                  const avatarUrl = getFullFileUrl(
+                  const avatarUrl = buildAttachmentUrl(
                     typeof sender === 'object' ? sender.avatar : undefined,
                   );
                   const msgTime = new Date(item.createdAt).toLocaleDateString('vi-VN', {

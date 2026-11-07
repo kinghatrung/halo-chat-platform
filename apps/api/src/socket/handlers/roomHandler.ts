@@ -14,6 +14,6 @@ export const registerRoomHandlers = (socket: Socket) => {
   });
 
   socket.on('conversation:leave', (payload: { conversationId: string }) => {
-    socket.leave(`conversation:${payload.conversationId}`);
+    socket.leave(`conversation:${payload?.conversationId}`);
   });
 };
