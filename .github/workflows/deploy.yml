@@ -151,35 +151,28 @@ jobs:
           [ "${{ needs.changes.outputs.api }}" = "true" ] && s="$s api"
           [ "${{ needs.changes.outputs.web }}" = "true" ] && s="$s web"
           echo "SERVICES=${s# }" >> "$GITHUB_ENV"
-      - name: Copy compose file to the VPS
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          port: ${{ secrets.VPS_PORT || 22 }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: deploy/docker-compose.yml
-          target: /opt/nimbo
-          strip_components: 1
-      - name: Pull and restart
-        uses: appleboy/ssh-action@v1.2.0
+      # Same SSH setup as the portfolio: base64 key + pinned host key (no third-party actions).
+      - name: SSH setup
         env:
-          SERVICES: ${{ env.SERVICES }}
-          GHCR_USER: ${{ github.actor }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          echo "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          echo "$VPS_SSH_KEY" | base64 -di > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+      - name: Copy compose file, pull and restart
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          port: ${{ secrets.VPS_PORT || 22 }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          envs: SERVICES,GHCR_USER,GHCR_TOKEN
-          script: |
-            set -e
-            cd /opt/nimbo
-            # The job token is only valid during this run, so log in, pull, log out.
-            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+        run: |
+          scp deploy/docker-compose.yml "deploy@$VPS_HOST:/opt/nimbo/docker-compose.yml"
+          # The job token is only valid during this run: sent over stdin (never on a command line),
+          # used to pull, then logged out.
+          printf '%s\n' "$GHCR_TOKEN" | ssh "deploy@$VPS_HOST" "set -e; cd /opt/nimbo
+            docker login ghcr.io -u '$GITHUB_ACTOR' --password-stdin
             docker compose pull $SERVICES
             docker logout ghcr.io
             docker compose up -d --remove-orphans $SERVICES
             docker image prune -f
-            docker compose ps
+            docker compose ps"
