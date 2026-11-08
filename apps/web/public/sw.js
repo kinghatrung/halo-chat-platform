@@ -3,7 +3,7 @@ self.addEventListener('push', (event) => {
 
   const payload = event.data.json();
   event.waitUntil(
-    self.registration.showNotification(payload.title || 'Nimbo', {
+    self.registration.showNotification(payload.title || 'Mivo', {
       body: payload.body,
       icon: '/apple-touch-icon.png',
       badge: '/apple-touch-icon.png',

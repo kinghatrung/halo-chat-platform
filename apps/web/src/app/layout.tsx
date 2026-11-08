@@ -4,7 +4,7 @@ import './globals.css';
 import '@livekit/components-styles';
 import { Providers } from './providers';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { APP_NAME } from '@/constants/brand';
+import { APP_NAME, SITE_URL as siteUrl } from '@/constants/brand';
 
 // Be Vietnam Pro ships a real Vietnamese subset; Geist had none, so accented letters
 // (ệ, ữ, ộ…) fell back to another font mid-word.
@@ -19,8 +19,6 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 });
-
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -64,10 +62,10 @@ export const metadata: Metadata = {
     siteName: APP_NAME,
     images: [
       {
-        url: '/image/chat-illustration.svg',
+        url: '/og.png',
         width: 1200,
         height: 630,
-        alt: `${APP_NAME} Platform Illustration`,
+        alt: `${APP_NAME} — nhắn tin, gọi thoại và gọi video miễn phí`,
       },
     ],
   },
@@ -76,7 +74,7 @@ export const metadata: Metadata = {
     title: `${APP_NAME} - Trò chuyện liền mạch, kết nối không giới hạn`,
     description:
       'Nền tảng nhắn tin hiện đại với giao diện mượt mà, hỗ trợ gửi tin nhắn, gọi thoại và gọi video.',
-    images: ['/image/chat-illustration.svg'],
+    images: ['/og.png'],
   },
   icons: {
     icon: [
@@ -99,7 +97,8 @@ const jsonLd = {
     priceCurrency: 'VND',
   },
   description: `${APP_NAME} là nền tảng nhắn tin thời gian thực hiện đại, cho phép bạn kết nối và gọi thoại/video dễ dàng.`,
-  image: `${siteUrl}/image/chat-illustration.svg`,
+  url: siteUrl,
+  image: `${siteUrl}/og.png`,
   author: {
     '@type': 'Organization',
     name: APP_NAME,

@@ -1,27 +1,11 @@
 import type { MetadataRoute } from 'next';
+import { SITE_URL } from '@/constants/brand';
 
+// Only public pages. "/" is left out: it only redirects (to /signin or /chat), and Google
+// reports redirecting URLs in a sitemap as errors.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  const lastModified = new Date();
-
   return [
-    {
-      url: baseUrl,
-      lastModified,
-      changeFrequency: 'daily',
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/signin`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/signup`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
+    { url: `${SITE_URL}/signin`, changeFrequency: 'monthly', priority: 1.0 },
+    { url: `${SITE_URL}/signup`, changeFrequency: 'monthly', priority: 0.8 },
   ];
 }

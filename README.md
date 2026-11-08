@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="apps/web/public/logo.svg" alt="Nimbo logo" width="120" />
+  <img src="apps/web/public/logo.svg" alt="Mivo logo" width="120" />
 </p>
 
-<h1 align="center">Nimbo</h1>
+<h1 align="center">Mivo</h1>
 
 <p align="center">
   <b>Hệ thống Trò chuyện Thời gian thực Đa nền tảng Hiện đại, Tốc độ cao & Bảo mật</b>
@@ -21,7 +21,7 @@
 
 ## 🌟 Giới thiệu
 
-**Nimbo** (trước đây là Halo Chat / Hudu Chat) là giải pháp truyền thông nhắn tin thời gian thực thế hệ mới. Được thiết kế với kiến trúc **Monorepo** hiện đại, dự án mang tới trải nghiệm trò chuyện mượt mà, phản hồi tức thì với giao diện Messenger-style chuẩn 60fps, hỗ trợ đầy đủ cả Web và ứng dụng Di động (Mobile).
+**Mivo** (trước đây là Nimbo / Halo Chat / Hudu Chat) là giải pháp truyền thông nhắn tin thời gian thực thế hệ mới. Được thiết kế với kiến trúc **Monorepo** hiện đại, dự án mang tới trải nghiệm trò chuyện mượt mà, phản hồi tức thì với giao diện Messenger-style chuẩn 60fps, hỗ trợ đầy đủ cả Web và ứng dụng Di động (Mobile).
 
 ---
 
@@ -170,5 +170,5 @@ Mọi ý kiến đóng góp, báo lỗi hoặc đề xuất tính năng mới lu
 ---
 
 <p align="center">
-  Crafted with ❤️ by <b>Nimbo Team</b>
+  Crafted with ❤️ by <b>Mivo Team</b>
 </p>

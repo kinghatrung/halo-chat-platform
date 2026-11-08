@@ -58,6 +58,7 @@ export interface ConversationMember {
   role: 'admin' | 'member';
   joinedAt: string;
   lastReadAt: string;
+  lastReadMessageId?: string | null;
   mutedUntil?: string | null;
   isArchived: boolean;
 }

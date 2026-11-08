@@ -220,6 +220,15 @@ const ChatWindow = ({
     conversation?.type === 'private'
       ? members.find((m) => m.userId._id !== currentUserId)?.userId
       : null;
+  // Furthest message any other member has read. ObjectIds of equal length sort by creation
+  // time, so comparing the hex strings matches the server's `_id: { $gt }` ordering.
+  const othersReadUpTo = members.reduce(
+    (max, m) =>
+      m.userId?._id !== currentUserId && m.lastReadMessageId && m.lastReadMessageId > max
+        ? m.lastReadMessageId
+        : max,
+    '',
+  );
   const onlineStatusOverrides = useChatStore((s) => s.onlineStatusOverrides);
   const otherMemberStatus = resolvePresence(
     onlineStatusOverrides,
@@ -301,7 +310,13 @@ const ChatWindow = ({
     if (!conversationId || messages.length === 0) return;
     const lastMessage = messages[messages.length - 1];
     if (lastMessage.status === 'sending' || lastMessage.status === 'failed') return;
-    markRead(conversationId, lastMessage._id);
+    // Only count it as read while the chat is actually on screen; catch up when the tab comes back.
+    const markIfVisible = () => {
+      if (document.visibilityState === 'visible') markRead(conversationId, lastMessage._id);
+    };
+    markIfVisible();
+    document.addEventListener('visibilitychange', markIfVisible);
+    return () => document.removeEventListener('visibilitychange', markIfVisible);
   }, [conversationId, messages, markRead]);
 
   useEffect(() => {
@@ -930,7 +945,7 @@ const ChatWindow = ({
                           <>
                             {formatMessageTime(msg.createdAt)}
                             {msg.isEdited && !msg.isDeleted ? ' · Đã chỉnh sửa' : ''}
-                            {mine && index === messages.length - 1 && (
+                            {mine && index === messages.length - 1 && othersReadUpTo >= msg._id && (
                               <Text style={{ fontSize: 11, color: '#6366f1', marginLeft: 4 }}>
                                 · Đã xem
                               </Text>

@@ -1,6 +1,6 @@
 import { theme, type ThemeConfig } from 'antd';
 
-// Brand palette — matches the Nimbo logo gradient (sky → indigo → violet).
+// Brand palette — matches the Mivo logo gradient (sky → indigo → violet).
 export const BRAND = {
   sky: '#38BDF8',
   primary: '#6366F1',
