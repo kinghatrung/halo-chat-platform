@@ -85,24 +85,30 @@ export const metadata: Metadata = {
   },
 };
 
+// WebSite tells Google the site name ("Mivo" instead of the bare domain); it must be on the home page.
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'SoftwareApplication',
-  name: APP_NAME,
-  applicationCategory: 'CommunicationApplication',
-  operatingSystem: 'Web, Windows, macOS, Android, iOS',
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'VND',
-  },
-  description: `${APP_NAME} là nền tảng nhắn tin thời gian thực hiện đại, cho phép bạn kết nối và gọi thoại/video dễ dàng.`,
-  url: siteUrl,
-  image: `${siteUrl}/og.png`,
-  author: {
-    '@type': 'Organization',
-    name: APP_NAME,
-  },
+  '@graph': [
+    { '@type': 'WebSite', name: APP_NAME, alternateName: `${APP_NAME} Chat`, url: `${siteUrl}/` },
+    {
+      '@type': 'SoftwareApplication',
+      name: APP_NAME,
+      applicationCategory: 'CommunicationApplication',
+      operatingSystem: 'Web, Windows, macOS, Android, iOS',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'VND',
+      },
+      description: `${APP_NAME} là nền tảng nhắn tin thời gian thực hiện đại, cho phép bạn kết nối và gọi thoại/video dễ dàng.`,
+      url: siteUrl,
+      image: `${siteUrl}/og.png`,
+      author: {
+        '@type': 'Organization',
+        name: APP_NAME,
+      },
+    },
+  ],
 };
 
 export default function RootLayout({

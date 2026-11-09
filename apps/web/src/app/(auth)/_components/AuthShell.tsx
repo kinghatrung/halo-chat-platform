@@ -58,8 +58,8 @@ export default function AuthShell({ title, subtitle, children, footer }: AuthShe
             Nhắn tin, chia sẻ và giữ liên lạc với bạn bè, đồng nghiệp mọi lúc mọi nơi.
           </p>
 
-          {/* Floating chat bubbles */}
-          <div className="relative mt-10 h-60 w-full max-w-110">
+          {/* Floating chat bubbles — decoration only: hidden from screen readers and Google snippets */}
+          <div className="relative mt-10 h-60 w-full max-w-110" aria-hidden data-nosnippet>
             <span className="absolute left-6 top-2 h-3 w-3 rounded-full bg-white/30" />
             <span className="absolute bottom-6 right-8 h-4 w-4 rounded-full bg-white/25" />
 
